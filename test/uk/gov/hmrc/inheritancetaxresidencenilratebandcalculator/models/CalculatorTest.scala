@@ -32,6 +32,10 @@ class CalculatorTest extends UnitSpec {
       "give RNRA equal to the threshold for the 2019/20 tax year" in {
         Calculator(new LocalDate(2020, 1, 1), 490000, 300000) shouldBe CalculationResult(150000, 0)
       }
+
+      "include brought forward RNRB in the RNRA and CFA results" in {
+        Calculator(new LocalDate(2021, 1, 1), 500000, 250000, 100) shouldBe CalculationResult(250000, 100000)
+      }
     }
 
     "all assets are left to direct descendents and leaving a property worth less than the RNRB threshold" must {
@@ -40,5 +44,9 @@ class CalculatorTest extends UnitSpec {
         Calculator(new LocalDate(2020, 1, 1), 470000, 80000) shouldBe CalculationResult(80000, 70000)
       }
     }
+  }
+
+  "Calculator" must {
+    // TODO: Check for negatives in all values, and check for percentages outside of the 0 - 100 bounds.
   }
 }
