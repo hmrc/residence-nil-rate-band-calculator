@@ -17,16 +17,26 @@
 package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.play.test.UnitSpec
 
-object ResidenceNilRateBand extends Band {
-  def apply(date: LocalDate): Int = {
-    val bands = Map(
-      new LocalDate(2018, 4, 5) -> 125000,
-      new LocalDate(2019, 4, 5) -> 150000,
-      new LocalDate(2020, 4, 5) -> 175000)
+class NilRateBandTest extends UnitSpec {
 
-    val bandDate = getHighestDateBefore(date, bands)
+  "Nil Rate Band" must {
 
-    bandDate.fold(100000) { d => bands(d) }
+    "return 100000 when given a date of 1 Jan 2000" in {
+      NilRateBand(new LocalDate(2000, 1, 1)) shouldBe 325000
+    }
+
+    "return 100000 when given a date of 6 Apr 2017" in {
+      NilRateBand(new LocalDate(2017, 4, 6)) shouldBe 325000
+    }
+
+    "return 175000 when given a date of 5 Apr 2021" in {
+      NilRateBand(new LocalDate(2021, 4, 5)) shouldBe 325000
+    }
+
+    "return 175000 when given a date of 1 Jan 2040" in {
+      NilRateBand(new LocalDate(2040, 1, 1)) shouldBe 325000
+    }
   }
 }

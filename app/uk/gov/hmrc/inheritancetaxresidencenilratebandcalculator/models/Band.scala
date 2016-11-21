@@ -18,15 +18,9 @@ package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
 
-object ResidenceNilRateBand extends Band {
-  def apply(date: LocalDate): Int = {
-    val bands = Map(
-      new LocalDate(2018, 4, 5) -> 125000,
-      new LocalDate(2019, 4, 5) -> 150000,
-      new LocalDate(2020, 4, 5) -> 175000)
+trait Band {
+  def apply(date: LocalDate): Int
 
-    val bandDate = getHighestDateBefore(date, bands)
-
-    bandDate.fold(100000) { d => bands(d) }
-  }
+  protected val getHighestDateBefore: (LocalDate, Map[LocalDate, Int]) => Option[LocalDate] = (date, bands) =>
+    bands.keys.toSeq.filter(d => d.isBefore(date)).sortWith(_ isAfter _).headOption
 }
