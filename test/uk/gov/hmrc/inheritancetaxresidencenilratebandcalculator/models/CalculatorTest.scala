@@ -61,6 +61,10 @@ class CalculatorTest extends UnitSpec {
       "give RNRA equal to the tapered away amount of the threshold" in {
         Calculator(new LocalDate(2021, 1, 1), 2100000, 500000, 100) shouldBe Right(CalculationResult(125000, 0))
       }
+
+      "give RNRA equal to the tapered away amount of the threshold in the 2018/19 tax year" in {
+        Calculator(new LocalDate(2018, 7, 1), 2100000, 450000, 100) shouldBe Right(CalculationResult(75000, 0))
+      }
     }
 
     "the estate is above the tapering threshold and the property is worth less than the RNRB threshold" must {
