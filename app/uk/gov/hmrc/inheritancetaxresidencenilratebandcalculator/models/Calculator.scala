@@ -31,7 +31,7 @@ object Calculator {
       val cfa = totalAllowance - rnra
       Right(CalculationResult(rnra, cfa))
     } else {
-      Left(("ESTATE_VALUE_NEGATIVE", "The estate value must be greater or equal to zero."))
+      Left(("INVALID_INPUTS", "The estate value must be greater or equal to zero."))
     }
   }
 }

@@ -49,8 +49,8 @@ class CalculatorTest extends UnitSpec {
   "Calculator" must {
     // TODO: Check for negatives in all values, and check for percentages outside of the 0 - 100 bounds.
     "give an error when supplied with a negative estate value" in {
-      Calculator(new LocalDate(2021, 1, 1), -490000, 300000) shouldBe Left
+      Calculator(new LocalDate(2021, 1, 1), -490000, 300000).left.get shouldBe
+        ("INVALID_INPUTS", "The estate value must be greater or equal to zero.")
     }
-
   }
 }
