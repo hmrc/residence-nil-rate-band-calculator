@@ -39,10 +39,14 @@ object Calculator {
     } else if (percentageCloselyInherited < 0 || percentageCloselyInherited > 100) {
       Left(("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred."))
     } else {
-      val propertyCloselyInherited = (percentageCloselyInherited / 100) * propertyValue toInt
       val totalAllowance = (1 + (percentageBroughtForwardAllowance / 100)) * ResidenceNilRateBand(dateOfDeath) toInt
-      val rnra = math.min(propertyCloselyInherited, totalAllowance)
-      val cfa = totalAllowance - rnra
+      val amountToTaper = math.max(estateValue - TaperBand(dateOfDeath), 0) / 2
+      val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
+
+      val propertyCloselyInherited = (percentageCloselyInherited / 100) * propertyValue toInt
+
+      val rnra = math.min(propertyCloselyInherited, taperedAllowance)
+      val cfa = taperedAllowance - rnra
       Right(CalculationResult(rnra, cfa))
     }
   }

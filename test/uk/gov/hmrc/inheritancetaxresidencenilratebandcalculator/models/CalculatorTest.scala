@@ -56,27 +56,44 @@ class CalculatorTest extends UnitSpec {
         Calculator(new LocalDate(2021, 1, 1), 500000, 200000, 50) shouldBe Right(CalculationResult(100000, 75000))
       }
     }
+
+    "the estate is above the tapering threshold and the property is worth more than the RNRB threshold" must {
+      "give RNRA equal to the tapered away amount of the threshold" in {
+        Calculator(new LocalDate(2021, 1, 1), 2100000, 500000, 100) shouldBe Right(CalculationResult(125000, 0))
+      }
+    }
+
+    "the estate is above the tapering threshold and the property is worth less than the RNRB threshold" must {
+      "give RNRA equal to the tapered away amount of the threshold" in {
+        Calculator(new LocalDate(2021, 1, 1), 2100000, 100000, 100) shouldBe Right(CalculationResult(100000, 25000))
+      }
+    }
   }
 
   "Calculator" must {
     "give an error when supplied with a negative estate value" in {
-      Calculator(new LocalDate(2021, 1, 1), -1, 300000, 0).left.get shouldBe Tuple2("INVALID_INPUTS", "The estate value must be greater or equal to zero.")
+      Calculator(new LocalDate(2021, 1, 1), -1, 300000, 0).left.get shouldBe
+        Tuple2("INVALID_INPUTS", "The estate value must be greater or equal to zero.")
     }
 
     "give an error when supplied with a negative property value" in {
-      Calculator(new LocalDate(2021, 1, 1), 490000, -1, 0).left.get shouldBe Tuple2("INVALID_INPUTS", "The property value must be greater or equal to zero.")
+      Calculator(new LocalDate(2021, 1, 1), 490000, -1, 0).left.get shouldBe
+        Tuple2("INVALID_INPUTS", "The property value must be greater or equal to zero.")
     }
 
     "give an error when supplied with a negative brought forward allowance percentage" in {
-      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 0, -0.1).left.get shouldBe Tuple2("INVALID_INPUTS", "The brought forward allowance percentage must be greater or equal to zero.")
+      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 0, -0.1).left.get shouldBe
+        Tuple2("INVALID_INPUTS", "The brought forward allowance percentage must be greater or equal to zero.")
     }
 
     "give an error when supplied with a negative percentage closely inherited" in {
-      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, -0.1, 12).left.get shouldBe Tuple2("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred.")
+      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, -0.1, 12).left.get shouldBe
+        Tuple2("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred.")
     }
 
     "give an error when supplied with a percentage closely inherited that is greater than 100%" in {
-      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 100.01, 12).left.get shouldBe Tuple2("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred.")
+      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 100.01, 12).left.get shouldBe
+        Tuple2("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred.")
     }
   }
 }
