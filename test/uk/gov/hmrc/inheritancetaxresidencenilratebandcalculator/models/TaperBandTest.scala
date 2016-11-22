@@ -19,24 +19,24 @@ package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
 import org.joda.time.LocalDate
 import uk.gov.hmrc.play.test.UnitSpec
 
-class NilRateBandTest extends UnitSpec {
+class TaperBandTest extends UnitSpec {
 
-  "Nil Rate Band" must {
+  "Taper Band" must {
 
-    "return 325000 when given a date of 1 Jan 2000" in {
-      NilRateBand(new LocalDate(2000, 1, 1)) shouldBe 325000
+    "return 2000000 when given a date of 1 Jan 2000" in {
+      TaperBand(new LocalDate(2000, 1, 1)) shouldBe 2000000
     }
 
-    "return 325000 when given a date of 6 Apr 2017" in {
-      NilRateBand(new LocalDate(2017, 4, 6)) shouldBe 325000
+    "return 2000000 when given a date of 6 Apr 2017" in {
+      TaperBand(new LocalDate(2017, 4, 6)) shouldBe 2000000
     }
 
-    "return 325000 when given a date of 5 Apr 2021" in {
-      NilRateBand(new LocalDate(2021, 4, 5)) shouldBe 325000
+    "return 2000000 when given a date of 5 Apr 2021" in {
+      TaperBand(new LocalDate(2021, 4, 5)) shouldBe 2000000
     }
 
-    "return 325000 when given a date of 1 Jan 2040" in {
-      NilRateBand(new LocalDate(2040, 1, 1)) shouldBe 325000
+    "return 2000000 when given a date of 1 Jan 2040" in {
+      TaperBand(new LocalDate(2040, 1, 1)) shouldBe 2000000
     }
   }
 }
