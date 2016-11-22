@@ -52,5 +52,15 @@ class CalculatorTest extends UnitSpec {
       Calculator(new LocalDate(2021, 1, 1), -490000, 300000).left.get shouldBe
         ("INVALID_INPUTS", "The estate value must be greater or equal to zero.")
     }
+
+    "give an error when supplied with a negative property value" in {
+      Calculator(new LocalDate(2021, 1, 1), 490000, -300000).left.get shouldBe
+        ("INVALID_INPUTS", "The property value must be greater or equal to zero.")
+    }
+
+    "give an error when supplied with a negative brought forward allowance value" in {
+      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, -12).left.get shouldBe
+        ("INVALID_INPUTS", "The brought forward allowance percentage must be greater or equal to zero.")
+    }
   }
 }

@@ -25,13 +25,18 @@ object Calculator {
             propertyValue: Int,
             percentageBroughtForwardAllowance: Float = 0): Either[(String, String), CalculationResult] = {
 
-    if (estateValue >= 0) {
+    if (estateValue < 0) {
+      Left(("INVALID_INPUTS", "The estate value must be greater or equal to zero."))
+    } else if (propertyValue < 0) {
+      Left(("INVALID_INPUTS", "The property value must be greater or equal to zero."))
+    } else if (percentageBroughtForwardAllowance < 0) {
+      Left(("INVALID_INPUTS", "The brought forward allowance percentage must be greater or equal to zero."))
+    } else {
       val totalAllowance = (1 + (percentageBroughtForwardAllowance / 100)) * ResidenceNilRateBand(dateOfDeath) toInt
       val rnra = math.min(propertyValue, totalAllowance)
       val cfa = totalAllowance - rnra
       Right(CalculationResult(rnra, cfa))
-    } else {
-      Left(("INVALID_INPUTS", "The estate value must be greater or equal to zero."))
     }
   }
+
 }
