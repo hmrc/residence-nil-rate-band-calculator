@@ -20,11 +20,18 @@ import org.joda.time.LocalDate
 
 object Calculator {
 
-  def apply(dateOfDeath: LocalDate, estateValue: Int, propertyValue: Int, percentageBroughtForwardAllowance: Float = 0) = {
+  def apply(dateOfDeath: LocalDate,
+            estateValue: Int,
+            propertyValue: Int,
+            percentageBroughtForwardAllowance: Float = 0): Either[(String, String), CalculationResult] = {
 
-    val totalAllowance = (1 + (percentageBroughtForwardAllowance / 100)) * ResidenceNilRateBand(dateOfDeath) toInt
-    val rnra = math.min(propertyValue, totalAllowance)
-    val cfa = totalAllowance - rnra
-    CalculationResult(rnra, cfa)
+    if (estateValue >= 0) {
+      val totalAllowance = (1 + (percentageBroughtForwardAllowance / 100)) * ResidenceNilRateBand(dateOfDeath) toInt
+      val rnra = math.min(propertyValue, totalAllowance)
+      val cfa = totalAllowance - rnra
+      Right(CalculationResult(rnra, cfa))
+    } else {
+      Left(("ESTATE_VALUE_NEGATIVE", "The estate value must be greater or equal to zero."))
+    }
   }
 }
