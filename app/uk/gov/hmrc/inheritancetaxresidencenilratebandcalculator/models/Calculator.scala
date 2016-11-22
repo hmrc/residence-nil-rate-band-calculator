@@ -18,12 +18,17 @@ package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
 
+/* Terms of art:
+ * Percentage closely inherited = The percentage of a property passing to a direct descendant
+ */
+
 object Calculator {
 
   def apply(dateOfDeath: LocalDate,
             estateValue: Int,
             propertyValue: Int,
-            percentageBroughtForwardAllowance: Float = 0): Either[(String, String), CalculationResult] = {
+            percentageCloselyInherited: Double,
+            percentageBroughtForwardAllowance: Double = 0): Either[(String, String), CalculationResult] = {
 
     if (estateValue < 0) {
       Left(("INVALID_INPUTS", "The estate value must be greater or equal to zero."))
@@ -31,12 +36,14 @@ object Calculator {
       Left(("INVALID_INPUTS", "The property value must be greater or equal to zero."))
     } else if (percentageBroughtForwardAllowance < 0) {
       Left(("INVALID_INPUTS", "The brought forward allowance percentage must be greater or equal to zero."))
+    } else if (percentageCloselyInherited < 0 || percentageCloselyInherited > 100) {
+      Left(("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred."))
     } else {
+      val propertyCloselyInherited = (percentageCloselyInherited / 100) * propertyValue toInt
       val totalAllowance = (1 + (percentageBroughtForwardAllowance / 100)) * ResidenceNilRateBand(dateOfDeath) toInt
-      val rnra = math.min(propertyValue, totalAllowance)
+      val rnra = math.min(propertyCloselyInherited, totalAllowance)
       val cfa = totalAllowance - rnra
       Right(CalculationResult(rnra, cfa))
     }
   }
-
 }
