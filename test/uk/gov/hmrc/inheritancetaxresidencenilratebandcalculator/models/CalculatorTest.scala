@@ -33,14 +33,14 @@ class CalculatorTest extends UnitSpec {
         Calculator(new LocalDate(2020, 1, 1), 490000, 300000, 100) shouldBe Right(CalculationResult(150000, 0))
       }
 
-      "include brought forward RNRB in the RNRA and CFA results" in {
+      "include brought forward RNRB in the RNRA and carry-forward amount results" in {
         Calculator(new LocalDate(2021, 1, 1), 500000, 250000, 100, 100) shouldBe Right(CalculationResult(250000, 100000))
       }
     }
 
     "all assets are left to direct descendants and leaving a property worth less than the RNRB threshold" must {
 
-      "give RNRA equal to the property value and CFA equal to (threshold - property value)" in {
+      "give RNRA equal to the property value and carry-forward amount equal to (threshold - property value)" in {
         Calculator(new LocalDate(2020, 1, 1), 470000, 80000, 100) shouldBe Right(CalculationResult(80000, 70000))
       }
     }

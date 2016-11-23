@@ -45,9 +45,9 @@ object Calculator {
 
       val propertyCloselyInherited = (percentageCloselyInherited / 100) * propertyValue toInt
 
-      val rnra = math.min(propertyCloselyInherited, taperedAllowance)
-      val cfa = taperedAllowance - rnra
-      Right(CalculationResult(rnra, cfa))
+      val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
+      val carryForwardAmount = taperedAllowance - residenceNilRateAmount
+      Right(CalculationResult(residenceNilRateAmount, carryForwardAmount))
     }
   }
 }
