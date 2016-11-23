@@ -20,8 +20,6 @@ case class Percent(value: Double) extends Ordered[Percent] {
 
   def asDecimal: Double = value / 100
 
-  //override def <(p: Percent): Boolean = p.value < value
-
   override def compare(that: Percent) = (this.value - that.value) match {
     case x if x > 0 => 1
     case x if x == 0 => 0
