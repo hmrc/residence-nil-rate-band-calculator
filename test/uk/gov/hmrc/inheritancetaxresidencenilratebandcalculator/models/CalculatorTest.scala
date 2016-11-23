@@ -18,6 +18,7 @@ package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.converters.Percentify._
 
 class CalculatorTest extends UnitSpec {
 
@@ -26,78 +27,80 @@ class CalculatorTest extends UnitSpec {
     "all assets are left to direct descendants and leaving a property worth more than the RNRB threshold" must {
 
       "give RNRA equal to the threshold for the 2020/21 tax year" in {
-        Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 100) shouldBe Right(CalculationResult(175000, 0))
+        Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 100 percent) shouldBe Right(CalculationResult(175000, 0))
       }
 
       "give RNRA equal to the threshold for the 2019/20 tax year" in {
-        Calculator(new LocalDate(2020, 1, 1), 490000, 300000, 100) shouldBe Right(CalculationResult(150000, 0))
+        Calculator(new LocalDate(2020, 1, 1), 490000, 300000, 100 percent) shouldBe Right(CalculationResult(150000, 0))
       }
 
       "include brought forward RNRB in the RNRA and carry-forward amount results" in {
-        Calculator(new LocalDate(2021, 1, 1), 500000, 250000, 100, 100) shouldBe Right(CalculationResult(250000, 100000))
+        Calculator(new LocalDate(2021, 1, 1), 500000, 250000, 100 percent, 100 percent) shouldBe Right(CalculationResult(250000, 100000))
       }
     }
 
     "all assets are left to direct descendants and leaving a property worth less than the RNRB threshold" must {
 
       "give RNRA equal to the property value and carry-forward amount equal to (threshold - property value)" in {
-        Calculator(new LocalDate(2020, 1, 1), 470000, 80000, 100) shouldBe Right(CalculationResult(80000, 70000))
+        Calculator(new LocalDate(2020, 1, 1), 470000, 80000, 100 percent) shouldBe Right(CalculationResult(80000, 70000))
       }
     }
 
     "part of a property is left to direct descendants, and the percentage left is above the RNRB threshold" must {
       "give RNRA equal to the RNRB threshold" in {
-        Calculator(new LocalDate(2021, 1, 1), 500000, 400000, 50) shouldBe Right(CalculationResult(175000, 0))
+        Calculator(new LocalDate(2021, 1, 1), 500000, 400000, 50 percent) shouldBe Right(CalculationResult(175000, 0))
       }
     }
 
     "part of a property is left to direct descendants, and the percentage left is below the RNRB threshold" must {
       "give RNRA equal to the percentage of the property value" in {
-        Calculator(new LocalDate(2021, 1, 1), 500000, 200000, 50) shouldBe Right(CalculationResult(100000, 75000))
+        Calculator(new LocalDate(2021, 1, 1), 500000, 200000, 50 percent) shouldBe Right(CalculationResult(100000, 75000))
       }
     }
 
     "the estate is above the tapering threshold and the property is worth more than the RNRB threshold" must {
       "give RNRA equal to the tapered away amount of the threshold" in {
-        Calculator(new LocalDate(2021, 1, 1), 2100000, 500000, 100) shouldBe Right(CalculationResult(125000, 0))
+        Calculator(new LocalDate(2021, 1, 1), 2100000, 500000, 100 percent) shouldBe Right(CalculationResult(125000, 0))
       }
 
       "give RNRA equal to the tapered away amount of the threshold in the 2018/19 tax year" in {
-        Calculator(new LocalDate(2018, 7, 1), 2100000, 450000, 100) shouldBe Right(CalculationResult(75000, 0))
+        Calculator(new LocalDate(2018, 7, 1), 2100000, 450000, 100 percent) shouldBe Right(CalculationResult(75000, 0))
       }
     }
 
     "the estate is above the tapering threshold and the property is worth less than the RNRB threshold" must {
       "give RNRA equal to the tapered away amount of the threshold" in {
-        Calculator(new LocalDate(2021, 1, 1), 2100000, 100000, 100) shouldBe Right(CalculationResult(100000, 25000))
+        Calculator(new LocalDate(2021, 1, 1), 2100000, 100000, 100 percent) shouldBe Right(CalculationResult(100000, 25000))
       }
     }
   }
 
   "Calculator" must {
     "give an error when supplied with a negative estate value" in {
-      Calculator(new LocalDate(2021, 1, 1), -1, 300000, 0).left.get shouldBe
+      Calculator(new LocalDate(2021, 1, 1), -1, 300000, 0 percent).left.get shouldBe
         Tuple2("INVALID_INPUTS", "The estate value must be greater or equal to zero.")
     }
 
     "give an error when supplied with a negative property value" in {
-      Calculator(new LocalDate(2021, 1, 1), 490000, -1, 0).left.get shouldBe
+      Calculator(new LocalDate(2021, 1, 1), 490000, -1, 0 percent).left.get shouldBe
         Tuple2("INVALID_INPUTS", "The property value must be greater or equal to zero.")
     }
 
     "give an error when supplied with a negative brought forward allowance percentage" in {
-      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 0, -0.1).left.get shouldBe
+      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 0 percent, -0.1 percent).left.get shouldBe
         Tuple2("INVALID_INPUTS", "The brought forward allowance percentage must be greater or equal to zero.")
     }
 
     "give an error when supplied with a negative percentage closely inherited" in {
-      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, -0.1, 12).left.get shouldBe
+      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, -0.01 percent, 12 percent).left.get shouldBe
         Tuple2("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred.")
     }
 
     "give an error when supplied with a percentage closely inherited that is greater than 100%" in {
-      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 100.01, 12).left.get shouldBe
+      Calculator(new LocalDate(2021, 1, 1), 490000, 300000, 100.01 percent, 12 percent).left.get shouldBe
         Tuple2("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred.")
     }
+
+
   }
 }

@@ -17,6 +17,7 @@
 package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.converters.Percentify._
 
 /* Terms of art:
  * Percentage closely inherited = The percentage of a property passing to a direct descendant
@@ -29,27 +30,30 @@ object Calculator {
   def apply(dateOfDeath: LocalDate,
             estateValue: Int,
             propertyValue: Int,
-            percentageCloselyInherited: Double,
-            percentageBroughtForwardAllowance: Double = 0): Either[(String, String), CalculationResult] = {
+            percentageCloselyInherited: Percent,
+            percentageBroughtForwardAllowance: Percent = 0 percent): Either[(String, String), CalculationResult] = {
 
     if (estateValue < 0) {
       Left(("INVALID_INPUTS", "The estate value must be greater or equal to zero."))
     } else if (propertyValue < 0) {
       Left(("INVALID_INPUTS", "The property value must be greater or equal to zero."))
-    } else if (percentageBroughtForwardAllowance < 0) {
+    } else if (percentageBroughtForwardAllowance < 0.percent) {
       Left(("INVALID_INPUTS", "The brought forward allowance percentage must be greater or equal to zero."))
-    } else if (percentageCloselyInherited < 0 || percentageCloselyInherited > 100) {
+    } else if (percentageCloselyInherited < 0.percent || percentageCloselyInherited > 100.percent) {
       Left(("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred."))
     } else {
-      val totalAllowance = (1 + (percentageBroughtForwardAllowance / 100)) * ResidenceNilRateBand(dateOfDeath) toInt
+      val totalAllowance = increaseByPercentage(ResidenceNilRateBand(dateOfDeath), percentageBroughtForwardAllowance)
       val amountToTaper = math.max(estateValue - TaperBand(dateOfDeath), 0) / taperRate
       val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
 
-      val propertyCloselyInherited = (percentageCloselyInherited / 100) * propertyValue toInt
+      val propertyCloselyInherited = percentageCloselyInherited.asDecimal * propertyValue toInt
 
       val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
       val carryForwardAmount = taperedAllowance - residenceNilRateAmount
       Right(CalculationResult(residenceNilRateAmount, carryForwardAmount))
     }
   }
+
+  private def increaseByPercentage(amount: Int, percentage: Percent) = (1 + percentage.asDecimal) * amount toInt
+
 }
