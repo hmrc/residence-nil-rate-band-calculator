@@ -24,6 +24,8 @@ import org.joda.time.LocalDate
 
 object Calculator {
 
+  val taperRate = 2
+
   def apply(dateOfDeath: LocalDate,
             estateValue: Int,
             propertyValue: Int,
@@ -40,7 +42,7 @@ object Calculator {
       Left(("INVALID_INPUTS", "The percentage closely inherited must be between zero and one hundred."))
     } else {
       val totalAllowance = (1 + (percentageBroughtForwardAllowance / 100)) * ResidenceNilRateBand(dateOfDeath) toInt
-      val amountToTaper = math.max(estateValue - TaperBand(dateOfDeath), 0) / 2
+      val amountToTaper = math.max(estateValue - TaperBand(dateOfDeath), 0) / taperRate
       val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
 
       val propertyCloselyInherited = (percentageCloselyInherited / 100) * propertyValue toInt
