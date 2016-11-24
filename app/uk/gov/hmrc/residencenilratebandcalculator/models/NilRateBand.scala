@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.controllers
+package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import uk.gov.hmrc.play.microservice.controller.BaseController
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
-import play.api.mvc._
-import scala.concurrent.Future
+import org.joda.time.LocalDate
 
-object MicroserviceHelloWorld extends MicroserviceHelloWorld
+object NilRateBand extends Band {
 
-trait MicroserviceHelloWorld extends BaseController {
-
-	def hello() = Action.async { implicit request =>
-		Future.successful(Ok("Hello world"))
-	}
+  def apply(date: LocalDate) = 325000
 }

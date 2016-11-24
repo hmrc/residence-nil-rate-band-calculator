@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import org.joda.time.LocalDate
-
-object NilRateBand extends Band {
-
-  def apply(date: LocalDate) = 325000
-}
+case class CalculationResult (residenceNilRateAmount: Int, carryForwardAmount: Int)

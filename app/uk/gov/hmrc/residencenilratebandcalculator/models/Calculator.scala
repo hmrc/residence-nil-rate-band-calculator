@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.converters.Percentify._
+import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 
 /* Terms of art:
  * Percentage closely inherited = The percentage of a property passing to a direct descendant

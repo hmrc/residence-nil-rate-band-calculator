@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.play.test.UnitSpec

@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
-import org.joda.time.LocalDate
+import play.api.http.Status
+import play.api.test.FakeRequest
+import play.api.http.Status
+import play.api.test.FakeRequest
 import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.play.test.WithFakeApplication
+import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class TaperBandTest extends UnitSpec {
 
-  "Taper Band" must {
+class MicroserviceHelloWorldControllerSpec extends UnitSpec with WithFakeApplication{
 
-    "return 2000000 when given a date of 1 Jan 2000" in {
-      TaperBand(new LocalDate(2000, 1, 1)) shouldBe 2000000
-    }
+  val fakeRequest = FakeRequest("GET", "/")
 
-    "return 2000000 when given a date of 6 Apr 2017" in {
-      TaperBand(new LocalDate(2017, 4, 6)) shouldBe 2000000
-    }
 
-    "return 2000000 when given a date of 5 Apr 2021" in {
-      TaperBand(new LocalDate(2021, 4, 5)) shouldBe 2000000
-    }
-
-    "return 2000000 when given a date of 1 Jan 2040" in {
-      TaperBand(new LocalDate(2040, 1, 1)) shouldBe 2000000
+  "GET /" should {
+    "return 200" in {
+      val result = MicroserviceHelloWorld.hello()(fakeRequest)
+      status(result) shouldBe Status.OK
     }
   }
+
+
 }

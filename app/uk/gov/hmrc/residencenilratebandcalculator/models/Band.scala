@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.converters
+package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models.Percent
+import org.joda.time.LocalDate
 
-object Percentify {
+trait Band {
+  def apply(date: LocalDate): Int
 
-  class Percentifier(double: Double) {
-    def percent = Percent(double)
-  }
-
-  implicit def doubleToPercent(double: Double) = new Percentifier(double)
+  protected val getHighestDateBefore: (LocalDate, Map[LocalDate, Int]) => Option[LocalDate] = (date, bands) =>
+    bands.keys.toSeq.filter(d => d.isBefore(date)).sortWith(_ isAfter _).headOption
 }

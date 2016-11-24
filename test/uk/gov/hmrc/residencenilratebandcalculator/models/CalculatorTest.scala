@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.play.test.UnitSpec
-import uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.converters.Percentify._
+import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 
 class CalculatorTest extends UnitSpec {
 

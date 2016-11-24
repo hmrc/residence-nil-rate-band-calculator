@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.converters
 
-import org.joda.time.LocalDate
+import uk.gov.hmrc.residencenilratebandcalculator.models.Percent
 
-object ResidenceNilRateBand extends Band {
-  def apply(date: LocalDate): Int = {
-    val bands = Map(
-      new LocalDate(2018, 4, 5) -> 125000,
-      new LocalDate(2019, 4, 5) -> 150000,
-      new LocalDate(2020, 4, 5) -> 175000)
+object Percentify {
 
-    val bandDate = getHighestDateBefore(date, bands)
-
-    bandDate.fold(100000) { d => bands(d) }
+  class Percentifier(double: Double) {
+    def percent = Percent(double)
   }
+
+  implicit def doubleToPercent(double: Double) = new Percentifier(double)
 }

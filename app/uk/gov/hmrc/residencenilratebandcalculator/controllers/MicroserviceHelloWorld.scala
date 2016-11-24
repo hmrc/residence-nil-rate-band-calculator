@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
-import org.joda.time.LocalDate
+import uk.gov.hmrc.play.microservice.controller.BaseController
+import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
+import play.api.mvc._
+import scala.concurrent.Future
 
-trait Band {
-  def apply(date: LocalDate): Int
+object MicroserviceHelloWorld extends MicroserviceHelloWorld
 
-  protected val getHighestDateBefore: (LocalDate, Map[LocalDate, Int]) => Option[LocalDate] = (date, bands) =>
-    bands.keys.toSeq.filter(d => d.isBefore(date)).sortWith(_ isAfter _).headOption
+trait MicroserviceHelloWorld extends BaseController {
+
+	def hello() = Action.async { implicit request =>
+		Future.successful(Ok("Hello world"))
+	}
 }

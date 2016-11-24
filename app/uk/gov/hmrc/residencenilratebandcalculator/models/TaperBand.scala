@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.models
 
-case class Percent(value: Double) extends Ordered[Percent] {
+import org.joda.time.LocalDate
 
-  def asDecimal: Double = value / 100
-
-  override def compare(that: Percent) = (this.value - that.value) match {
-    case x if x > 0 => 1
-    case x if x == 0 => 0
-    case _ => -1
-  }
+object TaperBand extends Band {
+  def apply(date: LocalDate): Int = 2000000
 }
