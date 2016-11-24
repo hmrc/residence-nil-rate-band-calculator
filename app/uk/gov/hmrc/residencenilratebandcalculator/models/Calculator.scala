@@ -29,23 +29,23 @@ object Calculator {
   val invalidInputError = "INVALID_INPUTS"
   val lostRNRBEarliestDisposalDate = new LocalDate(2015, 7, 8)
 
-  def lostRNRB(dateOfDeath: LocalDate,
+  def lostRnrb(dateOfDeath: LocalDate,
                dateOfDisposalOfFormerProperty: LocalDate,
                valueOfFormerProperty: Int,
-               valueOfTransferredRNRB: Int,
+               valueOfTransferredRnrb: Int,
                valueOfFinalProperty: Int): Either[(String, String), Int] = {
 
     if (valueOfFormerProperty < 0) {
       Left((invalidInputError, "The former property value must be greater or equal to zero."))
-    } else if (valueOfTransferredRNRB < 0) {
+    } else if (valueOfTransferredRnrb < 0) {
       Left((invalidInputError, "The transferred RNRB value must be greater or equal to zero."))
     } else if (valueOfFinalProperty < 0) {
       Left((invalidInputError, "The percentage of final property must be between zero and one hundred."))
     }  else if (dateOfDisposalOfFormerProperty.isBefore(lostRNRBEarliestDisposalDate)) {
       Right(0)
     } else {
-      val RNRBOnDeath = ResidenceNilRateBand(dateOfDeath)
-      val RNRBOnDeathWithTransferredRNRB = RNRBOnDeath + valueOfTransferredRNRB
+      val rnrbOnDeath = ResidenceNilRateBand(dateOfDeath)
+      val rnrbOnDeathWithTransferredRnrb = rnrbOnDeath + valueOfTransferredRnrb
 
       // Note that the following calculation is slightly ambiguous:
       //  this is step 3 in case studies 12, 13, 14, 15. The case studies always show that the calculation of
@@ -60,13 +60,13 @@ object Calculator {
       //     val percentageOfRNRBOfFinalProperty = math.min((valueOfFinalProperty.toDouble / RNRBOnDeathWithTransferredRNRB) * 100, 100)
       //
       //  There is an outstanding question put to the business to clarify this.
-      val percentageOfRNRBOfFinalProperty = fractionAsBoundedPercent(valueOfFinalProperty.toDouble / RNRBOnDeath)
+      val percentageOfRnrbOfFinalProperty = fractionAsBoundedPercent(valueOfFinalProperty.toDouble / rnrbOnDeath)
 
-      val maxRNRBOnSaleOfFormerProperty = ResidenceNilRateBand(dateOfDisposalOfFormerProperty) + valueOfTransferredRNRB
-      val percentageOfRNRBOfSale = fractionAsBoundedPercent(valueOfFormerProperty / maxRNRBOnSaleOfFormerProperty.toDouble)
-      val finalPercentage = percentageOfRNRBOfSale - percentageOfRNRBOfFinalProperty
+      val maxRnrbOnSaleOfFormerProperty = ResidenceNilRateBand(dateOfDisposalOfFormerProperty) + valueOfTransferredRnrb
+      val percentageOfRnrbOfSale = fractionAsBoundedPercent(valueOfFormerProperty / maxRnrbOnSaleOfFormerProperty.toDouble)
+      val finalPercentage = percentageOfRnrbOfSale - percentageOfRnrbOfFinalProperty
 
-      Right(finalPercentage * RNRBOnDeathWithTransferredRNRB toInt)
+      Right(finalPercentage * rnrbOnDeathWithTransferredRnrb toInt)
     }
   }
 

@@ -76,42 +76,42 @@ class CalculatorTest extends UnitSpec {
 
     "calculating lost RNRB" must {
       "calculate the correct lost RNRB when there is transferred RNRB, a former home that was sold, and no final home (case study 12)" in {
-        Calculator.lostRNRB(new LocalDate(2020, 11, 1), new LocalDate(2018, 6, 14), 195000, 175000, 0) shouldBe Right(227500)
+        Calculator.lostRnrb(new LocalDate(2020, 11, 1), new LocalDate(2018, 6, 14), 195000, 175000, 0) shouldBe Right(227500)
       }
 
       "calculate the lost RNRB as zero  if the date of disposal of the former property is before 8 July 2015  (date of sale before RNRB)" in {
-        Calculator.lostRNRB(new LocalDate(2020, 11, 1), new LocalDate(2015, 7, 7), 195000, 175000, 0) shouldBe Right(0)
+        Calculator.lostRnrb(new LocalDate(2020, 11, 1), new LocalDate(2015, 7, 7), 195000, 175000, 0) shouldBe Right(0)
       }
 
       "calculate the lost RNRB as zero if the value of the property is greater than the available RNRB the percentage is limited to 100% (case study 13)" in {
-        Calculator.lostRNRB(new LocalDate(2020, 1, 1), new LocalDate(2018, 8, 21), 450000, 0, 200000) shouldBe Right(0)
+        Calculator.lostRnrb(new LocalDate(2020, 1, 1), new LocalDate(2018, 8, 21), 450000, 0, 200000) shouldBe Right(0)
       }
 
       "calculate the lost RNRB as correctly if the value of the final property is less than the total amount of RNRB available (case study 14)" in {
-        Calculator.lostRNRB(new LocalDate(2020, 9, 10), new LocalDate(2018, 8, 21), 500000, 0, 105000) shouldBe Right(70000)
+        Calculator.lostRnrb(new LocalDate(2020, 9, 10), new LocalDate(2018, 8, 21), 500000, 0, 105000) shouldBe Right(70000)
       }
 
       "calculate the lost RNRB correctly if the former property was disposed after 8 July 2015 but before 6 April 2017, a 100000 RNRB Band applies (case study 15)" in {
-        Calculator.lostRNRB(new LocalDate(2019, 12, 10), new LocalDate(2016, 3, 21), 400000, 0, 105000) shouldBe Right(45000)
+        Calculator.lostRnrb(new LocalDate(2019, 12, 10), new LocalDate(2016, 3, 21), 400000, 0, 105000) shouldBe Right(45000)
       }
 
       "calculate the lost RNRB correctly if there is no home in the estate (case study 16) " in {
-        Calculator.lostRNRB(new LocalDate(2021, 3, 3), new LocalDate(2018, 10, 5), 285000, 0, 0) shouldBe Right(175000)
+        Calculator.lostRnrb(new LocalDate(2021, 3, 3), new LocalDate(2018, 10, 5), 285000, 0, 0) shouldBe Right(175000)
       }
 
       "calculate the lost RNRB as correctly if the value of the final property is less than the total amount of RNRB available (case study 17)" in {
-        Calculator.lostRNRB(new LocalDate(2021, 1, 10), new LocalDate(2019, 5, 21), 90000, 0, 0) shouldBe Right(105000)
+        Calculator.lostRnrb(new LocalDate(2021, 1, 10), new LocalDate(2019, 5, 21), 90000, 0, 0) shouldBe Right(105000)
       }
 
       "calculate the lost RNRB correctly when there is transferred RNRB (case study 18)" in {
-        Calculator.lostRNRB(new LocalDate(2021, 3, 27), new LocalDate(2018, 10, 3), 285000, 175000, 0) shouldBe Right(332500)
+        Calculator.lostRnrb(new LocalDate(2021, 3, 27), new LocalDate(2018, 10, 3), 285000, 175000, 0) shouldBe Right(332500)
       }
 
       "calculate the lost RNRB correctly when there is transferred RNRB and a final property" in {
         pending
         // Note that this test depends on the answer given to the long question asked in the comment in lostRNRB. If the
         // alternative form of teh calculation is used, this test should be added.
-        Calculator.lostRNRB(new LocalDate(2021, 3, 27), new LocalDate(2018, 10, 3), 285000, 175000, 90000) shouldBe Right(242500)
+        Calculator.lostRnrb(new LocalDate(2021, 3, 27), new LocalDate(2018, 10, 3), 285000, 175000, 90000) shouldBe Right(242500)
       }
     }
   }
