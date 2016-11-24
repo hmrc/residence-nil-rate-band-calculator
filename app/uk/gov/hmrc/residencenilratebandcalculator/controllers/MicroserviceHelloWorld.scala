@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator.controllers
+package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import uk.gov.hmrc.play.microservice.controller.BaseController
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._

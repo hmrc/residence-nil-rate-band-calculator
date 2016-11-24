@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.inheritancetaxresidencenilratebandcalculator
+package uk.gov.hmrc.residencenilratebandcalculator
 
 import com.typesafe.config.Config
 import play.api.{Application, Configuration, Play}
