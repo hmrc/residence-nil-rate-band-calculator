@@ -60,13 +60,13 @@ object Calculator {
       //     val percentageOfRNRBOfFinalProperty = math.min((valueOfFinalProperty.toDouble / RNRBOnDeathWithTransferredRNRB) * 100, 100)
       //
       //  There is an outstanding question put to the business to clarify this.
-      val percentageOfRNRBOfFinalProperty = math.min((valueOfFinalProperty.toDouble / RNRBOnDeath) * 100, 100)
+      val percentageOfRNRBOfFinalProperty = fractionAsBoundedPercent(valueOfFinalProperty.toDouble / RNRBOnDeath)
 
       val maxRNRBOnSaleOfFormerProperty = ResidenceNilRateBand(dateOfDisposalOfFormerProperty) + valueOfTransferredRNRB
-      val percentageOfRNRBOfSale = math.min((valueOfFormerProperty / maxRNRBOnSaleOfFormerProperty.toDouble) * 100, 100)
+      val percentageOfRNRBOfSale = fractionAsBoundedPercent(valueOfFormerProperty / maxRNRBOnSaleOfFormerProperty.toDouble)
       val finalPercentage = percentageOfRNRBOfSale - percentageOfRNRBOfFinalProperty
 
-      Right(RNRBOnDeathWithTransferredRNRB * (finalPercentage / 100) toInt)
+      Right(finalPercentage * RNRBOnDeathWithTransferredRNRB toInt)
     }
   }
 
@@ -89,7 +89,7 @@ object Calculator {
       val amountToTaper = math.max(estateValue - TaperBand(dateOfDeath), 0) / taperRate
       val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
 
-      val propertyCloselyInherited = percentageCloselyInherited.asDecimal * propertyValue toInt
+      val propertyCloselyInherited = percentageCloselyInherited * propertyValue toInt
 
       val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
       val carryForwardAmount = taperedAllowance - residenceNilRateAmount
@@ -98,5 +98,6 @@ object Calculator {
   }
 
   private def increaseByPercentage(amount: Int, percentage: Percent) = (1 + percentage.asDecimal) * amount toInt
+  private def fractionAsBoundedPercent(v: Double) = math.min(v * 100, 100) percent
 
 }
