@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-import play.api.mvc._
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import com.typesafe.config.Config
+import net.ceedubs.ficus.Ficus._
+import play.api.Configuration
+import uk.gov.hmrc.play.config.ControllerConfig
 
-import scala.concurrent.Future
 
-class MicroserviceHelloWorld @Inject()() extends BaseController {
-
-  def hello() = Action.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+@Singleton
+class ControllerConfiguration @Inject()(configuration: Configuration) extends ControllerConfig {
+  lazy val controllerConfigs = configuration.underlying.as[Config]("controllers")
 }
+

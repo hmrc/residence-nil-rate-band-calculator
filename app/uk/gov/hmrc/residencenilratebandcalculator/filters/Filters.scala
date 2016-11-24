@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.residencenilratebandcalculator.controllers
+package uk.gov.hmrc.residencenilratebandcalculator.filters
 
 import javax.inject.Inject
 
-import play.api.mvc._
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import play.api.http.DefaultHttpFilters
 
-import scala.concurrent.Future
-
-class MicroserviceHelloWorld @Inject()() extends BaseController {
-
-  def hello() = Action.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
-}
+class Filters @Inject()(metrics: Metrics,
+                        logging: Logging,
+                        audit: Audit,
+                        recovery: Recovery)
+  extends DefaultHttpFilters(metrics, audit, logging, recovery)

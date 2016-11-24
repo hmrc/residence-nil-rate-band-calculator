@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.residencenilratebandcalculator.controllers
+package uk.gov.hmrc.residencenilratebandcalculator.filters
 
 import javax.inject.Inject
 
-import play.api.mvc._
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import akka.stream.Materializer
+import play.api.mvc.{EssentialAction, EssentialFilter}
+import uk.gov.hmrc.play.filters.RecoveryFilter
 
-import scala.concurrent.Future
-
-class MicroserviceHelloWorld @Inject()() extends BaseController {
-
-  def hello() = Action.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+class Recovery @Inject()(implicit val mat: Materializer) extends EssentialFilter {
+  override def apply(next: EssentialAction): EssentialAction = RecoveryFilter(next)
 }
