@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.residencenilratebandcalculator.controllers
+package uk.gov.hmrc.residencenilratebandcalculator.filters
 
 import javax.inject.Inject
 
-import play.api.mvc._
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import akka.stream.Materializer
+import com.kenshoo.play.metrics.MetricsFilter
+import play.api.inject.Injector
+import play.api.mvc.{Filter, RequestHeader, Result}
 
 import scala.concurrent.Future
 
-class MicroserviceHelloWorld @Inject()() extends BaseController {
+class Metrics @Inject()(injector: Injector)(implicit val mat: Materializer) extends Filter {
+  val impl = injector.instanceOf[MetricsFilter]
 
-  def hello() = Action.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+  override def apply(f: (RequestHeader) => Future[Result])(rh: RequestHeader): Future[Result] =
+    impl.apply(f)(rh)
 }

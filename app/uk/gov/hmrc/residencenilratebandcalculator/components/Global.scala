@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.residencenilratebandcalculator.controllers
+package uk.gov.hmrc.residencenilratebandcalculator.components
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-import play.api.mvc._
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import org.slf4j.MDC
+import play.api.{Application, Configuration, Logger}
 
-import scala.concurrent.Future
+@Singleton
+class Global @Inject()(config: Configuration)(implicit app: Application) {
 
-class MicroserviceHelloWorld @Inject()() extends BaseController {
+  lazy val appName = config.getString("appName").getOrElse("APP NAME NOT SET")
+  lazy val loggerDateFormat: Option[String] = config.getString("logger.json.dateformat")
 
-  def hello() = Action.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+  Logger.info(s"Starting microservice : $appName : in mode : ${app.mode}")
+  MDC.put("appName", appName)
+  loggerDateFormat.foreach(str => MDC.put("logger.json.dateformat", str))
 }

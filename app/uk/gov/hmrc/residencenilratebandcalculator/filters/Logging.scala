@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.residencenilratebandcalculator.controllers
+package uk.gov.hmrc.residencenilratebandcalculator.filters
 
 import javax.inject.Inject
 
-import play.api.mvc._
-import uk.gov.hmrc.play.microservice.controller.BaseController
+import akka.stream.Materializer
+import play.api.mvc.Filter
+import uk.gov.hmrc.play.http.logging.filters.LoggingFilter
+import uk.gov.hmrc.residencenilratebandcalculator.controllers.ControllerConfiguration
 
-import scala.concurrent.Future
-
-class MicroserviceHelloWorld @Inject()() extends BaseController {
-
-  def hello() = Action.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+class Logging @Inject()(config: ControllerConfiguration)(implicit val mat: Materializer) extends Filter with LoggingFilter {
+  override def controllerNeedsLogging(controllerName: String) = config.paramsForController(controllerName).needsLogging
 }
