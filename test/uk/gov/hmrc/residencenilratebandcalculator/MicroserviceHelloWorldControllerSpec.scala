@@ -32,7 +32,7 @@ class MicroserviceHelloWorldControllerSpec extends UnitSpec with WithFakeApplica
 
   "GET /" should {
     "return 200" in {
-      val result = MicroserviceHelloWorld.hello()(fakeRequest)
+      val result = new MicroserviceHelloWorld().hello()(fakeRequest)
       status(result) shouldBe Status.OK
     }
   }
