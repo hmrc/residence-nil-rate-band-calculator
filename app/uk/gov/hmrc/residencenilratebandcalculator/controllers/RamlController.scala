@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.residencenilratebandcalculator.filters
+package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-import play.api.http.DefaultHttpFilters
-import play.filters.cors.CORSFilter
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.play.microservice.controller.BaseController
 
-class Filters @Inject()(metrics: Metrics,
-                        logging: Logging,
-                        audit: Audit,
-                        recovery: Recovery,
-                        corsFilter: CORSFilter)
-  extends DefaultHttpFilters(metrics, audit, logging, recovery, corsFilter)
+import scala.concurrent.Future
+
+@Singleton
+class RamlController @Inject()() extends BaseController {
+  def getRaml: Action[AnyContent] = Action.async {
+    Future.successful(Ok.sendFile(
+      content = new java.io.File("conf/Microservice.raml"),
+      inline = true).withHeaders(CONTENT_TYPE -> "text/plain"))
+  }
+}
