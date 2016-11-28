@@ -24,7 +24,7 @@ import uk.gov.hmrc.play.microservice.controller.BaseController
 import scala.concurrent.Future
 
 @Singleton
-class RAML @Inject()() extends BaseController {
+class RamlController @Inject()() extends BaseController {
   def getRaml: Action[AnyContent] = Action.async {
     Future.successful(Ok.sendFile(
       content = new java.io.File("conf/Microservice.raml"),
