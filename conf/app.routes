@@ -2,4 +2,4 @@
 
 GET         /hello-world            uk.gov.hmrc.residencenilratebandcalculator.controllers.MicroserviceHelloWorld.hello
 
-GET         /raml                   uk.gov.hmrc.residencenilratebandcalculator.controllers.RAML.getRaml
+GET         /raml                   uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController.getRaml
