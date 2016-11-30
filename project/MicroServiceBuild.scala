@@ -25,7 +25,10 @@ private object AppDependencies {
   private val hmrcTestVersion = "2.1.0"
   private val scalaTestVersion = "2.2.6"
   private val pegdownVersion = "1.6.0"
-
+  private val cukesVersion = "1.2.4"
+  private val cucumberRunnerVersion = "0.0.3"
+  private val testInterfaceVersion = "0.5"
+  private val scalajHttpVersion = "2.3.0"
 
   val compile = Seq(
 
@@ -36,7 +39,8 @@ private object AppDependencies {
     "uk.gov.hmrc" %% "play-url-binders" % playUrlBindersVersion,
     "uk.gov.hmrc" %% "play-config" % playConfigVersion,
     "uk.gov.hmrc" %% "logback-json-logger" % logbackJsonLoggerVersion,
-    "uk.gov.hmrc" %% "domain" % domainVersion
+    "uk.gov.hmrc" %% "domain" % domainVersion,
+    "org.scalaj" %% "scalaj-http" % scalajHttpVersion
   )
 
   trait TestDependencies {
@@ -51,13 +55,13 @@ private object AppDependencies {
         "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
         "org.pegdown" % "pegdown" % pegdownVersion % scope,
         "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
-        "info.cukes" % "cucumber-scala_2.11" % "1.2.4",
-        "info.cukes" % "cucumber-junit" % "1.2.4",
-        "info.cukes" % "cucumber-core" % "1.2.4",
-        "info.cukes" % "cucumber-jvm" % "1.2.4",
-        "info.cukes" % "cucumber-junit" % "1.2.4",
-        "org.scala-tools.testing" % "test-interface" % "0.5",
-        "com.waioeka.sbt" %% "cucumber-runner" % "0.0.3"
+        "info.cukes" % "cucumber-scala_2.11" % cukesVersion,
+        "info.cukes" % "cucumber-junit" % cukesVersion,
+        "info.cukes" % "cucumber-core" % cukesVersion,
+        "info.cukes" % "cucumber-jvm" % cukesVersion,
+        "info.cukes" % "cucumber-junit" % cukesVersion,
+        "org.scala-tools.testing" % "test-interface" % testInterfaceVersion,
+        "com.waioeka.sbt" %% "cucumber-runner" % cucumberRunnerVersion
       )
     }.test
   }

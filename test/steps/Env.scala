@@ -18,16 +18,34 @@ package steps
 
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
-import scalaj.http._
+import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}
+import play.api.test.TestServer
 
-class HelloWorldSteps extends ScalaDsl with EN with Matchers {
-  When("""^I GET the (.*) endpoint$""") { (endpoint: String) =>
-    val response = Http(s"${Env.baseUrl}$endpoint").asString
-    Context.responseCode = response.code
-    Context.responseBody = response.body
+trait Env extends ScalaDsl with EN with Matchers {
+
+  val port = 9000
+  var host = s"http://localhost:$port"
+  var baseUrl = s"$host/residence-nil-rate-band-calculator/"
+  var server: TestServer = null
+
+  def bindModules: Seq[GuiceableModule] = Seq()
+
+  def shutdown() = {
+    server.stop()
   }
 
-  Then("""^I should get an? (.*) response$""") { (expectedResponseCode: String) =>
-    HttpResponses.statusCodes(expectedResponseCode) shouldBe Context.responseCode
+  def startServer() = {
+    server = new TestServer(port, new GuiceApplicationBuilder().bindings(bindModules:_*).build())
+    server.start()
+  }
+
+  Before { scenario =>
+    startServer()
+  }
+
+  After { scenario =>
+    shutdown()
   }
 }
+
+object Env extends Env
