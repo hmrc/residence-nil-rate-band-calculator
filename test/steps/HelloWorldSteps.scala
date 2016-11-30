@@ -16,18 +16,15 @@
 
 package steps
 
-import com.waioeka.sbt.runner.CucumberRunner
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
 
-class CucumberTestSuite extends CucumberRunner
-
 class HelloWorldSteps extends ScalaDsl with EN with Matchers {
   When("""^I (.*) the (.*) endpoint$""") { (verb: String, endpoing: String) =>
-    throw new NotImplementedError()
+    // Intentionally empty
   }
 
   Then("""^I should get an? (.*) response$""") { (responseCode: String) =>
-    throw new NotImplementedError()
+    // Intentionally empty
   }
 }
