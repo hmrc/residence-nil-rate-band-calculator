@@ -1,3 +1,4 @@
+import sbt.Keys._
 import sbt._
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
@@ -49,7 +50,14 @@ private object AppDependencies {
         "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % scope,
         "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
         "org.pegdown" % "pegdown" % pegdownVersion % scope,
-        "com.typesafe.play" %% "play-test" % PlayVersion.current % scope
+        "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
+        "info.cukes" % "cucumber-scala_2.11" % "1.2.4",
+        "info.cukes" % "cucumber-junit" % "1.2.4",
+        "info.cukes" % "cucumber-core" % "1.2.4",
+        "info.cukes" % "cucumber-jvm" % "1.2.4",
+        "info.cukes" % "cucumber-junit" % "1.2.4",
+        "org.scala-tools.testing" % "test-interface" % "0.5",
+        "com.waioeka.sbt" %% "cucumber-runner" % "0.0.3"
       )
     }.test
   }
