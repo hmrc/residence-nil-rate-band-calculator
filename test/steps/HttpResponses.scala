@@ -16,18 +16,10 @@
 
 package steps
 
-import cucumber.api.scala.{EN, ScalaDsl}
-import org.scalatest.Matchers
-import scalaj.http._
-
-class HelloWorldSteps extends ScalaDsl with EN with Matchers {
-  When("""^I GET the (.*) endpoint$""") { (endpoint: String) =>
-    val response = Http(s"${Env.baseUrl}$endpoint").asString
-    Context.responseCode = response.code
-    Context.responseBody = response.body
-  }
-
-  Then("""^I should get an? (.*) response$""") { (expectedResponseCode: String) =>
-    HttpResponses.statusCodes(expectedResponseCode) shouldBe Context.responseCode
-  }
+object HttpResponses {
+  val statusCodes = Map(
+    "OK" -> 200,
+    "BAD_REQUEST" -> 400,
+    "NOT_FOUND" -> 404
+  )
 }
