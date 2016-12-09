@@ -3,12 +3,17 @@
 title: Inheritance Tax Residence Nil Rate Band Calculator Microservice
 baseUri: http://localhost:7112/residence-nil-rate-band-calculator
 
-/hello-world:
-    get:
-        description: Get the "Hello World" repsonse
+/calculate:
+    post:
+        description: |
+            Calculates the amount of Residence Nil Rate Band and the Transferable Residence Nil Rate Band for the given estate
+        body:
+            application/json:
+                schema: !include schemas/deceaseds-estate.jsonschema
+                example: !include schemas/deceaseds-estate.example
         responses:
             200:
                 body:
-                    application/text:
-                        example: |
-                            Hello World
+                    application/json:
+                        schema: !include schemas/residence-nil-rate-band.jsonschema
+                        example: !include schemas/residence-nil-rate-band.example

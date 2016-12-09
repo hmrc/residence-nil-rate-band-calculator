@@ -30,4 +30,10 @@ class RamlController @Inject()() extends BaseController {
       content = new java.io.File("conf/Microservice.raml"),
       inline = true).withHeaders(CONTENT_TYPE -> "text/plain"))
   }
+
+  def getSchema(filename: String): Action[AnyContent] = Action.async {
+    Future.successful(Ok.sendFile(
+      content = new java.io.File(s"conf/schemas/$filename"),
+      inline = true).withHeaders(CONTENT_TYPE -> "text/plain"))
+  }
 }

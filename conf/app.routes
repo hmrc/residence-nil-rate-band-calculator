@@ -3,3 +3,4 @@
 GET         /hello-world            uk.gov.hmrc.residencenilratebandcalculator.controllers.MicroserviceHelloWorld.hello
 
 GET         /raml                   uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController.getRaml
+GET         /schemas/:filename      uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController.getSchema(filename)

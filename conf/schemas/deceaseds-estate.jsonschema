@@ -1,0 +1,24 @@
+{
+    "title": "Summary of deceased's estate",
+    "description": "A summary of the deceased's estate used for calculating their Residence Nil Rate Band and Transferable Residence Nil Rate Band",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "chargeableTransferAmount": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "dateOfDeath": {
+            "type": "string"
+        },
+        "grossEstateValue": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "propertyValue": {
+            "type": "integer",
+            "minimum": 0
+        }
+    },
+    "required": ["chargeableTransferAmount", "dateOfDeath", "grossEstateValue", "propertyValue"]
+}
