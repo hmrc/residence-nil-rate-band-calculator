@@ -2,6 +2,7 @@ import com.waioeka.sbt.CucumberPlugin
 import sbt.Keys._
 import sbt.Tests.{Group, SubProcess}
 import sbt._
+import scoverage.ScoverageKeys
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 
 
@@ -29,6 +30,17 @@ trait MicroService {
     .settings(CucumberPlugin.glue := "steps")
     .settings(testFrameworks += new TestFramework("com.waioeka.sbt.runner"))
     .settings(playSettings : _*)
+    .settings(
+      ScoverageKeys.coverageExcludedFiles := ".*com.kenshoo.play.metrics.*;.*Routes.*;.*uk.gov.hmrc.residencenilratebandcalculator.components.*;" +
+        ".*uk.gov.hmrc.residencenilratebandcalculator.connectors.*;.*uk.gov.hmrc.residencenilratebandcalculator.filters.*;" +
+        ".*uk.gov.hmrc.residencenilratebandcalculator.handlers.*;.*BuildInfo.*;" +
+        ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.ControllerConfiguration*;" +
+        ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController*",
+      ScoverageKeys.coverageMinimum := 90,
+      ScoverageKeys.coverageFailOnMinimum := true,
+      ScoverageKeys.coverageHighlighting := true,
+      parallelExecution := false
+    )
     .settings(scalaSettings: _*)
     .settings(publishingSettings: _*)
     .settings(defaultSettings(): _*)
