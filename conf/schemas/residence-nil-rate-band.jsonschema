@@ -1,0 +1,17 @@
+{
+    "title": "The deceased's Residence Nil Rate Band successful response",
+    "description": "The deceased's Residence Nil Rate Band and Transferable Residence Nil Rate Band",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "residenceNilRateBand": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "transferableResidenceNilRateBand": {
+            "type": "integer",
+            "minimum": 0
+        }
+    },
+    "required": ["residenceNilRateBand", "transferableResidenceNilRateBand"]
+}
