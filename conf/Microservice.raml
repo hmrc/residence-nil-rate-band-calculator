@@ -17,3 +17,8 @@ baseUri: http://localhost:7112/residence-nil-rate-band-calculator
                     application/json:
                         schema: !include schemas/residence-nil-rate-band.jsonschema
                         example: !include schemas/residence-nil-rate-band.example
+            400:
+                body:
+                    application/json:
+                        schema: !include schemas/residence-nil-rate-band-error.jsonschema
+                        example: !include schemas/residence-nil-rate-band-error.example

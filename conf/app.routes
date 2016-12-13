@@ -4,3 +4,5 @@ GET         /hello-world            uk.gov.hmrc.residencenilratebandcalculator.c
 
 GET         /raml                   uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController.getRaml
 GET         /schemas/:filename      uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController.getSchema(filename)
+
+POST        /calculate              uk.gov.hmrc.residencenilratebandcalculator.controllers.CalculationController.calculate
