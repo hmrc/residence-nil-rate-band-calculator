@@ -36,7 +36,8 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication {
           | "dateOfDeath": "2018-01-01",
           | "grossEstateValue": 0,
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0
+          | "chargeableTransferAmount": 0,
+          | "percentageCloselyInherited": 0
           |}
         """.stripMargin)
 
@@ -56,7 +57,8 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication {
           | "dateOfDeath": "2018-01-01",
           | "grossEstateValue": -1,
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0
+          | "chargeableTransferAmount": 0,
+          | "percentageCloselyInherited": 0
           |}
         """.stripMargin)
 

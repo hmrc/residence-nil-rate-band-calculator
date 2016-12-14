@@ -118,7 +118,7 @@ class CalculationInputTest extends UnitSpec {
         ("dateOfDeath", "error.path.missing"),
         ("grossEstateValue", "error.path.missing"),
         ("propertyValue", "error.path.missing"),
-        ("chargeableTransferAmount", "error.path.missing")),
+        ("chargeableTransferAmount", "error.path.missing"),
         ("percentageCloselyInherited", "error.path.missing"))
 
       assert(errors.toSet == expcetedErrors)
@@ -131,7 +131,8 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "grossEstateValue": "0",
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0
+          | "chargeableTransferAmount": 0,
+          | "percentageCloselyInherited": 0
           |}
         """.stripMargin)
 
@@ -149,7 +150,8 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "",
           | "grossEstateValue": 0,
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0
+          | "chargeableTransferAmount": 0,
+          | "percentageCloselyInherited": 0
           |}
         """.stripMargin)
 
@@ -167,7 +169,8 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "grossEstateValue": -1,
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0
+          | "chargeableTransferAmount": 0,
+          | "percentageCloselyInherited": 0
           |}
         """.stripMargin)
 
