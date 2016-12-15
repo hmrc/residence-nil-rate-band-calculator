@@ -50,10 +50,10 @@ class CalculationInputTest extends UnitSpec {
 
       val input = Json.fromJson[CalculationInput](json).get
 
-      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
-      assert(input.grossEstateValue == 0)
-      assert(input.propertyValue == 0)
-      assert(input.chargeableTransferAmount == 0)
+      assert(input.DateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.GrossEstateValue == 0)
+      assert(input.PropertyValue == 0)
+      assert(input.ChargeableTransferAmount == 0)
     }
 
     "fail to create case class when JSON does not match schema" in {
@@ -84,10 +84,10 @@ class CalculationInputTest extends UnitSpec {
 
       val input = CalculationInput(json).right.get
 
-      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
-      assert(input.grossEstateValue == 0)
-      assert(input.propertyValue == 0)
-      assert(input.chargeableTransferAmount == 0)
+      assert(input.DateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.GrossEstateValue == 0)
+      assert(input.PropertyValue == 0)
+      assert(input.ChargeableTransferAmount == 0)
     }
 
     "fail with suitable error messages when values are missing" in {
