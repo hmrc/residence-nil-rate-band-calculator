@@ -1,4 +1,5 @@
 error.expected.number.non_negative = A number greater than or equal to zero is required
+error.expected.number.100_at_most = A number equal to or less than 100 is required
 error.expected.jsnumber = A number was expected, but not found
 error.expected.jodadate.format = A date of the form yyyy-mm-dd was expected, but not found
 error.path.missing = The required key was not found

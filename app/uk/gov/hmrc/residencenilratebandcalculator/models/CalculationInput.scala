@@ -24,9 +24,12 @@ import scala.util.{Failure, Success, Try}
 case class CalculationInput(dateOfDeath: LocalDate,
                             grossEstateValue: Int,
                             propertyValue: Int,
-                            chargeableTransferAmount: Int) {
+                            chargeableTransferAmount: Int,
+                            percentageCloselyInherited: Int) {
   require(grossEstateValue >= 0, """{"grossEstateValue" : "error.expected.number.non_negative"}""")
   require(propertyValue >= 0, """{"propertyValue" : "error.expected.number.non_negative"}""")
+  require(percentageCloselyInherited >= 0, """{"percentageCloselyInherited" : "error.expected.number.non_negative"}""")
+  require(percentageCloselyInherited <= 100, """{"percentageCloselyInherited" : "error.expected.number.100_at_most"}""")
 }
 
 object CalculationInput {
