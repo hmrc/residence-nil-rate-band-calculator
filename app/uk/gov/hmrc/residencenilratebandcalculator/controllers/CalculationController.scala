@@ -18,21 +18,16 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import javax.inject.Inject
 
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
 import play.api.mvc.{Action, BodyParsers, Controller}
+import uk.gov.hmrc.residencenilratebandcalculator.converters.HttpErrorResponse
 import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calculator}
 
 import scala.concurrent.Future
 
 class CalculationController @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
-
-  private def marshallErrors(errors: Seq[(String, String)], messages: Messages): JsValue = {
-    JsArray(errors.map {
-      error => JsObject(Map(error._1 -> JsString(messages(error._2))))
-    })
-  }
 
   def calculate() = Action.async(BodyParsers.parse.json) {
     implicit request => {
@@ -42,7 +37,7 @@ class CalculationController @Inject()(val messagesApi: MessagesApi) extends Cont
             Calculator(input.dateOfDeath, input.grossEstateValue, input.propertyValue, input.percentageCloselyInherited percent).right.get))
           )
         case Left(errors) =>
-          Future.successful(BadRequest(marshallErrors(errors, messagesApi.preferred(request))))
+          Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", errors)))
       }
     }
   }
