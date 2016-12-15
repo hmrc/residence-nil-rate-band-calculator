@@ -36,9 +36,10 @@ class CalculationController @Inject()(val messagesApi: MessagesApi) extends Cont
 
   def calculate() = Action.async(BodyParsers.parse.json) {
     implicit request => {
+      println("********************REQUEST: " + request.body)
       CalculationInput(request.body) match {
         case Right(input) =>
-          Future.successful(Ok(Json.toJson(Calculator(input.dateOfDeath, input.grossEstateValue, input.propertyValue, 100 percent).right.get)))
+          Future.successful(Ok(Json.toJson(Calculator(input.DateOfDeath, input.GrossEstateValue, input.PropertyValue, 100 percent).right.get)))
         case Left(errors) =>
           Future.successful(BadRequest(marshallErrors(errors, messagesApi.preferred(request))))
       }

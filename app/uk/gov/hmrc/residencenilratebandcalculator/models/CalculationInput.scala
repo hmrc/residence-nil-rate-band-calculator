@@ -21,12 +21,12 @@ import play.api.libs.json._
 
 import scala.util.{Failure, Success, Try}
 
-case class CalculationInput(dateOfDeath: LocalDate,
-                            grossEstateValue: Int,
-                            propertyValue: Int,
-                            chargeableTransferAmount: Int) {
-  require(grossEstateValue >= 0, """{"grossEstateValue" : "error.expected.number.non_negative"}""")
-  require(propertyValue >= 0, """{"propertyValue" : "error.expected.number.non_negative"}""")
+case class CalculationInput(DateOfDeath: LocalDate,
+                            GrossEstateValue: Int,
+                            PropertyValue: Int,
+                            ChargeableTransferAmount: Int) {
+  require(GrossEstateValue >= 0, """{"grossEstateValue" : "error.expected.number.non_negative"}""")
+  require(PropertyValue >= 0, """{"propertyValue" : "error.expected.number.non_negative"}""")
 }
 
 object CalculationInput {
