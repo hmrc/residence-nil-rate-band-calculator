@@ -69,8 +69,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication {
       val response = new CalculationController(injector.instanceOf[MessagesApi]).calculate()(fakeRequest)
 
       status(response) shouldBe BAD_REQUEST
-      contentAsJson(response) shouldBe JsArray(Seq(JsObject(Map(
-        "grossEstateValue" -> JsString(messages("error.expected.number.non_negative"))))))
+      (contentAsJson(response) \ "errors" \ "grossEstateValue").as[JsString].value shouldBe messages("error.expected.number.non_negative")
     }
   }
 }
