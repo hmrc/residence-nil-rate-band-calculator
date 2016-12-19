@@ -16,7 +16,10 @@
 
 package steps
 
+import play.api.libs.json.{JsValue, Json}
+
 object Context {
   var responseCode = 0
   var responseBody = ""
+  def responseBodyAsMap = Json.parse(Context.responseBody).as[Map[String, JsValue]]
 }
