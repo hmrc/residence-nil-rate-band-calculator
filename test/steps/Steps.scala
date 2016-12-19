@@ -23,7 +23,6 @@ import utils.DataTableHelper
 import scalaj.http._
 
 import scala.collection.JavaConverters._
-import play.api.libs.json._
 
 class Steps extends ScalaDsl with EN with Matchers {
 
@@ -45,7 +44,7 @@ class Steps extends ScalaDsl with EN with Matchers {
 
     for (item <- expectedItems) {
       val jsonNode = DataTableHelper.convertToJsonNode(item._1, item._2)
-      Context.responseBodyAsMap should contain (jsonNode._1 -> Json.toJson(jsonNode._2))
+      Context.responseBodyAsMap should contain (jsonNode._1 -> jsonNode._2)
     }
   }
 }
