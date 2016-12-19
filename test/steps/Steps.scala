@@ -16,18 +16,36 @@
 
 package steps
 
+import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
+import utils.DataTableHelper
 import scalaj.http._
 
-class HelloWorldSteps extends ScalaDsl with EN with Matchers {
-  When("""^I GET the (.*) endpoint$""") { (endpoint: String) =>
-    val response = Http(s"${Env.baseUrl}$endpoint").asString
+import scala.collection.JavaConverters._
+import play.api.libs.json._
+
+class Steps extends ScalaDsl with EN with Matchers {
+
+  When("""^I POST these details to (.*)$""") { (endpoint: String, dataTable: DataTable) =>
+    val json = DataTableHelper.convertToJsonString(dataTable)
+
+    val response = Http(s"${Env.baseUrl}$endpoint").postData(json).header("content-type", "application/json").asString
+
     Context.responseCode = response.code
     Context.responseBody = response.body
   }
 
   Then("""^I should get an? (.*) response$""") { (expectedResponseCode: String) =>
     HttpResponses.statusCodes(expectedResponseCode) shouldBe Context.responseCode
+  }
+
+  Then("""^the response body should be$""") { (dataTable: DataTable) =>
+    val expectedItems = dataTable.asMap(classOf[String], classOf[String]).asScala
+
+    for (item <- expectedItems) {
+      val jsonNode = DataTableHelper.convertToJsonNode(item._1, item._2)
+      Context.responseBodyAsMap should contain (jsonNode._1 -> Json.toJson(jsonNode._2))
+    }
   }
 }
