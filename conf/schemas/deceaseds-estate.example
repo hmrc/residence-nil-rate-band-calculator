@@ -3,5 +3,6 @@
     "dateOfDeath":"2018-01-01",
     "grossEstateValue":300,
     "propertyValue":300,
-    "percentageCloselyInherited": 100
+    "percentageCloselyInherited": 100,
+    "broughtForwardAllowance": 300
 }

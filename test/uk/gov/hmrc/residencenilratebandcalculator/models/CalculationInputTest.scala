@@ -51,7 +51,37 @@ class CalculationInputTest extends UnitSpec {
       assert(caught.getMessage == "requirement failed: {\"percentageCloselyInherited\" : \"error.expected.number.100_at_most\"}")
     }
 
+    "throw an exception when broughtForwardAllowance is less than zero" in {
+      val caught = intercept[IllegalArgumentException] {
+        CalculationInput(new LocalDate(), 0, 0, 0, 0, Some(-1))
+      }
+      assert(caught.getMessage == "requirement failed: {\"broughtForwardAllowance\" : \"error.expected.number.non_negative\"}")
+    }
+
     "be constructable from JSON" in {
+      val json = Json.parse(
+        """
+          |{
+          | "dateOfDeath": "2018-01-01",
+          | "grossEstateValue": 0,
+          | "propertyValue": 1,
+          | "chargeableTransferAmount": 2,
+          | "percentageCloselyInherited": 3,
+          | "broughtForwardAllowance": 4
+          |}
+        """.stripMargin)
+
+      val input = Json.fromJson[CalculationInput](json).get
+
+      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.grossEstateValue == 0)
+      assert(input.propertyValue == 1)
+      assert(input.chargeableTransferAmount == 2)
+      assert(input.percentageCloselyInherited == 3)
+      assert(input.broughtForwardAllowance.contains(4))
+    }
+
+    "be constructable from JSON with optional parameters omitted" in {
       val json = Json.parse(
         """
           |{
@@ -70,6 +100,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
+      assert(input.broughtForwardAllowance.isEmpty)
     }
 
     "fail to create case class when JSON does not match schema" in {
@@ -77,13 +108,12 @@ class CalculationInputTest extends UnitSpec {
 
       val input: JsResult[CalculationInput] = Json.fromJson[CalculationInput](json)
       input match {
-        case error: JsError => {
+        case error: JsError =>
           assert(((JsError.toJson(error) \ "obj.dateOfDeath") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.grossEstateValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.propertyValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.chargeableTransferAmount") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.percentageCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
-        }
         case _ => fail("Invalid JSON object construction succeeded")
       }
     }
@@ -96,7 +126,8 @@ class CalculationInputTest extends UnitSpec {
           | "grossEstateValue": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
-          | "percentageCloselyInherited": 3
+          | "percentageCloselyInherited": 3,
+          | "broughtForwardAllowance": 4
           |}
         """.stripMargin)
 
@@ -107,6 +138,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
+      assert(input.broughtForwardAllowance.contains(4))
     }
 
     "fail with suitable error messages when values are missing" in {
