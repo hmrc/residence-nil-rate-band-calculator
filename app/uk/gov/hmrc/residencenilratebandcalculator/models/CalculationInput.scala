@@ -23,8 +23,8 @@ import scala.util.{Failure, Success, Try}
 
 case class CalculationInput(dateOfDeath: LocalDate,
                             grossEstateValue: Int,
-                            propertyValue: Int,
                             chargeableTransferAmount: Int,
+                            propertyValue: Int,
                             percentageCloselyInherited: Int,
                             broughtForwardAllowance: Int) {
   require(grossEstateValue >= 0, """{"grossEstateValue" : "error.expected.number.non_negative"}""")

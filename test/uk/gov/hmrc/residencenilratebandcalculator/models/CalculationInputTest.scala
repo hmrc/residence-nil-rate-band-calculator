@@ -32,7 +32,7 @@ class CalculationInputTest extends UnitSpec {
 
     "throw an exception when propertyValue is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, -1, 0, 0, 0)
+        CalculationInput(new LocalDate(), 0, 0, -1, 0, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"propertyValue\" : \"error.expected.number.non_negative\"}")
     }
