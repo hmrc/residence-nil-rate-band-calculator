@@ -27,13 +27,13 @@ import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calc
 
 import scala.concurrent.Future
 
-class CalculationController @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class CalculationController @Inject()(calculator: Calculator, val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   def calculate() = Action.async(BodyParsers.parse.json) {
     implicit request => {
       CalculationInput(request.body) match {
         case Right(input) =>
-          Future.successful(Ok(Json.toJson(Calculator(input))))
+          Future.successful(Ok(Json.toJson(calculator(input).get)))
         case Left(errors) =>
           Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", errors)))
       }

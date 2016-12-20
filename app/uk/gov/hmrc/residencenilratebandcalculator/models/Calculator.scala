@@ -16,14 +16,24 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
+import javax.inject.{Inject, Singleton}
+
 import org.joda.time.LocalDate
+import play.api.Environment
 import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
+
+import scala.util.{Failure, Success, Try}
 
 /* Terms of art:
  * Percentage closely inherited = The percentage of a property passing to a direct descendant
  */
 
-object Calculator {
+@Singleton
+class Calculator @Inject()(env: Environment) {
+
+  lazy val residenceNilRateBand: GetNilRateAmountFromFile = {
+    new GetNilRateAmountFromFile(env, "conf/data/RNRB-amounts-by-year.json")
+  }
 
   val taperRate = 2
   val invalidInputError = "INVALID_INPUTS"
@@ -33,54 +43,62 @@ object Calculator {
                dateOfDisposalOfFormerProperty: LocalDate,
                valueOfFormerProperty: Int,
                valueOfTransferredRnrb: Int,
-               valueOfFinalProperty: Int): Either[(String, String), Int] = {
+               valueOfFinalProperty: Int): Try[Int] = {
 
     if (valueOfFormerProperty < 0) {
-      Left((invalidInputError, "The former property value must be greater or equal to zero."))
+      Failure(new RuntimeException(s"$invalidInputError: The former property value must be greater or equal to zero."))
     } else if (valueOfTransferredRnrb < 0) {
-      Left((invalidInputError, "The transferred RNRB value must be greater or equal to zero."))
+      Failure(new RuntimeException(s"$invalidInputError: The transferred RNRB value must be greater or equal to zero."))
     } else if (valueOfFinalProperty < 0) {
-      Left((invalidInputError, "The value of the final property must be greater or equal to zero."))
+      Failure(new RuntimeException(s"$invalidInputError: The percentage of final property must be greater or equal to zero."))
     } else if (dateOfDisposalOfFormerProperty.isBefore(lostRNRBEarliestDisposalDate)) {
-      Right(0)
+      Success(0)
     } else {
-      val rnrbOnDeath = ResidenceNilRateBand(dateOfDeath)
-      val rnrbOnDeathWithTransferredRnrb = rnrbOnDeath + valueOfTransferredRnrb
 
-      // Note that the following calculation is slightly ambiguous:
-      //  this is step 3 in case studies 12, 13, 14, 15. The case studies always show that the calculation of
-      //  maximum available RNRB of the _final_ property depends on the RNRB in effect at time of death. These case
-      //  studies also set the transferred RNRB to zero. In the cases studies where there is transferred RNRB
-      //  there is no final property in the estate at time of death.
-      //
-      //   Therefore calculating this percentage based on the RNRB on death gives the same result for the case studies
-      //   as whether or not any transferred RNRB is to be taken into account. If it was taken into account this line
-      //   would read:
-      //
-      //     val percentageOfRNRBOfFinalProperty = math.min((valueOfFinalProperty.toDouble / RNRBOnDeathWithTransferredRNRB) * 100, 100)
-      //
-      //  There is an outstanding question put to the business to clarify this.
-      val percentageOfRnrbOfFinalProperty = fractionAsBoundedPercent(valueOfFinalProperty.toDouble / rnrbOnDeath)
+      for {
+        rnrbOnDeath <- residenceNilRateBand(dateOfDeath)
+        rnrbWhenFormerPropertyDisposedOf <- residenceNilRateBand(dateOfDisposalOfFormerProperty)
+      } yield {
+        val rnrbOnDeathWithTransferredRnrb = rnrbOnDeath + valueOfTransferredRnrb
+        // Note that the following calculation is slightly ambiguous:
+        //  this is step 3 in case studies 12, 13, 14, 15. The case studies always show that the calculation of
+        //  maximum available RNRB of the _final_ property depends on the RNRB in effect at time of death. These case
+        //  studies also set the transferred RNRB to zero. In the cases studies where there is transferred RNRB
+        //  there is no final property in the estate at time of death.
+        //
+        //   Therefore calculating this percentage based on the RNRB on death gives the same result for the case studies
+        //   as whether or not any transferred RNRB is to be taken into account. If it was taken into account this line
+        //   would read:
+        //
+        //     val percentageOfRNRBOfFinalProperty = math.min((valueOfFinalProperty.toDouble / RNRBOnDeathWithTransferredRNRB) * 100, 100)
+        //
+        //  There is an outstanding question put to the business to clarify this.
+        val percentageOfRnrbOfFinalProperty = fractionAsBoundedPercent(valueOfFinalProperty.toDouble / rnrbOnDeath)
 
-      val maxRnrbOnSaleOfFormerProperty = ResidenceNilRateBand(dateOfDisposalOfFormerProperty) + valueOfTransferredRnrb
-      val percentageOfRnrbOfSale = fractionAsBoundedPercent(valueOfFormerProperty / maxRnrbOnSaleOfFormerProperty.toDouble)
-      val finalPercentage = percentageOfRnrbOfSale - percentageOfRnrbOfFinalProperty
+        val maxRnrbOnSaleOfFormerProperty = rnrbWhenFormerPropertyDisposedOf + valueOfTransferredRnrb
+        val percentageOfRnrbOfSale = fractionAsBoundedPercent(valueOfFormerProperty / maxRnrbOnSaleOfFormerProperty.toDouble)
+        val finalPercentage = percentageOfRnrbOfSale - percentageOfRnrbOfFinalProperty
 
-      Right(finalPercentage * rnrbOnDeathWithTransferredRnrb toInt)
+        finalPercentage * rnrbOnDeathWithTransferredRnrb toInt
+      }
     }
   }
 
-  def apply(input: CalculationInput): CalculationResult = {
+  def apply(input: CalculationInput): Try[CalculationResult] = {
 
-    val totalAllowance = ResidenceNilRateBand(input.dateOfDeath) + input.broughtForwardAllowance
-    val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
-    val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
+    residenceNilRateBand(input.dateOfDeath).map {
+      rnrb => {
+        val totalAllowance = rnrb + input.broughtForwardAllowance
+        val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
+        val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
 
-    val propertyCloselyInherited = (input.percentageCloselyInherited percent) * input.propertyValue toInt
+        val propertyCloselyInherited = (input.percentageCloselyInherited percent) * input.propertyValue toInt
 
-    val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
-    val carryForwardAmount = taperedAllowance - residenceNilRateAmount
-    CalculationResult(residenceNilRateAmount, carryForwardAmount)
+        val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
+        val carryForwardAmount = taperedAllowance - residenceNilRateAmount
+        CalculationResult(residenceNilRateAmount, carryForwardAmount)
+      }
+    }
   }
 
   private def fractionAsBoundedPercent(v: Double) = math.min(v * 100, 100) percent

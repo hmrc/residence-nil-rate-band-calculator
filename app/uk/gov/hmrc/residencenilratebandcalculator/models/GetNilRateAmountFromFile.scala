@@ -16,17 +16,23 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
+import javax.inject.Inject
+
 import org.joda.time.LocalDate
+import play.api.Environment
 
-object ResidenceNilRateBand extends Band {
-  def apply(date: LocalDate): Int = {
-    val bands = Map(
-      new LocalDate(2018, 4, 5) -> 125000,
-      new LocalDate(2019, 4, 5) -> 150000,
-      new LocalDate(2020, 4, 5) -> 175000)
+import scala.io.Source
+import scala.util.{Failure, Success, Try}
 
-    val bandDate = getHighestDateBefore(date, bands)
+class GetNilRateAmountFromFile @Inject()(env: Environment, filename: String) {
 
-    bandDate.fold(100000) { d => bands(d) }
+  private lazy val rateBandsAsJson: Try[String] = env.resourceAsStream(filename) match {
+    case Some(stream) => Success(Source.fromInputStream(stream).mkString)
+    case None => Failure(throw new RuntimeException(s"Unable to access $filename"))
   }
+
+  def apply(date: LocalDate): Try[Int] =
+    rateBandsAsJson.flatMap {
+      json: String => GetNilRateAmount(date, json)
+    }
 }

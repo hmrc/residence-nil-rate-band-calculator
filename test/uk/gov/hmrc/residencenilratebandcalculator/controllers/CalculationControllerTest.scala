@@ -16,13 +16,26 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
+import java.io.ByteArrayInputStream
+
+import org.mockito.Matchers._
+import org.mockito.Mockito.when
+import org.scalatest.mock.MockitoSugar
+import play.api.Environment
 import play.api.i18n.MessagesApi
 import play.api.libs.json._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import uk.gov.hmrc.residencenilratebandcalculator.models.Calculator
 
-class CalculationControllerTest extends UnitSpec with WithFakeApplication {
+class CalculationControllerTest extends UnitSpec with WithFakeApplication with MockitoSugar {
+
+  val env = mock[Environment]
+  when(env.resourceAsStream(anyString)) thenReturn Some(new ByteArrayInputStream(
+    "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}".getBytes))
+  val calculator = new Calculator(env)
+
   "Calculation Controller" must {
 
     val injector = fakeApplication.injector
@@ -44,7 +57,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication {
 
       val fakeRequest = FakeRequest("POST", "").withHeaders(("Content-Type", "application/json")).withBody(json)
 
-      val response = new CalculationController(injector.instanceOf[MessagesApi]).calculate()(fakeRequest)
+      val response = new CalculationController(calculator, injector.instanceOf[MessagesApi]).calculate()(fakeRequest)
 
       status(response) shouldBe OK
       contentAsJson(response) shouldBe JsObject(Map("residenceNilRateAmount" -> JsNumber(0), "carryForwardAmount" -> JsNumber(100000)))
@@ -68,7 +81,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication {
 
       val messages = messagesApi.preferred(fakeRequest)
 
-      val response = new CalculationController(injector.instanceOf[MessagesApi]).calculate()(fakeRequest)
+      val response = new CalculationController(calculator, injector.instanceOf[MessagesApi]).calculate()(fakeRequest)
 
       status(response) shouldBe BAD_REQUEST
       (contentAsJson(response) \ "errors" \ "grossEstateValue").as[JsString].value shouldBe messages("error.expected.number.non_negative")
