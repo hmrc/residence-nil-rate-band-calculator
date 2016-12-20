@@ -40,7 +40,7 @@ object Calculator {
     } else if (valueOfTransferredRnrb < 0) {
       Left((invalidInputError, "The transferred RNRB value must be greater or equal to zero."))
     } else if (valueOfFinalProperty < 0) {
-      Left((invalidInputError, "The percentage of final property must be between zero and one hundred."))
+      Left((invalidInputError, "The value of the final property must be greater or equal to zero."))
     } else if (dateOfDisposalOfFormerProperty.isBefore(lostRNRBEarliestDisposalDate)) {
       Right(0)
     } else {
