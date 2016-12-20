@@ -45,5 +45,43 @@ class PercentTest extends UnitSpec {
         p.asDecimal shouldBe 0.45
       }
     }
+
+    "compared to a larger value" must {
+      "return -1" in {
+        val p = Percent(10)
+        val q = Percent(11)
+        p compare q shouldBe -1
+      }
+    }
+
+    "compared to a smaller value" must {
+      "return 1" in {
+        val p = Percent(10)
+        val q = Percent(9)
+        p compare q shouldBe 1
+      }
+    }
+
+    "compared to an equal value" must {
+      "return 0" in {
+        val p = Percent(10)
+        val q = Percent(10)
+        p compare q shouldBe 0
+      }
+    }
+
+    "multiplied by a double" must {
+      "return the correct percentage of the double" in {
+        val p = Percent(50)
+        p * 100.2 shouldBe 50.1
+      }
+    }
+
+    "multiplied by an Int" must {
+      "return the correct percentage of the Int" in {
+        val p = Percent(50)
+        p * 100 shouldBe 50
+      }
+    }
   }
 }

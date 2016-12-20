@@ -122,6 +122,21 @@ class CalculatorTest extends UnitSpec {
         // alternative form of teh calculation is used, this test should be added.
         Calculator.lostRnrb(new LocalDate(2021, 3, 27), new LocalDate(2018, 10, 3), 285000, 175000, 90000) shouldBe Right(242500)
       }
+
+      "given an error when the value of the former property is less than zero" in {
+        Calculator.lostRnrb(new LocalDate(2021, 1, 1), new LocalDate(2019, 1, 1), -1, 0, 0) shouldBe
+          Left(("INVALID_INPUTS", "The former property value must be greater or equal to zero."))
+      }
+
+      "given an error when the value of transferred RNRB is less than zero" in {
+        Calculator.lostRnrb(new LocalDate(2021, 1, 1), new LocalDate(2019, 1, 1), 100000, -1, 0) shouldBe
+          Left(("INVALID_INPUTS", "The transferred RNRB value must be greater or equal to zero."))
+      }
+
+      "given an error when the value of the final property is less than zero" in {
+        Calculator.lostRnrb(new LocalDate(2021, 1, 1), new LocalDate(2019, 1, 1), 100000, 0, -1) shouldBe
+          Left(("INVALID_INPUTS", "The value of the final property must be greater or equal to zero."))
+      }
     }
   }
 }
