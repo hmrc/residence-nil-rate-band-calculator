@@ -7,6 +7,7 @@ Feature: Case Studies
       | grossEstateValue           | 490000     |
       | propertyValue              | 300000     |
       | percentageCloselyInherited | 100        |
+      | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be
       | residenceNilRateAmount | 175000 |

@@ -69,7 +69,7 @@ object Calculator {
       Right(finalPercentage * rnrbOnDeathWithTransferredRnrb toInt)
     }
   }
-  
+
   def apply(input: CalculationInput): Either[(String, String), CalculationResult] = {
 
     val totalAllowance = ResidenceNilRateBand(input.dateOfDeath) + input.broughtForwardAllowance
