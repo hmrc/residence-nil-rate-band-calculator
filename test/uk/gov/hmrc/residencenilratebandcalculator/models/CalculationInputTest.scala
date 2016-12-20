@@ -25,30 +25,37 @@ class CalculationInputTest extends UnitSpec {
 
     "throw an exception when grossEstateValue is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), -1, 0, 0, 0)
+        CalculationInput(new LocalDate(), -1, 0, 0, 0, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"grossEstateValue\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when propertyValue is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, -1, 0, 0)
+        CalculationInput(new LocalDate(), 0, 0, -1, 0, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"propertyValue\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when percentageCloselyInherited is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, -1)
+        CalculationInput(new LocalDate(), 0, 0, 0, -1, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"percentageCloselyInherited\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when percentageCloselyInherited is greater than one hundred" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, 101)
+        CalculationInput(new LocalDate(), 0, 0, 0, 101, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"percentageCloselyInherited\" : \"error.expected.number.100_at_most\"}")
+    }
+
+    "throw an exception when broughtForwardAllowance is less than zero" in {
+      val caught = intercept[IllegalArgumentException] {
+        CalculationInput(new LocalDate(), 0, 0, 0, 0, -1)
+      }
+      assert(caught.getMessage == "requirement failed: {\"broughtForwardAllowance\" : \"error.expected.number.non_negative\"}")
     }
 
     "be constructable from JSON" in {
@@ -59,7 +66,8 @@ class CalculationInputTest extends UnitSpec {
           | "grossEstateValue": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
-          | "percentageCloselyInherited": 3
+          | "percentageCloselyInherited": 3,
+          | "broughtForwardAllowance": 4
           |}
         """.stripMargin)
 
@@ -70,6 +78,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
+      assert(input.broughtForwardAllowance == 4)
     }
 
     "fail to create case class when JSON does not match schema" in {
@@ -77,13 +86,13 @@ class CalculationInputTest extends UnitSpec {
 
       val input: JsResult[CalculationInput] = Json.fromJson[CalculationInput](json)
       input match {
-        case error: JsError => {
+        case error: JsError =>
           assert(((JsError.toJson(error) \ "obj.dateOfDeath") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.grossEstateValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.propertyValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.chargeableTransferAmount") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.percentageCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
-        }
+          assert(((JsError.toJson(error) \ "obj.broughtForwardAllowance") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
         case _ => fail("Invalid JSON object construction succeeded")
       }
     }
@@ -96,7 +105,8 @@ class CalculationInputTest extends UnitSpec {
           | "grossEstateValue": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
-          | "percentageCloselyInherited": 3
+          | "percentageCloselyInherited": 3,
+          | "broughtForwardAllowance": 4
           |}
         """.stripMargin)
 
@@ -107,6 +117,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
+      assert(input.broughtForwardAllowance == 4)
     }
 
     "fail with suitable error messages when values are missing" in {
@@ -119,7 +130,8 @@ class CalculationInputTest extends UnitSpec {
         ("grossEstateValue", "error.path.missing"),
         ("propertyValue", "error.path.missing"),
         ("chargeableTransferAmount", "error.path.missing"),
-        ("percentageCloselyInherited", "error.path.missing"))
+        ("percentageCloselyInherited", "error.path.missing"),
+        ("broughtForwardAllowance", "error.path.missing"))
 
       assert(errors.toSet == expcetedErrors)
     }
@@ -132,7 +144,8 @@ class CalculationInputTest extends UnitSpec {
           | "grossEstateValue": "0",
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
-          | "percentageCloselyInherited": 0
+          | "percentageCloselyInherited": 0,
+          | "broughtForwardAllowance": 0
           |}
         """.stripMargin)
 
@@ -151,7 +164,8 @@ class CalculationInputTest extends UnitSpec {
           | "grossEstateValue": 0,
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
-          | "percentageCloselyInherited": 0
+          | "percentageCloselyInherited": 0,
+          | "broughtForwardAllowance": 0
           |}
         """.stripMargin)
 
@@ -170,7 +184,8 @@ class CalculationInputTest extends UnitSpec {
           | "grossEstateValue": -1,
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
-          | "percentageCloselyInherited": 0
+          | "percentageCloselyInherited": 0,
+          | "broughtForwardAllowance": 0
           |}
         """.stripMargin)
 

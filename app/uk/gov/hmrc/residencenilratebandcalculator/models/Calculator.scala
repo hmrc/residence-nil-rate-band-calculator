@@ -41,7 +41,7 @@ object Calculator {
       Left((invalidInputError, "The transferred RNRB value must be greater or equal to zero."))
     } else if (valueOfFinalProperty < 0) {
       Left((invalidInputError, "The percentage of final property must be between zero and one hundred."))
-    }  else if (dateOfDisposalOfFormerProperty.isBefore(lostRNRBEarliestDisposalDate)) {
+    } else if (dateOfDisposalOfFormerProperty.isBefore(lostRNRBEarliestDisposalDate)) {
       Right(0)
     } else {
       val rnrbOnDeath = ResidenceNilRateBand(dateOfDeath)
@@ -70,34 +70,18 @@ object Calculator {
     }
   }
 
-  def apply(dateOfDeath: LocalDate,
-            estateValue: Int,
-            propertyValue: Int,
-            percentageCloselyInherited: Percent,
-            percentageBroughtForwardAllowance: Percent = 0 percent): Either[(String, String), CalculationResult] = {
+  def apply(input: CalculationInput): Either[(String, String), CalculationResult] = {
 
-    if (estateValue < 0) {
-      Left((invalidInputError, "The estate value must be greater or equal to zero."))
-    } else if (propertyValue < 0) {
-      Left((invalidInputError, "The property value must be greater or equal to zero."))
-    } else if (percentageBroughtForwardAllowance < 0.percent) {
-      Left((invalidInputError, "The brought forward allowance percentage must be greater or equal to zero."))
-    } else if (percentageCloselyInherited < 0.percent || percentageCloselyInherited > 100.percent) {
-      Left((invalidInputError, "The percentage closely inherited must be between zero and one hundred."))
-    } else {
-      val totalAllowance = increaseByPercentage(ResidenceNilRateBand(dateOfDeath), percentageBroughtForwardAllowance)
-      val amountToTaper = math.max(estateValue - TaperBand(dateOfDeath), 0) / taperRate
-      val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
+    val totalAllowance = ResidenceNilRateBand(input.dateOfDeath) + input.broughtForwardAllowance
+    val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
+    val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
 
-      val propertyCloselyInherited = percentageCloselyInherited * propertyValue toInt
+    val propertyCloselyInherited = (input.percentageCloselyInherited percent) * input.propertyValue toInt
 
-      val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
-      val carryForwardAmount = taperedAllowance - residenceNilRateAmount
-      Right(CalculationResult(residenceNilRateAmount, carryForwardAmount))
-    }
+    val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
+    val carryForwardAmount = taperedAllowance - residenceNilRateAmount
+    Right(CalculationResult(residenceNilRateAmount, carryForwardAmount))
   }
 
-  private def increaseByPercentage(amount: Int, percentage: Percent) = (1 + percentage.asDecimal) * amount toInt
   private def fractionAsBoundedPercent(v: Double) = math.min(v * 100, 100) percent
-
 }

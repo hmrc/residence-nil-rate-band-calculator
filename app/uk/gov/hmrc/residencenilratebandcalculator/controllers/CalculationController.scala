@@ -33,9 +33,7 @@ class CalculationController @Inject()(val messagesApi: MessagesApi) extends Cont
     implicit request => {
       CalculationInput(request.body) match {
         case Right(input) =>
-          Future.successful(Ok(Json.toJson(
-            Calculator(input.dateOfDeath, input.grossEstateValue, input.propertyValue, input.percentageCloselyInherited percent).right.get))
-          )
+          Future.successful(Ok(Json.toJson(Calculator(input).right.get)))
         case Left(errors) =>
           Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", errors)))
       }
