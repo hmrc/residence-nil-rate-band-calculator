@@ -26,12 +26,12 @@ case class CalculationInput(dateOfDeath: LocalDate,
                             propertyValue: Int,
                             chargeableTransferAmount: Int,
                             percentageCloselyInherited: Int,
-                            broughtForwardAllowance: Option[Int] = None) {
+                            broughtForwardAllowance: Int) {
   require(grossEstateValue >= 0, """{"grossEstateValue" : "error.expected.number.non_negative"}""")
   require(propertyValue >= 0, """{"propertyValue" : "error.expected.number.non_negative"}""")
   require(percentageCloselyInherited >= 0, """{"percentageCloselyInherited" : "error.expected.number.non_negative"}""")
   require(percentageCloselyInherited <= 100, """{"percentageCloselyInherited" : "error.expected.number.100_at_most"}""")
-  require(broughtForwardAllowance.getOrElse(0) >= 0, """{"broughtForwardAllowance" : "error.expected.number.non_negative"}""")
+  require(broughtForwardAllowance >= 0, """{"broughtForwardAllowance" : "error.expected.number.non_negative"}""")
 }
 
 object CalculationInput {
