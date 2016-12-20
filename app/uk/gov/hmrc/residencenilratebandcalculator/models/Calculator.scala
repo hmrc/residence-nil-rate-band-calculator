@@ -70,7 +70,7 @@ object Calculator {
     }
   }
 
-  def apply(input: CalculationInput): Either[(String, String), CalculationResult] = {
+  def apply(input: CalculationInput): CalculationResult = {
 
     val totalAllowance = ResidenceNilRateBand(input.dateOfDeath) + input.broughtForwardAllowance
     val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
@@ -80,7 +80,7 @@ object Calculator {
 
     val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
     val carryForwardAmount = taperedAllowance - residenceNilRateAmount
-    Right(CalculationResult(residenceNilRateAmount, carryForwardAmount))
+    CalculationResult(residenceNilRateAmount, carryForwardAmount)
   }
 
   private def fractionAsBoundedPercent(v: Double) = math.min(v * 100, 100) percent
