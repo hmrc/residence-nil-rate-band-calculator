@@ -60,7 +60,10 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
       val response = new CalculationController(calculator, injector.instanceOf[MessagesApi]).calculate()(fakeRequest)
 
       status(response) shouldBe OK
-      contentAsJson(response) shouldBe JsObject(Map("residenceNilRateAmount" -> JsNumber(0), "carryForwardAmount" -> JsNumber(100000)))
+      contentAsJson(response) shouldBe JsObject(Map(
+        "residenceNilRateAmount" -> JsNumber(0),
+        "applicableNilRateBandAmount" -> JsNumber(100000),
+        "carryForwardAmount" -> JsNumber(100000)))
     }
 
     "return an error when given invalid JSON" in {

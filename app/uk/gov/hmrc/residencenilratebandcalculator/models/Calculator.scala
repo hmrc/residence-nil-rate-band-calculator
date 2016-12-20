@@ -96,7 +96,7 @@ class Calculator @Inject()(env: Environment) {
 
         val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
         val carryForwardAmount = taperedAllowance - residenceNilRateAmount
-        CalculationResult(residenceNilRateAmount, carryForwardAmount)
+        CalculationResult(residenceNilRateAmount, rnrb, carryForwardAmount)
       }
     }
   }
