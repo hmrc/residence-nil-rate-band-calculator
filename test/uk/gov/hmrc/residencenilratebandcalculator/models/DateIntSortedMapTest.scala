@@ -17,26 +17,27 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
+import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.residencenilratebandcalculator.models.DateIntSortedMap._
 
-class NilRateBandTest extends UnitSpec {
+import scala.collection.immutable.SortedMap
 
-  "Nil Rate Band" must {
+class DateIntSortedMapTest extends UnitSpec {
+  val json = Json.parse("""{"2018-01-01": 1, "2019-01-01": 2}""")
+  val data = SortedMap[LocalDate, Int](new LocalDate(2019, 1, 1) -> 2, new LocalDate(2018, 1, 1) -> 1)
 
-    "return 325000 when given a date of 1 Jan 2000" in {
-      NilRateBand(new LocalDate(2000, 1, 1)) shouldBe 325000
+  "A Date to Int sorted map" must {
+    "be parsable from valid JSON" in {
+      Json.fromJson[SortedMap[LocalDate, Int]](json).get shouldBe data
     }
 
-    "return 325000 when given a date of 6 Apr 2017" in {
-      NilRateBand(new LocalDate(2017, 4, 6)) shouldBe 325000
+    "be writeable to JSON" in {
+      Json.toJson[SortedMap[LocalDate, Int]](data) shouldBe json
     }
 
-    "return 325000 when given a date of 5 Apr 2021" in {
-      NilRateBand(new LocalDate(2021, 4, 5)) shouldBe 325000
-    }
-
-    "return 325000 when given a date of 1 Jan 2040" in {
-      NilRateBand(new LocalDate(2040, 1, 1)) shouldBe 325000
+    "must fail when constructed with invalid JSON" in {
+      Json.fromJson[SortedMap[LocalDate, Int]](Json.parse("{\"key\": []}")).asOpt shouldBe None
     }
   }
 }

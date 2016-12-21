@@ -22,20 +22,23 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
 import play.api.mvc.{Action, BodyParsers, Controller}
 import uk.gov.hmrc.residencenilratebandcalculator.converters.HttpErrorResponse
-import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calculator}
 
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
-class CalculationController @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class CalculationController @Inject()(calculator: Calculator)(implicit val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   def calculate() = Action.async(BodyParsers.parse.json) {
     implicit request => {
       CalculationInput(request.body) match {
         case Right(input) =>
-          Future.successful(Ok(Json.toJson(Calculator(input))))
-        case Left(errors) =>
-          Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", errors)))
+          calculator(input) match {
+            case Success(result) => Future.successful(Ok(Json.toJson(result)))
+            case Failure(error) => Future.successful(InternalServerError(HttpErrorResponse(INTERNAL_SERVER_ERROR, error.getMessage)))
+          }
+        case Left(jsonErrors) =>
+          Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", jsonErrors)))
       }
     }
   }

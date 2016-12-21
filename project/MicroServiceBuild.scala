@@ -29,6 +29,7 @@ private object AppDependencies {
   private val cucumberRunnerVersion = "0.0.3"
   private val testInterfaceVersion = "0.5"
   private val scalajHttpVersion = "2.3.0"
+  private val mockitoAllVersion = "1.10.19"
 
   val compile = Seq(
 
@@ -61,7 +62,8 @@ private object AppDependencies {
         "info.cukes" % "cucumber-jvm" % cukesVersion,
         "info.cukes" % "cucumber-junit" % cukesVersion,
         "org.scala-tools.testing" % "test-interface" % testInterfaceVersion,
-        "com.waioeka.sbt" %% "cucumber-runner" % cucumberRunnerVersion
+        "com.waioeka.sbt" %% "cucumber-runner" % cucumberRunnerVersion,
+        "org.mockito" % "mockito-all" % mockitoAllVersion % scope
       )
     }.test
   }

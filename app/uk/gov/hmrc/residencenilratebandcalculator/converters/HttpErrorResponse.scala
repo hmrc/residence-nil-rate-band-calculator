@@ -21,10 +21,11 @@ import play.api.libs.json._
 
 object HttpErrorResponse {
 
-  def apply(status: Int, messageKey: String, errors: Seq[(String, String)])(implicit messages: Messages) =
-    JsObject(Map[String, JsValue](
-      "statusCode" -> JsNumber(status),
-      "message" -> JsString(messages(messageKey)),
-      "errors" -> JsObject(errors.map { case (key, value) => (key, JsString(messages(value))) })
-    ))
+  def apply(status: Int, messageKey: String, errors: Seq[(String, String)] = Seq())(implicit messages: Messages) = {
+    val responseErrors =
+      if (errors.nonEmpty) { Seq("errors" -> JsObject(errors.map { case (key, value) => (key, JsString(messages(value))) })) }
+      else { Nil }
+    val body = Seq("statusCode" -> JsNumber(status), "message" -> JsString(messages(messageKey))) ++ responseErrors
+    JsObject(body.toMap[String, JsValue])
+  }
 }
