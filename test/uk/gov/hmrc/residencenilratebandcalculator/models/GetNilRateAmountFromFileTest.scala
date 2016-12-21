@@ -29,16 +29,15 @@ import scala.util.Success
 
 class GetNilRateAmountFromFileTest extends UnitSpec with WithFakeApplication with MockitoSugar {
 
-  def getNilRateAmountFromFile = {
-    val env = mock[Environment]
-    when(env.resourceAsStream(anyString)) thenReturn Some(new ByteArrayInputStream(
-      """{"2006-04-06": 285000, "2007-04-06": 300000, "2008-04-06": 312000, "2009-04-06": 325000}""".getBytes))
-    new GetNilRateAmountFromFile(env, "")
-  }
+  val env = mock[Environment]
+  when(env.resourceAsStream(anyString)) thenReturn Some(new ByteArrayInputStream(
+    """{"2006-04-06": 285000, "2007-04-06": 300000, "2008-04-06": 312000, "2009-04-06": 325000}""".getBytes))
 
-  "Nil Rate Band" must {
+  val getNilRateAmountFromFile = new GetNilRateAmountFromFile(env, "")
 
-    "return 325000 when given a date of 1 Jan 2000" in {
+  "Get Nil Rate Amount From File" must {
+
+    "return 0 when given a date of 1 Jan 2000" in {
       getNilRateAmountFromFile(new LocalDate(2000, 1, 1)) shouldBe Success(0)
     }
 
@@ -58,7 +57,7 @@ class GetNilRateAmountFromFileTest extends UnitSpec with WithFakeApplication wit
       getNilRateAmountFromFile(new LocalDate(2009, 4, 6)) shouldBe Success(325000)
     }
 
-    "return 325000 when given a date of 1 Jan 2040" in {
+    "return 325,000 when given a date of 1 Jan 2040" in {
       getNilRateAmountFromFile(new LocalDate(2040, 1, 1)) shouldBe Success(325000)
     }
   }

@@ -28,7 +28,7 @@ class GetNilRateAmountFromFile @Inject()(env: Environment, filename: String) {
 
   private lazy val rateBandsAsJson: Try[String] = env.resourceAsStream(filename) match {
     case Some(stream) => Success(Source.fromInputStream(stream).mkString)
-    case None => Failure(throw new RuntimeException(s"Unable to access $filename"))
+    case None => Failure(throw new RuntimeException("error.resource_access_failure"))
   }
 
   def apply(date: LocalDate): Try[Int] =

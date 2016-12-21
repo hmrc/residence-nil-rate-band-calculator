@@ -4,3 +4,4 @@ error.expected.jsnumber = A number was expected, but not found
 error.expected.jodadate.format = A date of the form yyyy-mm-dd was expected, but not found
 error.json_parsing_failure = Failed to parse the provided JSON object
 error.path.missing = The required key was not found
+error.resource_access_failure = Unable to access resource
