@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.scalatest.mock.MockitoSugar
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 class GetNilRateAmountTest extends UnitSpec with WithFakeApplication with MockitoSugar {
 
@@ -66,6 +66,16 @@ class GetNilRateAmountTest extends UnitSpec with WithFakeApplication with Mockit
 
     "return 175000 when given a date of 1 Jan 2040" in {
       GetNilRateAmount(new LocalDate(2040, 1, 1), rateBandsAsJson) shouldBe Success(175000)
+    }
+
+    "return a failure when invalid JSON is provided" in {
+      GetNilRateAmount(new LocalDate(2017, 4, 6), "[") shouldBe a[Failure[_]]
+    }
+
+    "return a failure when the provided JSON does not represent a rate band" in {
+      val result = GetNilRateAmount(new LocalDate(2017, 4, 6), "{\"something\": []}")
+      println("result: " + result)
+      result shouldBe a[Failure[_]]
     }
   }
 }

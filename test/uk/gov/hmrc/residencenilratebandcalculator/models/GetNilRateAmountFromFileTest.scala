@@ -60,5 +60,13 @@ class GetNilRateAmountFromFileTest extends UnitSpec with WithFakeApplication wit
     "return 325,000 when given a date of 1 Jan 2040" in {
       getNilRateAmountFromFile(new LocalDate(2040, 1, 1)) shouldBe Success(325000)
     }
+
+    "fail when unable to obtain the rate bands as JSON" in {
+      val env = mock[Environment]
+      when(env.resourceAsStream(anyString)) thenReturn None
+      val getNilRateAmountFromFile = new GetNilRateAmountFromFile(env, "")
+
+      getNilRateAmountFromFile(new LocalDate(2006, 4, 6)).failed.get.getMessage shouldBe "error.resource_access_failure"
+    }
   }
 }
