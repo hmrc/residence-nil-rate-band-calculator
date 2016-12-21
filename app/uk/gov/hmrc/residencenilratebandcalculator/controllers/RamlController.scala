@@ -26,14 +26,14 @@ import scala.concurrent.Future
 @Singleton
 class RamlController @Inject()() extends BaseController {
   def getRaml: Action[AnyContent] = Action.async {
-    Future.successful(Ok.sendFile(
-      content = new java.io.File("conf/Microservice.raml"),
+    Future.successful(Ok.sendResource(
+      resource = "Microservice.raml",
       inline = true).withHeaders(CONTENT_TYPE -> "text/plain"))
   }
 
   def getSchema(filename: String): Action[AnyContent] = Action.async {
-    Future.successful(Ok.sendFile(
-      content = new java.io.File(s"conf/schemas/$filename"),
+    Future.successful(Ok.sendResource(
+      resource = s"schemas/$filename",
       inline = true).withHeaders(CONTENT_TYPE -> "text/plain"))
   }
 }

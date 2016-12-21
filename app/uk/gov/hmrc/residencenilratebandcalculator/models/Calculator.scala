@@ -32,7 +32,7 @@ import scala.util.{Failure, Success, Try}
 class Calculator @Inject()(env: Environment) {
 
   lazy val residenceNilRateBand: GetNilRateAmountFromFile = {
-    new GetNilRateAmountFromFile(env, "conf/data/RNRB-amounts-by-year.json")
+    new GetNilRateAmountFromFile(env, "data/RNRB-amounts-by-year.json")
   }
 
   val taperRate = 2
