@@ -1,7 +1,8 @@
-#%RAML 0.8
----
+#%RAML 1.0
 title: Inheritance Tax Residence Nil Rate Band Calculator Microservice
-baseUri: http://localhost:7112/residence-nil-rate-band-calculator
+baseUri: https://raw.githubusercontent.com/hmrc/residence-nil-rate-band-calculator/RNRBC-RAML/conf
+protocols: [ HTTPS ]
+mediaType: [ application/json, application/hal+json ]
 
 /calculate:
     post:

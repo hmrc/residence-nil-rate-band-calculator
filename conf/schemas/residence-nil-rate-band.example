@@ -1,4 +1,5 @@
 {
     "residenceNilRateBand": 1000,
+    "applicableNilRateBandAmount": 100000,
     "transferableResidenceNilRateBand": 1000
 }
