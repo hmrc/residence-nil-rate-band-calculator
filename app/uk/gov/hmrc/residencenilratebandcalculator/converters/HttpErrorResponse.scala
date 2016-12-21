@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package steps
+package uk.gov.hmrc.residencenilratebandcalculator.converters
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.i18n.Messages
+import play.api.libs.json._
 
-object Context {
-  var responseCode = 0
-  var responseBody = ""
-  def responseBodyAsMap = Json.parse(Context.responseBody).as[Map[String, JsValue]]
+object HttpErrorResponse {
+
+  def apply(status: Int, messageKey: String, errors: Seq[(String, String)])(implicit messages: Messages) =
+    JsObject(Map[String, JsValue](
+      "statusCode" -> JsNumber(status),
+      "message" -> JsString(messages(messageKey)),
+      "errors" -> JsObject(errors.map { case (key, value) => (key, JsString(messages(value))) })
+    ))
 }

@@ -36,7 +36,9 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication {
           | "dateOfDeath": "2018-01-01",
           | "grossEstateValue": 0,
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0
+          | "chargeableTransferAmount": 0,
+          | "percentageCloselyInherited": 0,
+          | "broughtForwardAllowance": 0
           |}
         """.stripMargin)
 
@@ -56,7 +58,9 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication {
           | "dateOfDeath": "2018-01-01",
           | "grossEstateValue": -1,
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0
+          | "chargeableTransferAmount": 0,
+          | "percentageCloselyInherited": 0,
+          | "broughtForwardAllowance": 0
           |}
         """.stripMargin)
 
@@ -67,8 +71,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication {
       val response = new CalculationController(injector.instanceOf[MessagesApi]).calculate()(fakeRequest)
 
       status(response) shouldBe BAD_REQUEST
-      contentAsJson(response) shouldBe JsArray(Seq(JsObject(Map(
-        "grossEstateValue" -> JsString(messages("error.expected.number.non_negative"))))))
+      (contentAsJson(response) \ "errors" \ "grossEstateValue").as[JsString].value shouldBe messages("error.expected.number.non_negative")
     }
   }
 }
