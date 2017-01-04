@@ -12,8 +12,9 @@ Feature: Case Study 2
       | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be
-      | residenceNilRateAmount | 100000 |
-      | carryForwardAmount     | 75000  |
+      | applicableNilRateBandAmount | 175000 |
+      | residenceNilRateAmount      | 100000 |
+      | carryForwardAmount          | 75000  |
 
   Scenario: 2.2 - Death occurs in an earlier tax year
     When I POST these details to calculate
@@ -25,5 +26,6 @@ Feature: Case Study 2
       | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be
-      | residenceNilRateAmount | 100000 |
-      | carryForwardAmount     | 25000  |
+      | applicableNilRateBandAmount | 125000 |
+      | residenceNilRateAmount      | 100000 |
+      | carryForwardAmount          | 25000  |
