@@ -19,7 +19,7 @@ package steps
 import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.scalatest.Matchers
-import utils.DataTableHelper
+import utils.{DataTableHelper, HttpConnector}
 import scalaj.http._
 
 import scala.collection.JavaConverters._
@@ -29,10 +29,22 @@ class Steps extends ScalaDsl with EN with Matchers {
   When("""^I POST these details to (.*)$""") { (endpoint: String, dataTable: DataTable) =>
     val json = DataTableHelper.convertToJsonString(dataTable)
 
-    val response = Http(s"${Env.baseUrl}$endpoint").postData(json).header("content-type", "application/json").asString
+    HttpConnector.post(endpoint, json)
+  }
 
-    Context.responseCode = response.code
-    Context.responseBody = response.body
+  When("""^I combine these details$""") { (dataTable: DataTable) =>
+    Context.details = DataTableHelper.convertToJsValue(dataTable)
+  }
+
+  When("^(?:I combine )?these [P|p]roperty [V|v]alue [A|a]fter [E|e]xemption details$") { (dataTable: DataTable) =>
+    val innerJson = DataTableHelper.convertToJsValue(dataTable)
+    Context.details = Context.details + ("propertyValueAfterExemption" -> innerJson)
+  }
+
+  When("""^(?:I )?POST the details to (.*)$""") { (endpoint: String) =>
+    val json = Context.details.toString
+
+    HttpConnector.post(endpoint, json)
   }
 
   Then("""^I should get an? (.*) response$""") { (expectedResponseCode: String) =>
