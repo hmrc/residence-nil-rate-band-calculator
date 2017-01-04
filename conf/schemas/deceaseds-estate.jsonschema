@@ -33,6 +33,16 @@
         "broughtForwardAllowance": {
             "type": "integer",
             "minimum": 0
+        },
+        "propertyValueAfterExemption": {
+            "propertyValue": {
+                "type": "integer",
+                "minimum": 0
+            },
+            "propertyValueCloselyInherited": {
+                "type": "integer",
+                "minimum": 0
+            }
         }
     },
     "required": ["chargeableTransferAmount", "dateOfDeath", "grossEstateValue", "propertyValue", "percentageCloselyInherited", "broughtForwardAllowance"]
