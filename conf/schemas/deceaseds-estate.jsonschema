@@ -35,11 +35,11 @@
             "minimum": 0
         },
         "propertyValueAfterExemption": {
-            "propertyValue": {
+            "value": {
                 "type": "integer",
                 "minimum": 0
             },
-            "propertyValueCloselyInherited": {
+            "valueCloselyInherited": {
                 "type": "integer",
                 "minimum": 0
             }
