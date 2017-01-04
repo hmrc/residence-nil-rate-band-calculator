@@ -92,7 +92,10 @@ class Calculator @Inject()(env: Environment) {
         val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
         val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
 
-        val propertyCloselyInherited = (input.percentageCloselyInherited percent) * input.propertyValue toInt
+        val propertyCloselyInherited = input.propertyValueAfterExemption match {
+          case Some(values) => input.propertyValueAfterExemption.get.valueCloselyInherited
+          case None => (input.percentageCloselyInherited percent) * input.propertyValue toInt
+        }
 
         val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
         val carryForwardAmount = taperedAllowance - residenceNilRateAmount
