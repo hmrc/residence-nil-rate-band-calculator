@@ -93,7 +93,7 @@ class Calculator @Inject()(env: Environment) {
         val taperedAllowance = math.max(totalAllowance - amountToTaper, 0)
 
         val propertyCloselyInherited = input.propertyValueAfterExemption match {
-          case Some(values) => input.propertyValueAfterExemption.get.valueCloselyInherited
+          case Some(values) => values.valueCloselyInherited
           case None => (input.percentageCloselyInherited percent) * input.propertyValue toInt
         }
 
