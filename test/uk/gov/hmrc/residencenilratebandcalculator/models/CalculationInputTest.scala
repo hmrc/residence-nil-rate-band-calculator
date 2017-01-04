@@ -139,6 +139,29 @@ class CalculationInputTest extends UnitSpec {
       }
     }
 
+    "fail to create case class when PropertyValueAfterExemption JSON does not match schema" in {
+      val json = Json.parse(
+        """
+          |{
+          | "dateOfDeath": "2018-01-01",
+          | "grossEstateValue": 0,
+          | "propertyValue": 1,
+          | "chargeableTransferAmount": 2,
+          | "percentageCloselyInherited": 3,
+          | "broughtForwardAllowance": 4,
+          | "propertyValueAfterExemption": {}
+          |}
+        """.stripMargin)
+
+      val input: JsResult[CalculationInput] = Json.fromJson[CalculationInput](json)
+      input match {
+        case error: JsError =>
+          assert(((JsError.toJson(error) \ "obj.propertyValueAfterExemption.value") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+          assert(((JsError.toJson(error) \ "obj.propertyValueAfterExemption.valueCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+        case _ => fail("Invalid JSON object construction succeeded")
+      }
+    }
+
     "be constructable from a valid JsValue" in {
       val json = Json.parse(
         """
