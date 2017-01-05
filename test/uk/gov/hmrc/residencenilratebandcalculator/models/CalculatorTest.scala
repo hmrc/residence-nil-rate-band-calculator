@@ -99,7 +99,7 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
     "part of the property is exempt from inheritance tax" must {
       "give RNRA using the value closely inherited after exemptions" in {
         val input = CalculationInput(new LocalDate(2021, 1, 1), 1000000, 1000000, 500000, 100, 0, Some(PropertyValueAfterExemption(100000, 100000)))
-        calculator(input) shouldBe Success(CalculationResult(100000, 175000, 75000))
+        calculator(input) shouldBe Success(CalculationResult(100000, 175000, 75000, 175000))
       }
     }
 
