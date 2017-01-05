@@ -1,8 +1,26 @@
 #%RAML 1.0
-title: Inheritance Tax Residence Nil Rate Band Calculator Microservice
-baseUri: https://raw.githubusercontent.com/hmrc/residence-nil-rate-band-calculator/RNRBC-RAML/conf
+---
+
+title: Inheritance Tax Residence Nil Rate Band Calculator
+version: 0.1
+baseUri: https://api.service.hmrc.gov.uk/
 protocols: [ HTTPS ]
+
+documentation:
+ - title: Overview
+   content: !include docs/overview.md
+ - title: Versioning
+   content: !include http://api-documentation-raml-frontend.service/api-documentation/assets/common/docs/versioning.md
+ - title: Errors
+   content: !include http://api-documentation-raml-frontend.service/api-documentation/assets/common/docs/errors.md
+
 mediaType: [ application/json, application/hal+json ]
+
+uses:
+  sec: http://api-documentation-raml-frontend.service/api-documentation/assets/common/modules/securitySchemes.raml
+  headers: http://api-documentation-raml-frontend.service/api-documentation/assets/common/modules/headers.raml
+  annotations: http://api-documentation-raml-frontend.service/api-documentation/assets/common/modules/annotations.raml
+  types: http://api-documentation-raml-frontend.service/api-documentation/assets/common/modules/types.raml
 
 /calculate:
     post:

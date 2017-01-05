@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
+import java.nio.file.Paths
 import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.{Action, AnyContent}
@@ -25,15 +26,25 @@ import scala.concurrent.Future
 
 @Singleton
 class RamlController @Inject()() extends BaseController {
-  def getRaml: Action[AnyContent] = Action.async {
+
+  private def getResource(resource: String): Action[AnyContent] = Action.async {
     Future.successful(Ok.sendResource(
-      resource = "Microservice.raml",
+      resource = resource,
       inline = true).withHeaders(CONTENT_TYPE -> "text/plain"))
   }
 
-  def getSchema(filename: String): Action[AnyContent] = Action.async {
-    Future.successful(Ok.sendResource(
-      resource = s"schemas/$filename",
-      inline = true).withHeaders(CONTENT_TYPE -> "text/plain"))
+  def getRaml(version: String): Action[AnyContent] = {
+    val path = Paths.get("resources", "public", "api", "conf", version, "application.raml")
+    getResource(path.toString)
+  }
+
+  def getSchema(version: String, filename: String): Action[AnyContent] = {
+    val path = Paths.get("resources", "public", "api", "conf", version, "schemas", filename)
+    getResource(path.toString)
+  }
+
+  def getDocs(version: String, filename: String): Action[AnyContent] = {
+    val path = Paths.get("resources", "public", "api", "conf", version, "docs", filename)
+    getResource(path.toString)
   }
 }
