@@ -12,8 +12,9 @@ Feature: Case Study 6
       | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be
-      | residenceNilRateAmount | 175000 |
-      | carryForwardAmount     | 0      |
+      | applicableNilRateBandAmount | 175000 |
+      | residenceNilRateAmount      | 175000 |
+      | carryForwardAmount          | 0      |
 
   Scenario: 6.2 - Amount left to direct descendants is less than the maximum RNRB
     When I POST these details to calculate
@@ -25,5 +26,6 @@ Feature: Case Study 6
       | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be
-      | residenceNilRateAmount | 125000 |
-      | carryForwardAmount     | 50000  |
+      | applicableNilRateBandAmount | 175000 |
+      | residenceNilRateAmount      | 125000 |
+      | carryForwardAmount          | 50000  |

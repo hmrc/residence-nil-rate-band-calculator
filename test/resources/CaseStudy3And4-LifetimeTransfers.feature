@@ -10,8 +10,9 @@ Feature: Case Study 3
       | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be
-      | residenceNilRateAmount | 175000 |
-      | carryForwardAmount     | 0      |
+      | applicableNilRateBandAmount | 175000 |
+      | residenceNilRateAmount      | 175000 |
+      | carryForwardAmount          | 0      |
 
   Scenario: 4.1 - Case Study 4
     When I POST these details to calculate
@@ -23,5 +24,6 @@ Feature: Case Study 3
       | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be
-      | residenceNilRateAmount | 175000 |
-      | carryForwardAmount     | 0      |
+      | applicableNilRateBandAmount | 175000 |
+      | residenceNilRateAmount      | 175000 |
+      | carryForwardAmount          | 0      |

@@ -26,7 +26,8 @@ case class CalculationInput(dateOfDeath: LocalDate,
                             chargeableTransferAmount: Int,
                             propertyValue: Int,
                             percentageCloselyInherited: Int,
-                            broughtForwardAllowance: Int) {
+                            broughtForwardAllowance: Int,
+                            propertyValueAfterExemption: Option[PropertyValueAfterExemption] = None) {
   require(grossEstateValue >= 0, """{"grossEstateValue" : "error.expected.number.non_negative"}""")
   require(propertyValue >= 0, """{"propertyValue" : "error.expected.number.non_negative"}""")
   require(percentageCloselyInherited >= 0, """{"percentageCloselyInherited" : "error.expected.number.non_negative"}""")
@@ -58,4 +59,13 @@ object CalculationInput {
       case Failure(ex) => Left(extractErrors(ex))
     }
   }
+}
+
+case class PropertyValueAfterExemption(value: Int, valueCloselyInherited: Int) {
+  require(value >= 0, """{"value" : "error.expected.number.non_negative"}""")
+  require(valueCloselyInherited >= 0, """{"valueCloselyInherited" : "error.expected.number.non_negative"}""")
+}
+
+object PropertyValueAfterExemption {
+  implicit val formats: OFormat[PropertyValueAfterExemption] = Json.format[PropertyValueAfterExemption]
 }

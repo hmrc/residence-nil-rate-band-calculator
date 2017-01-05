@@ -4,5 +4,9 @@
     "grossEstateValue":300,
     "propertyValue":300,
     "percentageCloselyInherited": 100,
-    "broughtForwardAllowance": 300
+    "broughtForwardAllowance": 300,
+    "propertyValueAfterExemption": {
+        "value": 200,
+        "valueCloselyInherited": 200
+    }
 }

@@ -58,6 +58,20 @@ class CalculationInputTest extends UnitSpec {
       assert(caught.getMessage == "requirement failed: {\"broughtForwardAllowance\" : \"error.expected.number.non_negative\"}")
     }
 
+    "throw an exception when propertyValueAfterExemption is present but its value is less than 0" in {
+      val caught = intercept[IllegalArgumentException] {
+        CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, Some(PropertyValueAfterExemption(-1, 0)))
+      }
+      assert(caught.getMessage == "requirement failed: {\"value\" : \"error.expected.number.non_negative\"}")
+    }
+
+    "throw an exception when propertyValueAfterExemption is present but its valueCloselyInherited is less than 0" in {
+      val caught = intercept[IllegalArgumentException] {
+        CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, Some(PropertyValueAfterExemption(0, -1)))
+      }
+      assert(caught.getMessage == "requirement failed: {\"valueCloselyInherited\" : \"error.expected.number.non_negative\"}")
+    }
+
     "be constructable from JSON" in {
       val json = Json.parse(
         """
@@ -81,6 +95,34 @@ class CalculationInputTest extends UnitSpec {
       assert(input.broughtForwardAllowance == 4)
     }
 
+    "be constructable from JSON with property value after exemption present" in {
+      val json = Json.parse(
+        """
+          |{
+          | "dateOfDeath": "2018-01-01",
+          | "grossEstateValue": 0,
+          | "propertyValue": 1,
+          | "chargeableTransferAmount": 2,
+          | "percentageCloselyInherited": 3,
+          | "broughtForwardAllowance": 4,
+          | "propertyValueAfterExemption": {
+          |   "value": 5,
+          |   "valueCloselyInherited": 6
+          | }
+          |}
+        """.stripMargin)
+
+      val input = Json.fromJson[CalculationInput](json).get
+
+      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.grossEstateValue == 0)
+      assert(input.propertyValue == 1)
+      assert(input.chargeableTransferAmount == 2)
+      assert(input.percentageCloselyInherited == 3)
+      assert(input.broughtForwardAllowance == 4)
+      assert(input.propertyValueAfterExemption.contains(PropertyValueAfterExemption(5, 6)))
+    }
+
     "fail to create case class when JSON does not match schema" in {
       val json = Json.parse("{}")
 
@@ -93,6 +135,29 @@ class CalculationInputTest extends UnitSpec {
           assert(((JsError.toJson(error) \ "obj.chargeableTransferAmount") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.percentageCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.broughtForwardAllowance") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+        case _ => fail("Invalid JSON object construction succeeded")
+      }
+    }
+
+    "fail to create case class when PropertyValueAfterExemption JSON does not match schema" in {
+      val json = Json.parse(
+        """
+          |{
+          | "dateOfDeath": "2018-01-01",
+          | "grossEstateValue": 0,
+          | "propertyValue": 1,
+          | "chargeableTransferAmount": 2,
+          | "percentageCloselyInherited": 3,
+          | "broughtForwardAllowance": 4,
+          | "propertyValueAfterExemption": {}
+          |}
+        """.stripMargin)
+
+      val input: JsResult[CalculationInput] = Json.fromJson[CalculationInput](json)
+      input match {
+        case error: JsError =>
+          assert(((JsError.toJson(error) \ "obj.propertyValueAfterExemption.value") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+          assert(((JsError.toJson(error) \ "obj.propertyValueAfterExemption.valueCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
         case _ => fail("Invalid JSON object construction succeeded")
       }
     }
@@ -118,6 +183,34 @@ class CalculationInputTest extends UnitSpec {
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
       assert(input.broughtForwardAllowance == 4)
+    }
+
+    "be constructable from a valid JsValue with property value after exemption present" in {
+      val json = Json.parse(
+        """
+          |{
+          | "dateOfDeath": "2018-01-01",
+          | "grossEstateValue": 0,
+          | "propertyValue": 1,
+          | "chargeableTransferAmount": 2,
+          | "percentageCloselyInherited": 3,
+          | "broughtForwardAllowance": 4,
+          | "propertyValueAfterExemption": {
+          |   "value": 5,
+          |   "valueCloselyInherited": 6
+          | }
+          |}
+        """.stripMargin)
+
+      val input = CalculationInput(json).right.get
+
+      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.grossEstateValue == 0)
+      assert(input.propertyValue == 1)
+      assert(input.chargeableTransferAmount == 2)
+      assert(input.percentageCloselyInherited == 3)
+      assert(input.broughtForwardAllowance == 4)
+      assert(input.propertyValueAfterExemption.contains(PropertyValueAfterExemption(5, 6)))
     }
 
     "fail with suitable error messages when values are missing" in {

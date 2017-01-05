@@ -12,8 +12,9 @@ Feature: Case Study 5
       | broughtForwardAllowance    | 150000     |
     Then I should get an OK response
     And the response body should be
-      | residenceNilRateAmount | 300000 |
-      | carryForwardAmount     | 0      |
+      | applicableNilRateBandAmount | 150000 |
+      | residenceNilRateAmount      | 300000 |
+      | carryForwardAmount          | 0      |
 
   Scenario: 5.2 - Property worth less than the RNRB + unused allowance
     When I POST these details to calculate
@@ -25,5 +26,6 @@ Feature: Case Study 5
       | broughtForwardAllowance    | 150000     |
     Then I should get an OK response
     And the response body should be
-      | residenceNilRateAmount | 250000 |
-      | carryForwardAmount     | 50000  |
+      | applicableNilRateBandAmount | 150000 |
+      | residenceNilRateAmount      | 250000 |
+      | carryForwardAmount          | 50000  |

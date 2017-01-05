@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package steps
+package utils
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import steps.{Context, Env}
+import scalaj.http._
 
-object Context {
-  var responseCode = 0
-  var responseBody = ""
-  def responseBodyAsMap = Json.parse(Context.responseBody).as[Map[String, JsValue]]
+object HttpConnector {
 
-  var details: JsObject = null
+  def post(endpoint: String, body: String) = {
+    val response = Http(s"${Env.baseUrl}$endpoint").postData(body).header("content-type", "application/json").asString
+
+    Context.responseCode = response.code
+    Context.responseBody = response.body
+  }
 }

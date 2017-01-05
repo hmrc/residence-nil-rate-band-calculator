@@ -17,30 +17,27 @@
 package utils
 
 import cucumber.api.DataTable
-import play.api.libs.json.Json
-
-import scala.util.parsing.json.JSONObject
+import play.api.libs.json.{JsObject, Json}
 import scala.collection.JavaConverters._
 
 object DataTableHelper {
 
-  private def setType(key: String, value: String) = key match {
-    case "dateOfDeath" => (key, value)
-    case _ => (key, value.toInt)
-  }
-
   def convertToJsonString(dataTable: DataTable) = {
-    val nodes = dataTable.asMap(classOf[String], classOf[String]).asScala
-
-    val convertedNodes = nodes map {
-      case(k, v) => setType(k, v)
-    }
-
-    JSONObject(convertedNodes.toMap[String, Any]).toString()
+    convertToJsValue(dataTable).toString
   }
 
   def convertToJsonNode(key: String, value: String) = key match {
     case "dateOfDeath" => (key, Json.toJson(value))
     case _ => (key, Json.toJson(value.toInt))
+  }
+
+  def convertToJsValue(dataTable: DataTable) ={
+    val nodes = dataTable.asMap(classOf[String], classOf[String]).asScala
+
+    val convertedNodes = nodes map {
+      case(k, v) => convertToJsonNode(k, v)
+    }
+
+    JsObject(convertedNodes)
   }
 }
