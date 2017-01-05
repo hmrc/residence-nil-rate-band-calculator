@@ -47,6 +47,27 @@
                 },
                 "required": ["value", "valueCloselyInherited"]
             }
+        },
+        "downsizingDetails": {
+            "type": "object",
+            "properties": {
+                "dateOfDisposal": {
+                    "$ref": "#/definitions/dateString"
+                },
+                "valueOfDisposedProperty": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "valueCloselyInherited": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "broughtForwardAllowanceAtDisposal": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            },
+            "required": ["dateOfDisposal", "valueOfDisposedProperty", "valueCloselyInherited", "broughtForwardAllowanceAtDisposal"]
         }
     },
     "required": ["chargeableTransferAmount", "dateOfDeath", "grossEstateValue", "propertyValue", "percentageCloselyInherited", "broughtForwardAllowance"]
