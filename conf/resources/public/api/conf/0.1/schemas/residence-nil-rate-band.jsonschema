@@ -15,7 +15,11 @@
         "transferableResidenceNilRateBand": {
             "type": "integer",
             "minimum": 0
+        },
+        "defaultAllowanceAmount": {
+            "type": "integer",
+            "minimum": 0
         }
     },
-    "required": ["residenceNilRateBand", "applicableNilRateBandAmount", "transferableResidenceNilRateBand"]
+    "required": ["residenceNilRateBand", "applicableNilRateBandAmount", "transferableResidenceNilRateBand, "defaultAllowanceAmount"]
 }
