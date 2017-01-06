@@ -38,6 +38,7 @@ class Calculator @Inject()(env: Environment) {
   val taperRate = 2
   val invalidInputError = "INVALID_INPUTS"
   val lostRNRBEarliestDisposalDate = new LocalDate(2015, 7, 8)
+  val legislativeStartDate = new LocalDate(2017, 4, 6)
 
   def lostRnrb(dateOfDeath: LocalDate,
                dateOfDisposalOfFormerProperty: LocalDate,
@@ -84,6 +85,28 @@ class Calculator @Inject()(env: Environment) {
     }
   }
 
+  def lostRelievableAmount(valueOfDisposedProperty: Int,
+                           formerAllowance: Int,
+                           chargeablePropertyValue: Int,
+                           taperedAllowance: Int): Int = {
+    require(valueOfDisposedProperty >= 0, "valueOfDisposedProperty cannot be negative")
+    require(formerAllowance > 0, "formerAllowance must be greater than zero")
+    require(chargeablePropertyValue >= 0, "chargeablePropertyValue cannot be negative")
+    require(taperedAllowance >= 0, "taperedAllowance cannot be negative")
+
+    if (taperedAllowance == 0) {
+      0
+    }
+    else {
+
+      val fractionOfFormerAllowance = math.min(valueOfDisposedProperty.toDouble / formerAllowance, 1.0)
+      val fractionOfAllowanceOnDeath = math.min(chargeablePropertyValue.toDouble / taperedAllowance, 1.0)
+      val difference = math.max(fractionOfFormerAllowance - fractionOfAllowanceOnDeath, 0.0)
+
+      (difference * taperedAllowance) toInt
+    }
+  }
+
   def apply(input: CalculationInput): Try[CalculationResult] = {
 
     residenceNilRateBand(input.dateOfDeath).map {
@@ -96,6 +119,8 @@ class Calculator @Inject()(env: Environment) {
           case Some(values) => values.valueCloselyInherited
           case None => (input.percentageCloselyInherited percent) * input.propertyValue toInt
         }
+
+        // TODO: Include downsizing here
 
         val residenceNilRateAmount = math.min(propertyCloselyInherited, taperedAllowance)
         val carryForwardAmount = taperedAllowance - residenceNilRateAmount
