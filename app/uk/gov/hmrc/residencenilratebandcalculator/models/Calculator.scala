@@ -85,6 +85,16 @@ class Calculator @Inject()(env: Environment) {
     }
   }
 
+  def adjustedBroughtForwardAllowance(totalAllowance: Int,
+                                      amountToTaper: Int,
+                                      broughtForwardAllowance: Int): Int = {
+    require(totalAllowance >= 0, "totalAllowance cannot be negative")
+    require(amountToTaper >= 0, "amountToTaper cannot be negative")
+    require(broughtForwardAllowance >= 0, "broughtForwardAllowance cannot be negative")
+
+    math.max(broughtForwardAllowance - (amountToTaper.toDouble * (broughtForwardAllowance.toDouble / totalAllowance)), 0.0) toInt
+  }
+
   def lostRelievableAmount(valueOfDisposedProperty: Int,
                            formerAllowance: Int,
                            chargeablePropertyValue: Int,

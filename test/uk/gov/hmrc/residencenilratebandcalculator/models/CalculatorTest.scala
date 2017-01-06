@@ -160,6 +160,31 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
     }
   }
 
+  "calculating adjusted brought forward allowance" must {
+
+    "give an error when total allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.adjustedBroughtForwardAllowance(-1, 1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: totalAllowance cannot be negative")
+    }
+
+    "give an error when amount to taper is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.adjustedBroughtForwardAllowance(1, -1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: amountToTaper cannot be negative")
+    }
+
+    "give an error when brought forward allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.adjustedBroughtForwardAllowance(1, 1, -1)
+      }
+      assert(caught.getMessage == "requirement failed: broughtForwardAllowance cannot be negative")
+    }
+
+  }
+
   "calculating lost relievable amount" must {
 
     "return 0 when the value of the disposed property is 0" in {
