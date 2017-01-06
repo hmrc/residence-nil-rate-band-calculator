@@ -109,9 +109,9 @@ class Calculator @Inject()(env: Environment) {
     }
     else {
 
-      val fractionOfFormerAllowance = math.min(valueOfDisposedProperty.toDouble / formerAllowance, 1.0)
-      val fractionOfAllowanceOnDeath = math.min(chargeablePropertyValue.toDouble / taperedAllowance, 1.0)
-      val difference = math.max(fractionOfFormerAllowance - fractionOfAllowanceOnDeath, 0.0)
+      val percentageOfFormerAllowance = fractionAsBoundedPercent(valueOfDisposedProperty.toDouble / formerAllowance)
+      val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(chargeablePropertyValue.toDouble / taperedAllowance)
+      val difference = boundedPercentageDifferenceAsDouble(percentageOfFormerAllowance,percentageOfAllowanceOnDeath)
 
       (difference * taperedAllowance) toInt
     }
@@ -140,4 +140,6 @@ class Calculator @Inject()(env: Environment) {
   }
 
   private def fractionAsBoundedPercent(v: Double) = math.min(v * 100, 100) percent
+
+  private def boundedPercentageDifferenceAsDouble(a: Percent, b: Percent) = math.max((a - b) asDecimal, 0.0)
 }
