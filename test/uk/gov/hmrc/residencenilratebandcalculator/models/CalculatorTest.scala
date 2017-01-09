@@ -186,22 +186,22 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
 
   "calculating persons former allowance" must {
 
-    "ignore brought forward allowance when the date of disposal is before 6 April 2017" in {
+    "ignore brought forward allowance at disposal when the date of disposal is before 6 April 2017" in {
       calculator.personsFormerAllowance(new LocalDate(2015, 4, 5), 100000, 50000, 0) shouldBe 100000
     }
 
-    "give an error when RNRB on disposal is negative" in {
+    "give an error when RNRB at disposal is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.personsFormerAllowance(new LocalDate(), -1, 1, 1)
       }
-      assert(caught.getMessage == "requirement failed: rnrbOnDisposal cannot be negative")
+      assert(caught.getMessage == "requirement failed: rnrbAtDisposal cannot be negative")
     }
 
-    "give an error when brought forward allowance is negative" in {
+    "give an error when brought forward allowance at disposal is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.personsFormerAllowance(new LocalDate(), 1, -1, 1)
       }
-      assert(caught.getMessage == "requirement failed: broughtForwardAllowance cannot be negative")
+      assert(caught.getMessage == "requirement failed: broughtForwardAllowanceAtDisposal cannot be negative")
     }
 
     "give an error when adjusted brought forward allowance is negative" in {
@@ -257,11 +257,11 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
       assert(caught.getMessage == "requirement failed: formerAllowance must be greater than zero")
     }
 
-    "give an error when chargeable property value is negative" in {
+    "give an error when property value closely inherited is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.lostRelievableAmount(1, 1, -1, 1)
       }
-      assert(caught.getMessage == "requirement failed: chargeablePropertyValue cannot be negative")
+      assert(caught.getMessage == "requirement failed: propertyValueCloselyInherited cannot be negative")
     }
 
     "give an error when tapered allowance is negative" in {

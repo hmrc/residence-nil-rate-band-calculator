@@ -33,11 +33,12 @@ class CalculatorSteps extends ScalaDsl with EN with Matchers with MockitoSugar {
   }
 
   When("""^I calculate persons former allowance with (.*), (\d*), (\d*) and (\d*)$""") {
-    (dateOfDisposal: String, rnrbOnDisposal: Int, broughtForwardAllowance: Int, adjustedBroughtForwardAllowance: Int) =>
+    (dateOfDisposal: String, rnrbAtDisposal: Int, broughtForwardAllowanceAtDisposal: Int, adjustedBroughtForwardAllowance: Int) =>
       val env = mock[Environment]
       var calculator = new Calculator(env)
       val parsedDate = LocalDate.parse(dateOfDisposal)
-      CalculationContext.personsFormerAllowance = calculator.personsFormerAllowance(parsedDate, rnrbOnDisposal, broughtForwardAllowance, adjustedBroughtForwardAllowance)
+      CalculationContext.personsFormerAllowance =
+        calculator.personsFormerAllowance(parsedDate, rnrbAtDisposal, broughtForwardAllowanceAtDisposal, adjustedBroughtForwardAllowance)
   }
 
   Then("""^the adjusted brought forward allowance should be (\d*)$""") { (expectedAnswer: Int) =>
