@@ -1,3 +1,5 @@
+@CaseStudy5
+@CaseStudy
 Feature: Case Study 5
 
   Variants on Case Study 5, a simple case with transfer of unused RNRB

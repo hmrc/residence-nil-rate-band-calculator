@@ -1,3 +1,5 @@
+@CaseStudy1
+@CaseStudy
 Feature: Case Study 1
 
   Variants on Case Study 1, a simple case

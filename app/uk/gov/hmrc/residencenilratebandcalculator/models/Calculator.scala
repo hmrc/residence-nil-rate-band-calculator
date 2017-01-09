@@ -37,7 +37,7 @@ class Calculator @Inject()(env: Environment) {
 
   val taperRate = 2
   val invalidInputError = "INVALID_INPUTS"
-  val lostRNRBEarliestDisposalDate = new LocalDate(2015, 7, 8)
+  val earliestDisposalDate = new LocalDate(2015, 7, 8)
   val legislativeStartDate = new LocalDate(2017, 4, 6)
 
   def lostRnrb(dateOfDeath: LocalDate,
@@ -52,7 +52,7 @@ class Calculator @Inject()(env: Environment) {
       Failure(new RuntimeException(s"$invalidInputError: The transferred RNRB value must be greater or equal to zero."))
     } else if (valueOfFinalProperty < 0) {
       Failure(new RuntimeException(s"$invalidInputError: The percentage of final property must be greater or equal to zero."))
-    } else if (dateOfDisposalOfFormerProperty.isBefore(lostRNRBEarliestDisposalDate)) {
+    } else if (dateOfDisposalOfFormerProperty.isBefore(earliestDisposalDate)) {
       Success(0)
     } else {
 
@@ -194,6 +194,7 @@ class Calculator @Inject()(env: Environment) {
       }
 
       val downsizingAddition: Int = input.downsizingDetails match {
+        case Some(details) if details.dateOfDisposal isBefore earliestDisposalDate => 0
         case Some(details) => downsizingAllowance(details, rnrbAtDisposal, totalAllowance, amountToTaper, input.broughtForwardAllowance, propertyValueToConsider)
         case None => 0
       }

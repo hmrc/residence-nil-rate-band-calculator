@@ -1,3 +1,5 @@
+@CaseStudy2
+@CaseStudy
 Feature: Case Study 2
 
   Variants on Case Study 2, a simple case where the home is worth less than the maximum RNRB

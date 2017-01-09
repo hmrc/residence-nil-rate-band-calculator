@@ -1,4 +1,6 @@
-@14
+@CaseStudy14
+@CaseStudy
+@Downsizing
 Feature: Case Study 14
 
   Variants on Case Study 14, downsizing with only part of the property left to direct descendants

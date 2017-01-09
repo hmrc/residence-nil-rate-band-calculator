@@ -1,3 +1,6 @@
+@CaseStudy13
+@CaseStudy
+@Downsizing
 Feature: Case Study 13
 
   Variants on Case Study 13, a simple example of downsizing

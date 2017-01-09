@@ -1,3 +1,5 @@
+@CaseStudy6
+@CaseStudy
 Feature: Case Study 6
 
   Variants on Case Study 6, a simple case where only part of the property is left to direct descendants
