@@ -28,6 +28,7 @@ object DataTableHelper {
 
   def convertToJsonNode(key: String, value: String) = key match {
     case "dateOfDeath" => (key, Json.toJson(value))
+    case "dateOfDisposal" => (key, Json.toJson(value))
     case _ => (key, Json.toJson(value.toInt))
   }
 

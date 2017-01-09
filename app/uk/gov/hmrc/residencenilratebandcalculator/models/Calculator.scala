@@ -111,11 +111,11 @@ class Calculator @Inject()(env: Environment) {
 
   def lostRelievableAmount(valueOfDisposedProperty: Int,
                            formerAllowance: Int,
-                           propertyValueCloselyInherited: Int,
+                           chargeablePropertyValue: Int,
                            taperedAllowance: Int): Int = {
     require(valueOfDisposedProperty >= 0, "valueOfDisposedProperty cannot be negative")
     require(formerAllowance > 0, "formerAllowance must be greater than zero")
-    require(propertyValueCloselyInherited >= 0, "propertyValueCloselyInherited cannot be negative")
+    require(chargeablePropertyValue >= 0, "chargeablePropertyValue cannot be negative")
     require(taperedAllowance >= 0, "taperedAllowance cannot be negative")
 
     if (taperedAllowance == 0) {
@@ -124,10 +124,23 @@ class Calculator @Inject()(env: Environment) {
     else {
 
       val percentageOfFormerAllowance = fractionAsBoundedPercent(valueOfDisposedProperty.toDouble / formerAllowance)
-      val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(propertyValueCloselyInherited.toDouble / taperedAllowance)
+      val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(chargeablePropertyValue.toDouble / taperedAllowance)
       val difference = boundedPercentageDifferenceAsDouble(percentageOfFormerAllowance,percentageOfAllowanceOnDeath)
 
-      (difference * taperedAllowance) toInt
+      println("*********************************************")
+      println("Lost Relievable Amount")
+      println("----------------------")
+      println("Value of disposed property = " + valueOfDisposedProperty)
+      println("Former allowance = " + formerAllowance)
+      println("Property value closely inherited = " + chargeablePropertyValue)
+      println("Tapered allowance = " + taperedAllowance)
+      println("Percentage of former allowance = " + percentageOfFormerAllowance)
+      println("Percentage of allowance on death = " + percentageOfAllowanceOnDeath)
+      println("Difference = " + difference)
+      val x = (difference * taperedAllowance.toDouble).toInt
+      println("Result will be: " + x)
+
+      (difference * taperedAllowance.toDouble) toInt
     }
   }
 
@@ -136,12 +149,23 @@ class Calculator @Inject()(env: Environment) {
                           totalAllowance: Int,
                           amountToTaper: Int,
                           broughtForwardAllowance: Int,
-                          propertyValueCloselyInherited: Int): Int = {
+                          propertyValue: Int): Int = {
 
     val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
     val formerAllowance = personsFormerAllowance(downsizingDetails.dateOfDisposal, rnrbAtDisposal, downsizingDetails.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
     val taperedAllowance = getTaperedAllowance(totalAllowance, amountToTaper)
-    val lostAmount = lostRelievableAmount(downsizingDetails.valueOfDisposedProperty, formerAllowance, propertyValueCloselyInherited, taperedAllowance)
+    val lostAmount = lostRelievableAmount(downsizingDetails.valueOfDisposedProperty, formerAllowance, propertyValue, taperedAllowance)
+
+
+    println("*********************************************")
+    println("Downsizing Allowance")
+    println("--------------------")
+    println("Adjusted BFA = " + adjustedBroughtForward)
+    println("Former allowance = " + formerAllowance)
+    println("Tapered allowance = " + taperedAllowance)
+    println("Lost amount = " + lostAmount)
+    println("Property value = " + propertyValue)
+    println("Output will be: " + math.min(downsizingDetails.valueCloselyInherited, lostAmount))
 
     math.min(downsizingDetails.valueCloselyInherited, lostAmount)
   }
@@ -164,15 +188,32 @@ class Calculator @Inject()(env: Environment) {
         case None => (input.percentageCloselyInherited percent) * input.propertyValue toInt
       }
 
+      val propertyValueToConsider = input.propertyValueAfterExemption match {
+        case Some(values) => values.value
+        case None => input.propertyValue
+      }
+
       val downsizingAddition: Int = input.downsizingDetails match {
-        case Some(details) => downsizingAllowance(details, rnrbAtDisposal, totalAllowance, amountToTaper, input.broughtForwardAllowance, propertyCloselyInherited)
+        case Some(details) => downsizingAllowance(details, rnrbAtDisposal, totalAllowance, amountToTaper, input.broughtForwardAllowance, propertyValueToConsider)
         case None => 0
       }
 
-      val overallAllowance = adjustedAllowance + downsizingAddition
+      val residenceNilRateAmount = math.min(propertyCloselyInherited + downsizingAddition, adjustedAllowance)
+      val carryForwardAmount = adjustedAllowance - residenceNilRateAmount
 
-      val residenceNilRateAmount = math.min(propertyCloselyInherited, overallAllowance)
-      val carryForwardAmount = overallAllowance - residenceNilRateAmount
+
+      println("*********************************************")
+      println("*********************************************")
+      println("*********************************************")
+      println("Property closely inherited = " + propertyCloselyInherited)
+      println("Downsizing addition = " + downsizingAddition)
+      println("Residence nil rate amount = " + residenceNilRateAmount)
+      println("Carry forward amount = " + carryForwardAmount)
+      println("*********************************************")
+      println("*********************************************")
+      println("*********************************************")
+
+
       CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount)
     }
   }

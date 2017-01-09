@@ -41,6 +41,11 @@ class Steps extends ScalaDsl with EN with Matchers {
     Context.details = Context.details + ("propertyValueAfterExemption" -> innerJson)
   }
 
+  When("""^(?:I combine )?these [D|d]ownsizing [D|d]etails$""") { (dataTable: DataTable) =>
+    val innerJson = DataTableHelper.convertToJsValue(dataTable)
+    Context.details = Context.details + ("downsizingDetails" -> innerJson)
+  }
+
   When("""^(?:I )?POST the details to (.*)$""") { (endpoint: String) =>
     val json = Context.details.toString
 
