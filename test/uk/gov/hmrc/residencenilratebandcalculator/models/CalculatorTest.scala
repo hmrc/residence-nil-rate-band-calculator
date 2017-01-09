@@ -182,7 +182,34 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
       }
       assert(caught.getMessage == "requirement failed: broughtForwardAllowance cannot be negative")
     }
+  }
 
+  "calculating persons former allowance" must {
+
+    "ignore brought forward allowance when the date of disposal is before 6 April 2017" in {
+      calculator.personsFormerAllowance(new LocalDate(2015, 4, 5), 100000, 50000, 0) shouldBe 100000
+    }
+
+    "give an error when RNRB on disposal is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.personsFormerAllowance(new LocalDate(), -1, 1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: rnrbOnDisposal cannot be negative")
+    }
+
+    "give an error when brought forward allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.personsFormerAllowance(new LocalDate(), 1, -1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: broughtForwardAllowance cannot be negative")
+    }
+
+    "give an error when adjusted brought forward allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.personsFormerAllowance(new LocalDate(), 1, 1, -1)
+      }
+      assert(caught.getMessage == "requirement failed: adjustedBroughtForwardAllowance cannot be negative")
+    }
   }
 
   "calculating lost relievable amount" must {

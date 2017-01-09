@@ -17,6 +17,7 @@
 package steps
 
 import cucumber.api.scala.{EN, ScalaDsl}
+import org.joda.time.LocalDate
 import org.scalatest.Matchers
 import org.scalatest.mock.MockitoSugar
 import play.api.Environment
@@ -31,7 +32,19 @@ class CalculatorSteps extends ScalaDsl with EN with Matchers with MockitoSugar {
       CalculationContext.adjustedBroughtForwardAllowance = calculator.adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
   }
 
+  When("""^I calculate persons former allowance with (.*), (\d*), (\d*) and (\d*)$""") {
+    (dateOfDisposal: String, rnrbOnDisposal: Int, broughtForwardAllowance: Int, adjustedBroughtForwardAllowance: Int) =>
+      val env = mock[Environment]
+      var calculator = new Calculator(env)
+      val parsedDate = LocalDate.parse(dateOfDisposal)
+      CalculationContext.personsFormerAllowance = calculator.personsFormerAllowance(parsedDate, rnrbOnDisposal, broughtForwardAllowance, adjustedBroughtForwardAllowance)
+  }
+
   Then("""^the adjusted brought forward allowance should be (\d*)$""") { (expectedAnswer: Int) =>
     CalculationContext.adjustedBroughtForwardAllowance shouldBe expectedAnswer
+  }
+
+  Then("""^the persons former allowance should be (\d*)$""") { (expectedAnswer: Int) =>
+    CalculationContext.personsFormerAllowance shouldBe expectedAnswer
   }
 }

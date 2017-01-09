@@ -85,6 +85,20 @@ class Calculator @Inject()(env: Environment) {
     }
   }
 
+  def personsFormerAllowance(dateOfDisposal: LocalDate,
+                             rnrbOnDisposal: Int,
+                             broughtForwardAllowance: Int,
+                             adjustedBroughtForwardAllowance: Int): Int = {
+    require(broughtForwardAllowance >= 0, "broughtForwardAllowance cannot be negative")
+    require(adjustedBroughtForwardAllowance >= 0, "adjustedBroughtForwardAllowance cannot be negative")
+    require(rnrbOnDisposal >= 0, "rnrbOnDisposal cannot be negative")
+
+    val availableBroughtForwardAllowance = if (dateOfDisposal.isBefore(legislativeStartDate)) 0 else broughtForwardAllowance
+    val excessBroughtForwardAllowance = math.max(adjustedBroughtForwardAllowance - availableBroughtForwardAllowance, 0)
+
+    rnrbOnDisposal + availableBroughtForwardAllowance + excessBroughtForwardAllowance
+  }
+
   def adjustedBroughtForwardAllowance(totalAllowance: Int,
                                       amountToTaper: Int,
                                       broughtForwardAllowance: Int): Int = {
