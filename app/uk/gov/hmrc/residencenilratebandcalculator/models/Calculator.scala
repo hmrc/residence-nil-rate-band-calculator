@@ -36,54 +36,9 @@ class Calculator @Inject()(env: Environment) {
   }
 
   val taperRate = 2
-  val invalidInputError = "INVALID_INPUTS"
   val earliestDisposalDate = new LocalDate(2015, 7, 8)
   val legislativeStartDate = new LocalDate(2017, 4, 6)
 
-  def lostRnrb(dateOfDeath: LocalDate,
-               dateOfDisposalOfFormerProperty: LocalDate,
-               valueOfFormerProperty: Int,
-               valueOfTransferredRnrb: Int,
-               valueOfFinalProperty: Int): Try[Int] = {
-
-    if (valueOfFormerProperty < 0) {
-      Failure(new RuntimeException(s"$invalidInputError: The former property value must be greater or equal to zero."))
-    } else if (valueOfTransferredRnrb < 0) {
-      Failure(new RuntimeException(s"$invalidInputError: The transferred RNRB value must be greater or equal to zero."))
-    } else if (valueOfFinalProperty < 0) {
-      Failure(new RuntimeException(s"$invalidInputError: The percentage of final property must be greater or equal to zero."))
-    } else if (dateOfDisposalOfFormerProperty.isBefore(earliestDisposalDate)) {
-      Success(0)
-    } else {
-
-      for {
-        rnrbOnDeath <- residenceNilRateBand(dateOfDeath)
-        rnrbWhenFormerPropertyDisposedOf <- residenceNilRateBand(dateOfDisposalOfFormerProperty)
-      } yield {
-        val rnrbOnDeathWithTransferredRnrb = rnrbOnDeath + valueOfTransferredRnrb
-        // Note that the following calculation is slightly ambiguous:
-        //  this is step 3 in case studies 12, 13, 14, 15. The case studies always show that the calculation of
-        //  maximum available RNRB of the _final_ property depends on the RNRB in effect at time of death. These case
-        //  studies also set the transferred RNRB to zero. In the cases studies where there is transferred RNRB
-        //  there is no final property in the estate at time of death.
-        //
-        //   Therefore calculating this percentage based on the RNRB on death gives the same result for the case studies
-        //   as whether or not any transferred RNRB is to be taken into account. If it was taken into account this line
-        //   would read:
-        //
-        //     val percentageOfRNRBOfFinalProperty = math.min((valueOfFinalProperty.toDouble / RNRBOnDeathWithTransferredRNRB) * 100, 100)
-        //
-        //  There is an outstanding question put to the business to clarify this.
-        val percentageOfRnrbOfFinalProperty = fractionAsBoundedPercent(valueOfFinalProperty.toDouble / rnrbOnDeath)
-
-        val maxRnrbOnSaleOfFormerProperty = rnrbWhenFormerPropertyDisposedOf + valueOfTransferredRnrb
-        val percentageOfRnrbOfSale = fractionAsBoundedPercent(valueOfFormerProperty / maxRnrbOnSaleOfFormerProperty.toDouble)
-        val finalPercentage = percentageOfRnrbOfSale - percentageOfRnrbOfFinalProperty
-
-        finalPercentage * rnrbOnDeathWithTransferredRnrb toInt
-      }
-    }
-  }
 
   def personsFormerAllowance(dateOfDisposal: LocalDate,
                              rnrbAtDisposal: Int,
@@ -127,19 +82,6 @@ class Calculator @Inject()(env: Environment) {
       val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(chargeablePropertyValue.toDouble / taperedAllowance)
       val difference = boundedPercentageDifferenceAsDouble(percentageOfFormerAllowance,percentageOfAllowanceOnDeath)
 
-      println("*********************************************")
-      println("Lost Relievable Amount")
-      println("----------------------")
-      println("Value of disposed property = " + valueOfDisposedProperty)
-      println("Former allowance = " + formerAllowance)
-      println("Property value closely inherited = " + chargeablePropertyValue)
-      println("Tapered allowance = " + taperedAllowance)
-      println("Percentage of former allowance = " + percentageOfFormerAllowance)
-      println("Percentage of allowance on death = " + percentageOfAllowanceOnDeath)
-      println("Difference = " + difference)
-      val x = (difference * taperedAllowance.toDouble).toInt
-      println("Result will be: " + x)
-
       (difference * taperedAllowance.toDouble) toInt
     }
   }
@@ -153,19 +95,8 @@ class Calculator @Inject()(env: Environment) {
 
     val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
     val formerAllowance = personsFormerAllowance(downsizingDetails.dateOfDisposal, rnrbAtDisposal, downsizingDetails.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
-    val taperedAllowance = getTaperedAllowance(totalAllowance, amountToTaper)
-    val lostAmount = lostRelievableAmount(downsizingDetails.valueOfDisposedProperty, formerAllowance, propertyValue, taperedAllowance)
-
-
-    println("*********************************************")
-    println("Downsizing Allowance")
-    println("--------------------")
-    println("Adjusted BFA = " + adjustedBroughtForward)
-    println("Former allowance = " + formerAllowance)
-    println("Tapered allowance = " + taperedAllowance)
-    println("Lost amount = " + lostAmount)
-    println("Property value = " + propertyValue)
-    println("Output will be: " + math.min(downsizingDetails.valueCloselyInherited, lostAmount))
+    val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
+    val lostAmount = lostRelievableAmount(downsizingDetails.valueOfDisposedProperty, formerAllowance, propertyValue, adjustedAllowance)
 
     math.min(downsizingDetails.valueCloselyInherited, lostAmount)
   }
@@ -181,45 +112,34 @@ class Calculator @Inject()(env: Environment) {
     } yield {
       val totalAllowance = rnrbOnDeath + input.broughtForwardAllowance
       val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
-      val adjustedAllowance = getTaperedAllowance(totalAllowance, amountToTaper)
+      val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
 
       val propertyCloselyInherited = input.propertyValueAfterExemption match {
         case Some(values) => values.valueCloselyInherited
         case None => (input.percentageCloselyInherited percent) * input.propertyValue toInt
       }
 
-      val propertyValueToConsider = input.propertyValueAfterExemption match {
-        case Some(values) => values.value
-        case None => input.propertyValue
-      }
+      val valueToConsider = propertyValueToConsider(input)
 
       val downsizingAddition: Int = input.downsizingDetails match {
         case Some(details) if details.dateOfDisposal isBefore earliestDisposalDate => 0
-        case Some(details) => downsizingAllowance(details, rnrbAtDisposal, totalAllowance, amountToTaper, input.broughtForwardAllowance, propertyValueToConsider)
+        case Some(details) => downsizingAllowance(details, rnrbAtDisposal, totalAllowance, amountToTaper, input.broughtForwardAllowance, valueToConsider)
         case None => 0
       }
 
       val residenceNilRateAmount = math.min(propertyCloselyInherited + downsizingAddition, adjustedAllowance)
       val carryForwardAmount = adjustedAllowance - residenceNilRateAmount
 
-
-      println("*********************************************")
-      println("*********************************************")
-      println("*********************************************")
-      println("Property closely inherited = " + propertyCloselyInherited)
-      println("Downsizing addition = " + downsizingAddition)
-      println("Residence nil rate amount = " + residenceNilRateAmount)
-      println("Carry forward amount = " + carryForwardAmount)
-      println("*********************************************")
-      println("*********************************************")
-      println("*********************************************")
-
-
       CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount)
     }
   }
 
-  private def getTaperedAllowance(totalAllowance: Int, amountToTaper: Int) = math.max(totalAllowance - amountToTaper, 0)
+  private def taperedAllowance(totalAllowance: Int, amountToTaper: Int) = math.max(totalAllowance - amountToTaper, 0)
+
+  private def propertyValueToConsider(input: CalculationInput) = input.propertyValueAfterExemption match {
+    case Some(values) => values.value
+    case None => input.propertyValue
+  }
 
   private def fractionAsBoundedPercent(v: Double) = math.min(v * 100, 100) percent
 
