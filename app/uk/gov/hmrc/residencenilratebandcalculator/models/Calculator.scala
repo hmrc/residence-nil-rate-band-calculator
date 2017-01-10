@@ -22,7 +22,7 @@ import org.joda.time.LocalDate
 import play.api.Environment
 import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Success, Try}
 
 /* Terms of art:
  * Percentage closely inherited = The percentage of a property passing to a direct descendant
@@ -96,14 +96,13 @@ class Calculator @Inject()(env: Environment) {
     downsizingDetails match {
       case None => 0
       case Some(details) if details.dateOfDisposal isBefore earliestDisposalDate => 0
-      case Some(details) => {
+      case Some(details) =>
         val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
         val formerAllowance = personsFormerAllowance(details.dateOfDisposal, rnrbAtDisposal, details.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
         val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
         val lostAmount = lostRelievableAmount(details.valueOfDisposedProperty, formerAllowance, propertyValue, adjustedAllowance)
 
         math.min(details.valueCloselyInherited, lostAmount)
-      }
     }
   }
 
