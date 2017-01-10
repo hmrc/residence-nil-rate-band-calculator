@@ -86,19 +86,25 @@ class Calculator @Inject()(env: Environment) {
     }
   }
 
-  def downsizingAllowance(downsizingDetails: DownsizingDetails,
+  def downsizingAllowance(downsizingDetails: Option[DownsizingDetails],
                           rnrbAtDisposal: Int,
                           totalAllowance: Int,
                           amountToTaper: Int,
                           broughtForwardAllowance: Int,
                           propertyValue: Int): Int = {
 
-    val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
-    val formerAllowance = personsFormerAllowance(downsizingDetails.dateOfDisposal, rnrbAtDisposal, downsizingDetails.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
-    val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
-    val lostAmount = lostRelievableAmount(downsizingDetails.valueOfDisposedProperty, formerAllowance, propertyValue, adjustedAllowance)
+    downsizingDetails match {
+      case None => 0
+      case Some(details) if details.dateOfDisposal isBefore earliestDisposalDate => 0
+      case Some(details) => {
+        val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
+        val formerAllowance = personsFormerAllowance(details.dateOfDisposal, rnrbAtDisposal, details.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
+        val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
+        val lostAmount = lostRelievableAmount(details.valueOfDisposedProperty, formerAllowance, propertyValue, adjustedAllowance)
 
-    math.min(downsizingDetails.valueCloselyInherited, lostAmount)
+        math.min(details.valueCloselyInherited, lostAmount)
+      }
+    }
   }
 
   def apply(input: CalculationInput): Try[CalculationResult] = {
@@ -114,21 +120,9 @@ class Calculator @Inject()(env: Environment) {
       val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
       val adjustedAllowance = taperedAllowance(defaultAllowance, amountToTaper)
 
-      val propertyCloselyInherited = input.propertyValueAfterExemption match {
-        case Some(values) => values.valueCloselyInherited
-        case None => (input.percentageCloselyInherited percent) * input.propertyValue toInt
-      }
+      val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValueToConsider)
 
-      val valueToConsider = propertyValueToConsider(input)
-
-      val downsizingAddition: Int = input.downsizingDetails match {
-        case Some(details) if details.dateOfDisposal isBefore earliestDisposalDate => 0
-        case Some(details) => downsizingAllowance(details, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, valueToConsider)
-        case None => 0
-
-      }
-
-      val residenceNilRateAmount = math.min(propertyCloselyInherited + downsizingAddition, adjustedAllowance)
+      val residenceNilRateAmount = math.min(input.propertyValueCloselyInherited + downsizingAddition, adjustedAllowance)
       val carryForwardAmount = adjustedAllowance - residenceNilRateAmount
 
       CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount, defaultAllowance)
@@ -136,11 +130,6 @@ class Calculator @Inject()(env: Environment) {
   }
 
   private def taperedAllowance(totalAllowance: Int, amountToTaper: Int) = math.max(totalAllowance - amountToTaper, 0)
-
-  private def propertyValueToConsider(input: CalculationInput) = input.propertyValueAfterExemption match {
-    case Some(values) => values.value
-    case None => input.propertyValue
-  }
 
   private def fractionAsBoundedPercent(v: Double) = math.min(v * 100, 100) percent
 

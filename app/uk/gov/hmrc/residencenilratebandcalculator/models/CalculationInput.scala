@@ -18,6 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
 import play.api.libs.json._
+import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 
 import scala.util.{Failure, Success, Try}
 
@@ -34,6 +35,16 @@ case class CalculationInput(dateOfDeath: LocalDate,
   require(percentageCloselyInherited >= 0, """{"percentageCloselyInherited" : "error.expected.number.non_negative"}""")
   require(percentageCloselyInherited <= 100, """{"percentageCloselyInherited" : "error.expected.number.100_at_most"}""")
   require(broughtForwardAllowance >= 0, """{"broughtForwardAllowance" : "error.expected.number.non_negative"}""")
+
+  def propertyValueCloselyInherited = propertyValueAfterExemption match {
+    case Some(values) => values.valueCloselyInherited
+    case None => (percentageCloselyInherited percent) * propertyValue toInt
+  }
+
+  def propertyValueToConsider = propertyValueAfterExemption match {
+    case Some(values) => values.value
+    case None => propertyValue
+  }
 }
 
 object CalculationInput {

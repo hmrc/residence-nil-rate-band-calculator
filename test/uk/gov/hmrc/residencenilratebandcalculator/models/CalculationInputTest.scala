@@ -394,5 +394,21 @@ class CalculationInputTest extends UnitSpec {
 
       assert(errors == expectedErrors)
     }
+
+    "return propertyValueAfterExemption.valueCloselyInherited as the propertyValueCloselyInherited when it is present" in {
+      CalculationInput(new LocalDate(), 1, 2, 3, 4, 5, Some(PropertyValueAfterExemption(6, 7))).propertyValueCloselyInherited shouldBe 7
+    }
+
+    "return (propertyValue * percentageCloselyInhertied / 100) as the propertyValueCloselyInherited when propertyValueAfterExemption is not present" in {
+      CalculationInput(new LocalDate(), 1, 2, 3, 4, 5).propertyValueCloselyInherited shouldBe (3.0 * (4.0 / 100.0)).toInt
+    }
+
+    "return propertyValueAfterExemption.value as the propertyValueToConsider when it is present" in {
+      CalculationInput(new LocalDate(), 1, 2, 3, 4, 5, Some(PropertyValueAfterExemption(6, 7))).propertyValueToConsider shouldBe 6
+    }
+
+    "return propertyValue as the propertyValueToConsider when propertyValueAfterExemption is not present" in {
+      CalculationInput(new LocalDate(), 1, 2, 3, 4, 5).propertyValueToConsider shouldBe 3
+    }
   }
 }
