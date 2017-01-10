@@ -102,61 +102,117 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
         calculator(input) shouldBe Success(CalculationResult(100000, 175000, 75000, 175000))
       }
     }
+  }
 
-    "calculating lost RNRB" must {
-      "calculate the correct lost RNRB when there is transferred RNRB, a former home that was sold, and no final home (case study 12)" in {
-        calculator.lostRnrb(new LocalDate(2020, 11, 1), new LocalDate(2018, 6, 14), 195000, 175000, 0) shouldBe Success(227500)
-      }
+  "calculating adjusted brought forward allowance" must {
 
-      "calculate the lost RNRB as zero  if the date of disposal of the former property is before 8 July 2015  (date of sale before RNRB)" in {
-        calculator.lostRnrb(new LocalDate(2020, 11, 1), new LocalDate(2015, 7, 7), 195000, 175000, 0) shouldBe Success(0)
+    "give an error when total allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.adjustedBroughtForwardAllowance(-1, 1, 1)
       }
-
-      "calculate the lost RNRB as zero if the value of the property is greater than the available RNRB the percentage is limited to 100% (case study 13)" in {
-        calculator.lostRnrb(new LocalDate(2020, 1, 1), new LocalDate(2018, 8, 21), 450000, 0, 200000) shouldBe Success(0)
-      }
-
-      "calculate the lost RNRB as correctly if the value of the final property is less than the total amount of RNRB available (case study 14)" in {
-        calculator.lostRnrb(new LocalDate(2020, 9, 10), new LocalDate(2018, 8, 21), 500000, 0, 105000) shouldBe Success(70000)
-      }
-
-      "calculate the lost RNRB correctly if the former property was disposed after 8 July 2015 but before 6 April 2017, a 100000 RNRB Band applies (case study 15)" in {
-        calculator.lostRnrb(new LocalDate(2019, 12, 10), new LocalDate(2016, 3, 21), 400000, 0, 105000) shouldBe Success(45000)
-      }
-
-      "calculate the lost RNRB correctly if there is no home in the estate (case study 16) " in {
-        calculator.lostRnrb(new LocalDate(2021, 3, 3), new LocalDate(2018, 10, 5), 285000, 0, 0) shouldBe Success(175000)
-      }
-
-      "calculate the lost RNRB as correctly if the value of the final property is less than the total amount of RNRB available (case study 17)" in {
-        calculator.lostRnrb(new LocalDate(2021, 1, 10), new LocalDate(2019, 5, 21), 90000, 0, 0) shouldBe Success(105000)
-      }
-
-      "calculate the lost RNRB correctly when there is transferred RNRB (case study 18)" in {
-        calculator.lostRnrb(new LocalDate(2021, 3, 27), new LocalDate(2018, 10, 3), 285000, 175000, 0) shouldBe Success(332500)
-      }
-
-      "calculate the lost RNRB correctly when there is transferred RNRB and a final property" in {
-        pending
-        // Note that this test depends on the answer given to the long question asked in the comment in lostRNRB. If the
-        // alternative form of teh calculation is used, this test should be added.
-        calculator.lostRnrb(new LocalDate(2021, 3, 27), new LocalDate(2018, 10, 3), 285000, 175000, 90000) shouldBe Success(242500)
-      }
+      assert(caught.getMessage == "requirement failed: totalAllowance cannot be negative")
     }
 
-    "given an error when the value of the former property is less than zero" in {
-      calculator.lostRnrb(new LocalDate(2021, 1, 1), new LocalDate(2019, 1, 1), -1, 0, 0).failed.get.getMessage shouldBe
-        "INVALID_INPUTS: The former property value must be greater or equal to zero."
+    "give an error when amount to taper is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.adjustedBroughtForwardAllowance(1, -1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: amountToTaper cannot be negative")
     }
 
-    "given an error when the value of transferred RNRB is less than zero" in {
-      calculator.lostRnrb(new LocalDate(2021, 1, 1), new LocalDate(2019, 1, 1), 100000, -1, 0).failed.get.getMessage shouldBe
-        "INVALID_INPUTS: The transferred RNRB value must be greater or equal to zero."
+    "give an error when brought forward allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.adjustedBroughtForwardAllowance(1, 1, -1)
+      }
+      assert(caught.getMessage == "requirement failed: broughtForwardAllowance cannot be negative")
+    }
+  }
+
+  "calculating persons former allowance" must {
+
+    "ignore brought forward allowance at disposal when the date of disposal is before 6 April 2017" in {
+      calculator.personsFormerAllowance(new LocalDate(2015, 4, 5), 100000, 50000, 0) shouldBe 100000
     }
 
-    "given an error when the value of the final property is less than zero" in {
-      calculator.lostRnrb(new LocalDate(2021, 1, 1), new LocalDate(2019, 1, 1), 100000, 0, -1).failed.get.getMessage shouldBe
-        "INVALID_INPUTS: The percentage of final property must be greater or equal to zero."
+    "give an error when RNRB at disposal is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.personsFormerAllowance(new LocalDate(), -1, 1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: rnrbAtDisposal cannot be negative")
+    }
+
+    "give an error when brought forward allowance at disposal is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.personsFormerAllowance(new LocalDate(), 1, -1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: broughtForwardAllowanceAtDisposal cannot be negative")
+    }
+
+    "give an error when adjusted brought forward allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.personsFormerAllowance(new LocalDate(), 1, 1, -1)
+      }
+      assert(caught.getMessage == "requirement failed: adjustedBroughtForwardAllowance cannot be negative")
+    }
+  }
+
+  "calculating lost relievable amount" must {
+
+    "return 0 when the value of the disposed property is 0" in {
+      calculator.lostRelievableAmount(0, 100000, 100000, 100000) shouldBe 0
+    }
+
+    "return 0 when the tapered allowance is 0" in {
+      calculator.lostRelievableAmount(100000, 100000, 100000, 0) shouldBe 0
+    }
+
+    "return a value equal to the tapered allowance when the chargeable property value is 0 and the disposed property value is greater than or equal to the former allowance" in {
+      calculator.lostRelievableAmount(200000, 100000, 0, 150000) shouldBe 150000
+      calculator.lostRelievableAmount(200000, 200000, 0, 150000) shouldBe 150000
+    }
+
+    "return [tapered allowance] * [value of disposed property / former allowance] when the chargeable property value is 0 and the disposed property value is less than the former allowance" in {
+      calculator.lostRelievableAmount(100000, 200000, 0, 150000) shouldBe 75000
+    }
+
+    "return 0 when the chargeable property value is equal to or greater than the tapered allowance" in {
+      calculator.lostRelievableAmount(100000, 100000, 150000, 150000) shouldBe 0
+      calculator.lostRelievableAmount(100000, 100000, 200000, 150000) shouldBe 0
+    }
+
+    "give an error when value of disposed property is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.lostRelievableAmount(-1, 1, 1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: valueOfDisposedProperty cannot be negative")
+    }
+
+    "give an error when former allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.lostRelievableAmount(1, -1, 1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: formerAllowance must be greater than zero")
+    }
+
+    "give an error when former allowance is zero" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.lostRelievableAmount(1, 0, 1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: formerAllowance must be greater than zero")
+    }
+
+    "give an error when property value closely inherited is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.lostRelievableAmount(1, 1, -1, 1)
+      }
+      assert(caught.getMessage == "requirement failed: chargeablePropertyValue cannot be negative")
+    }
+
+    "give an error when tapered allowance is negative" in {
+      val caught = intercept[IllegalArgumentException] {
+        calculator.lostRelievableAmount(1, 1, 1, -1)
+      }
+      assert(caught.getMessage == "requirement failed: taperedAllowance cannot be negative")
     }
   }
 }

@@ -18,6 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
 import play.api.libs.json._
+import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 
 import scala.util.{Failure, Success, Try}
 
@@ -27,12 +28,23 @@ case class CalculationInput(dateOfDeath: LocalDate,
                             propertyValue: Int,
                             percentageCloselyInherited: Int,
                             broughtForwardAllowance: Int,
-                            propertyValueAfterExemption: Option[PropertyValueAfterExemption] = None) {
+                            propertyValueAfterExemption: Option[PropertyValueAfterExemption] = None,
+                            downsizingDetails: Option[DownsizingDetails] = None) {
   require(grossEstateValue >= 0, """{"grossEstateValue" : "error.expected.number.non_negative"}""")
   require(propertyValue >= 0, """{"propertyValue" : "error.expected.number.non_negative"}""")
   require(percentageCloselyInherited >= 0, """{"percentageCloselyInherited" : "error.expected.number.non_negative"}""")
   require(percentageCloselyInherited <= 100, """{"percentageCloselyInherited" : "error.expected.number.100_at_most"}""")
   require(broughtForwardAllowance >= 0, """{"broughtForwardAllowance" : "error.expected.number.non_negative"}""")
+
+  def propertyValueCloselyInherited = propertyValueAfterExemption match {
+    case Some(values) => values.valueCloselyInherited
+    case None => (percentageCloselyInherited percent) * propertyValue toInt
+  }
+
+  def propertyValueToConsider = propertyValueAfterExemption match {
+    case Some(values) => values.value
+    case None => propertyValue
+  }
 }
 
 object CalculationInput {
@@ -68,4 +80,17 @@ case class PropertyValueAfterExemption(value: Int, valueCloselyInherited: Int) {
 
 object PropertyValueAfterExemption {
   implicit val formats: OFormat[PropertyValueAfterExemption] = Json.format[PropertyValueAfterExemption]
+}
+
+case class DownsizingDetails(dateOfDisposal: LocalDate,
+                             valueOfDisposedProperty: Int,
+                             valueCloselyInherited: Int,
+                             broughtForwardAllowanceAtDisposal: Int) {
+  require(valueOfDisposedProperty >= 0, """{"valueOfDisposedProperty" : "error.expected.number.non_negative"}""")
+  require(valueCloselyInherited >= 0, """{"valueCloselyInherited" : "error.expected.number.non_negative"}""")
+  require(broughtForwardAllowanceAtDisposal >= 0, """{"broughtForwardAllowanceAtDisposal" : "error.expected.number.non_negative"}""")
+}
+
+object DownsizingDetails {
+  implicit val formats: OFormat[DownsizingDetails] = Json.format[DownsizingDetails]
 }
