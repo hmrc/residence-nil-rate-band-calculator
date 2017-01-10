@@ -110,9 +110,9 @@ class Calculator @Inject()(env: Environment) {
         case None => Success(0)
       }
     } yield {
-      val totalAllowance = rnrbOnDeath + input.broughtForwardAllowance
+      val defaultAllowance = rnrbOnDeath + input.broughtForwardAllowance
       val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
-      val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
+      val adjustedAllowance = taperedAllowance(defaultAllowance, amountToTaper)
 
       val propertyCloselyInherited = input.propertyValueAfterExemption match {
         case Some(values) => values.valueCloselyInherited
@@ -123,14 +123,15 @@ class Calculator @Inject()(env: Environment) {
 
       val downsizingAddition: Int = input.downsizingDetails match {
         case Some(details) if details.dateOfDisposal isBefore earliestDisposalDate => 0
-        case Some(details) => downsizingAllowance(details, rnrbAtDisposal, totalAllowance, amountToTaper, input.broughtForwardAllowance, valueToConsider)
+        case Some(details) => downsizingAllowance(details, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, valueToConsider)
         case None => 0
+
       }
 
       val residenceNilRateAmount = math.min(propertyCloselyInherited + downsizingAddition, adjustedAllowance)
       val carryForwardAmount = adjustedAllowance - residenceNilRateAmount
 
-      CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount)
+      CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount, defaultAllowance)
     }
   }
 

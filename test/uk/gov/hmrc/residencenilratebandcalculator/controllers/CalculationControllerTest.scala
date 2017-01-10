@@ -67,7 +67,8 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
       contentAsJson(response) shouldBe JsObject(Map(
         "residenceNilRateAmount" -> JsNumber(0),
         "applicableNilRateBandAmount" -> JsNumber(100000),
-        "carryForwardAmount" -> JsNumber(100000)))
+        "carryForwardAmount" -> JsNumber(100000),
+        "defaultAllowanceAmount" -> JsNumber(100000)))
     }
 
     "return an error when given invalid JSON" in {
