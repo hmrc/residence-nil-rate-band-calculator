@@ -16,23 +16,23 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import play.api.libs.json._
-import play.api.libs.json.Writes._
-import play.api.libs.json.Reads._
-import play.api.libs.functional.syntax._
+import javax.inject.Inject
 
-case class TaperBand (threshold: Int, rate: Int)
+import org.joda.time.LocalDate
+import play.api.Environment
 
-object TaperBand {
-  val taperBandReads: Reads[TaperBand] = (
-    (__ \ "threshold").read[Int] and
-    (__ \ "rate").read[Int]
-  )(TaperBand.apply _)
+import scala.io.Source
+import scala.util.{Failure, Success, Try}
 
-  val taperBandWrites: Writes[TaperBand] = (
-    (__ \ "threshold").write[Int] and
-      (__ \ "rate").write[Int]
-    )(unlift(TaperBand.unapply _))
+class GetTaperBandFromFile @Inject()(env: Environment, filename: String) {
 
-  implicit val taperBandFormat: Format[TaperBand] = Format(taperBandReads, taperBandWrites)
+  private lazy val bandsAsJson: Try[String] = env.resourceAsStream(filename) match {
+    case Some(stream) => Success(Source.fromInputStream(stream).mkString)
+    case None => Failure(new RuntimeException("error.resource_access_failure"))
+  }
+
+  def apply(date: LocalDate): Try[TaperBand] =
+    bandsAsJson.flatMap {
+      json: String => GetTaperBand(date, json)
+    }
 }

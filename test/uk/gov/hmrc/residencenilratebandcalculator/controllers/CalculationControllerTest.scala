@@ -38,8 +38,11 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
   def messages = messagesApi.preferred(fakeRequest)
 
   val env = mock[Environment]
-  when(env.resourceAsStream(anyString)) thenReturn Some(new ByteArrayInputStream(
+  when(env.resourceAsStream(matches("data/RNRB-amounts-by-year.json"))) thenReturn Some(new ByteArrayInputStream(
     "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}".getBytes))
+
+  when(env.resourceAsStream(matches("data/Taper-bands-by-year.json"))) thenReturn Some(new ByteArrayInputStream(
+    """{ "2017-04-06": {"threshold": 2000000, "rate": 2}}""".getBytes))
 
   val calculator = new Calculator(env)
 

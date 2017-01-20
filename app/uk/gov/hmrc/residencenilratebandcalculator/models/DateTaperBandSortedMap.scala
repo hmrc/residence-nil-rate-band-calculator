@@ -23,30 +23,28 @@ import play.api.libs.json._
 import scala.collection.immutable.SortedMap
 import scala.util.{Failure, Success, Try}
 
-class InvalidJsonException extends RuntimeException
+object DateTaperBandSortedMap extends SortedMapOrdering {
 
-object DateIntSortedMap extends SortedMapOrdering {
-
-  val dateIntSortedMapReads = new Reads[SortedMap[LocalDate, Int]] {
+  val dateTaperBandSortedMapReads = new Reads[SortedMap[LocalDate, TaperBand]] {
     override def reads(json: JsValue) =
-      Try(json.as[Map[String, Int]].map {
-        case (key: String, value: Int) => (LocalDate.parse(key), value)
+      Try(json.as[Map[String, TaperBand]].map {
+        case (key: String, value: TaperBand) => (LocalDate.parse(key), value)
       }) match {
-        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, Int](bandsMap.toArray: _*))
-        case Failure(error) => {
+        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, TaperBand](bandsMap.toArray: _*))
+        case Failure(error) =>
           Logger.error(error.getMessage)
           JsError(error.getMessage)
-        }
       }
-  }
+    }
 
-  val dateIntSortedMapWrites = new Writes[SortedMap[LocalDate, Int]] {
-    override def writes(bandsMap: SortedMap[LocalDate, Int]) = {
-      Json.toJson[SortedMap[String, Int]](bandsMap.map {
-        case (key: LocalDate, value: Int) => (key.toString, value)
+  val dateTaperBandSortedMapWrites = new Writes[SortedMap[LocalDate, TaperBand]] {
+    override def writes(bandsMap: SortedMap[LocalDate, TaperBand]) = {
+      Json.toJson[SortedMap[String, TaperBand]](bandsMap.map {
+        case (key: LocalDate, value: TaperBand) => (key.toString, value)
       })
     }
   }
 
-  implicit val dateIntSortedMapFormat = Format(dateIntSortedMapReads, dateIntSortedMapWrites)
+  implicit val dateIntSortedMapFormat = Format(dateTaperBandSortedMapReads, dateTaperBandSortedMapWrites)
+
 }

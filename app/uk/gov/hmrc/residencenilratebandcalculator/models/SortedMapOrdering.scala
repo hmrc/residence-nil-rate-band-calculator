@@ -17,26 +17,9 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.play.test.UnitSpec
 
-class TaperBandTest extends UnitSpec {
-
-  "Taper Band" must {
-
-    "return 2000000 when given a date of 1 Jan 2000" in {
-      TaperBand(new LocalDate(2000, 1, 1)) shouldBe 2000000
-    }
-
-    "return 2000000 when given a date of 6 Apr 2017" in {
-      TaperBand(new LocalDate(2017, 4, 6)) shouldBe 2000000
-    }
-
-    "return 2000000 when given a date of 5 Apr 2021" in {
-      TaperBand(new LocalDate(2021, 4, 5)) shouldBe 2000000
-    }
-
-    "return 2000000 when given a date of 1 Jan 2040" in {
-      TaperBand(new LocalDate(2040, 1, 1)) shouldBe 2000000
-    }
+trait SortedMapOrdering {
+  implicit val ordering: Ordering[LocalDate] = new Ordering[LocalDate] {
+    override def compare(x: LocalDate, y: LocalDate) = y.compareTo(x)
   }
 }
