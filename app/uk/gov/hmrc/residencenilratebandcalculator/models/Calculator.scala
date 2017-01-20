@@ -35,6 +35,10 @@ class Calculator @Inject()(env: Environment) {
     new GetNilRateAmountFromFile(env, "data/RNRB-amounts-by-year.json")
   }
 
+  lazy val taperBand: GetTaperBandFromFile = {
+    new GetTaperBandFromFile(env, "data/Taper-bands-by-year.json")
+  }
+
   val taperRate = 2
   val earliestDisposalDate = new LocalDate(2015, 7, 8)
   val legislativeStartDate = new LocalDate(2017, 4, 6)
@@ -114,9 +118,10 @@ class Calculator @Inject()(env: Environment) {
         case Some(details) => residenceNilRateBand(details.dateOfDisposal)
         case None => Success(0)
       }
+      taperBandOnDeath <- taperBand(input.dateOfDeath)
     } yield {
       val defaultAllowance = rnrbOnDeath + input.broughtForwardAllowance
-      val amountToTaper = math.max(input.grossEstateValue - TaperBand(input.dateOfDeath), 0) / taperRate
+      val amountToTaper = math.max(input.grossEstateValue - taperBandOnDeath.threshold, 0) / taperBandOnDeath.rate
       val adjustedAllowance = taperedAllowance(defaultAllowance, amountToTaper)
 
       val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValueToConsider)
