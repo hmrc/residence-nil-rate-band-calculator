@@ -3,7 +3,7 @@
 @Downsizing
 Feature: Case Study 22
 
-  Variants on Case Study 22, downsizing and leaving a property with brought forward allowance
+  Variants on Case Study 22, downsizing and leaving no property
 
   Scenario: 22.1 - Case Study 22
     When I combine these details
@@ -24,4 +24,3 @@ Feature: Case Study 22
       | applicableNilRateBandAmount | 175000 |
       | residenceNilRateAmount      | 175000 |
       | carryForwardAmount          | 0      |
-    

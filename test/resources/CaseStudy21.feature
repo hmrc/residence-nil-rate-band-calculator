@@ -3,7 +3,7 @@
 @Downsizing
 Feature: Case Study 21
 
-  Variants on Case Study 21, downsizing and leaving a property with brought forward allowance
+  Variants on Case Study 21, selling a residence and leaving another
 
   Scenario: 21.1 - Case Study 21
     When I combine these details
