@@ -16,7 +16,7 @@ Feature: Case Study 20
     And these downsizing details
       | dateOfDisposal                    | 2019-07-01 |
       | valueOfDisposedProperty           | 285000     |
-      | valueCloselyInherited             | 285000     |
+      | valueCloselyInherited             | 1660000    |
       | broughtForwardAllowanceAtDisposal | 150000     |
     And POST the details to calculate
     Then I should get an OK response
@@ -36,7 +36,7 @@ Feature: Case Study 20
     And these downsizing details
       | dateOfDisposal                    | 2017-07-01 |
       | valueOfDisposedProperty           | 285000     |
-      | valueCloselyInherited             | 285000     |
+      | valueCloselyInherited             | 1660000    |
       | broughtForwardAllowanceAtDisposal | 100000     |
     And POST the details to calculate
     Then I should get an OK response
