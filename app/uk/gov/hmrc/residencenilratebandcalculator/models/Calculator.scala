@@ -86,7 +86,7 @@ class Calculator @Inject()(env: Environment) {
       val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(chargeablePropertyValue.toDouble / taperedAllowance)
       val difference = boundedPercentageDifferenceAsDouble(percentageOfFormerAllowance,percentageOfAllowanceOnDeath)
 
-      (difference * taperedAllowance.toDouble) toInt
+      math.rint(difference * taperedAllowance.toDouble) toInt
     }
   }
 

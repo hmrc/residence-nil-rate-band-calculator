@@ -183,6 +183,12 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
       calculator.lostRelievableAmount(100000, 100000, 200000, 150000) shouldBe 0
     }
 
+    "round correctly when given a values which result in a value of x.999999" in {
+      // Due to imprecision in floating point number arithmetic, an issue was seen when the calculation "175000 * 0.7" was calculated as 122499.99999999
+      // and then rounded down to 122499, instead of being rounded up as 122500
+      calculator.lostRelievableAmount(400000, 125000, 52500, 175000) shouldBe 122500
+    }
+
     "give an error when value of disposed property is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.lostRelievableAmount(-1, 1, 1, 1)
