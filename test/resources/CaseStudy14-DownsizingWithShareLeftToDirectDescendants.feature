@@ -8,11 +8,14 @@ Feature: Case Study 14
   Scenario: 14.1 - Case Study 14
     When I combine these details
       | dateOfDeath                | 2020-09-01 |
-      | chargeableTransferAmount   | 202500     |
-      | grossEstateValue           | 255000     |
+      | chargeableTransferAmount   | 700000     |
+      | grossEstateValue           | 700000     |
       | propertyValue              | 105000     |
       | percentageCloselyInherited | 50         |
       | broughtForwardAllowance    | 0          |
+    And these property value after exemption details
+      | value                 | 52500 |
+      | valueCloselyInherited | 52500 |
     And these downsizing details
       | dateOfDisposal                    | 2019-02-01 |
       | valueOfDisposedProperty           | 400000     |
@@ -22,5 +25,28 @@ Feature: Case Study 14
     Then I should get an OK response
     And the response body should be
       | applicableNilRateBandAmount | 175000 |
-      | residenceNilRateAmount      | 122500 |
-      | carryForwardAmount          | 52500  |
+      | residenceNilRateAmount      | 175000 |
+      | carryForwardAmount          | 0      |
+
+  Scenario: 14.2 - Case Study 14A
+    When I combine these details
+      | dateOfDeath                | 2020-09-01 |
+      | chargeableTransferAmount   | 700000     |
+      | grossEstateValue           | 700000     |
+      | propertyValue              | 105000     |
+      | percentageCloselyInherited | 50         |
+      | broughtForwardAllowance    | 0          |
+    And these property value after exemption details
+      | value                 | 52500 |
+      | valueCloselyInherited | 52500 |
+    And these downsizing details
+      | dateOfDisposal                    | 2019-02-01 |
+      | valueOfDisposedProperty           | 400000     |
+      | valueCloselyInherited             | 20000      |
+      | broughtForwardAllowanceAtDisposal | 0          |
+    And POST the details to calculate
+    Then I should get an OK response
+    And the response body should be
+      | applicableNilRateBandAmount | 175000 |
+      | residenceNilRateAmount      | 72500  |
+      | carryForwardAmount          | 102500 |
