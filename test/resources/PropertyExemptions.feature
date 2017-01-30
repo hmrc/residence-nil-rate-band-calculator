@@ -19,3 +19,5 @@ Feature: Property Exemptions
       | applicableNilRateBandAmount | 175000 |
       | residenceNilRateAmount      | 100000 |
       | carryForwardAmount          | 75000  |
+      | defaultAllowanceAmount      | 175000 |
+      | adjustedAllowanceAmount     | 175000 |

@@ -18,3 +18,5 @@ Feature: Case Study 7
       | applicableNilRateBandAmount | 150000 |
       | residenceNilRateAmount      | 150000 |
       | carryForwardAmount          | 0      |
+      | defaultAllowanceAmount      | 150000 |
+      | adjustedAllowanceAmount     | 150000 |

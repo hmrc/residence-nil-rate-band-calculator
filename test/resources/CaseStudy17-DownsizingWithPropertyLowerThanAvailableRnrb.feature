@@ -24,6 +24,8 @@ Feature: Case Study 17
       | applicableNilRateBandAmount | 175000 |
       | residenceNilRateAmount      | 105000 |
       | carryForwardAmount          | 70000  |
+      | defaultAllowanceAmount      | 175000 |
+      | adjustedAllowanceAmount     | 175000 |
 
 
   Scenario: 17.2 - Alternative scenario with a small estate left to a direct descendant
@@ -45,3 +47,5 @@ Feature: Case Study 17
       | applicableNilRateBandAmount | 175000 |
       | residenceNilRateAmount      | 100000 |
       | carryForwardAmount          | 75000  |
+      | defaultAllowanceAmount      | 175000 |
+      | adjustedAllowanceAmount     | 175000 |

@@ -17,6 +17,8 @@ Feature: Case Study 6
       | applicableNilRateBandAmount | 175000 |
       | residenceNilRateAmount      | 175000 |
       | carryForwardAmount          | 0      |
+      | defaultAllowanceAmount      | 175000 |
+      | adjustedAllowanceAmount     | 175000 |
 
   Scenario: 6.2 - Amount left to direct descendants is less than the maximum RNRB
     When I POST these details to calculate
@@ -31,3 +33,5 @@ Feature: Case Study 6
       | applicableNilRateBandAmount | 175000 |
       | residenceNilRateAmount      | 125000 |
       | carryForwardAmount          | 50000  |
+      | defaultAllowanceAmount      | 175000 |
+      | adjustedAllowanceAmount     | 175000 |

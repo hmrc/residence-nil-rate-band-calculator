@@ -24,6 +24,8 @@ Feature: Case Study 15
       | applicableNilRateBandAmount | 150000 |
       | residenceNilRateAmount      | 80000  |
       | carryForwardAmount          | 70000  |
+      | defaultAllowanceAmount      | 150000 |
+      | adjustedAllowanceAmount     | 150000 |
 
   Scenario: 15.2 - Case Study 15A
     When I combine these details
@@ -44,3 +46,5 @@ Feature: Case Study 15
       | applicableNilRateBandAmount | 150000 |
       | residenceNilRateAmount      | 10000  |
       | carryForwardAmount          | 140000 |
+      | defaultAllowanceAmount      | 150000 |
+      | adjustedAllowanceAmount     | 150000 |

@@ -17,6 +17,8 @@ Feature: Case Study 1
       | applicableNilRateBandAmount | 175000 |
       | residenceNilRateAmount      | 175000 |
       | carryForwardAmount          | 0      |
+      | defaultAllowanceAmount      | 175000 |
+      | adjustedAllowanceAmount     | 175000 |
 
   Scenario: 1.2 - Death occurs in an earlier tax year
     When I POST these details to calculate
@@ -31,3 +33,5 @@ Feature: Case Study 1
       | applicableNilRateBandAmount | 100000 |
       | residenceNilRateAmount      | 100000 |
       | carryForwardAmount          | 0      |
+      | defaultAllowanceAmount      | 100000 |
+      | adjustedAllowanceAmount     | 100000 |
