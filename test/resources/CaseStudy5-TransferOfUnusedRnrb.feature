@@ -17,6 +17,8 @@ Feature: Case Study 5
       | applicableNilRateBandAmount | 150000 |
       | residenceNilRateAmount      | 300000 |
       | carryForwardAmount          | 0      |
+      | defaultAllowanceAmount      | 300000 |
+      | adjustedAllowanceAmount     | 300000 |
 
   Scenario: 5.2 - Property worth less than the RNRB + unused allowance
     When I POST these details to calculate
@@ -31,3 +33,5 @@ Feature: Case Study 5
       | applicableNilRateBandAmount | 150000 |
       | residenceNilRateAmount      | 250000 |
       | carryForwardAmount          | 50000  |
+      | defaultAllowanceAmount      | 300000 |
+      | adjustedAllowanceAmount     | 300000 |

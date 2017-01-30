@@ -77,16 +77,15 @@ class Calculator @Inject()(env: Environment) {
     require(chargeablePropertyValue >= 0, "chargeablePropertyValue cannot be negative")
     require(taperedAllowance >= 0, "taperedAllowance cannot be negative")
 
-    if (taperedAllowance == 0) {
-      0
-    }
-    else {
+    taperedAllowance match {
+      case 0 => 0
+      case _ => {
+        val percentageOfFormerAllowance = fractionAsBoundedPercent(valueOfDisposedProperty.toDouble / formerAllowance)
+        val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(chargeablePropertyValue.toDouble / taperedAllowance)
+        val difference = boundedPercentageDifferenceAsDouble(percentageOfFormerAllowance,percentageOfAllowanceOnDeath)
 
-      val percentageOfFormerAllowance = fractionAsBoundedPercent(valueOfDisposedProperty.toDouble / formerAllowance)
-      val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(chargeablePropertyValue.toDouble / taperedAllowance)
-      val difference = boundedPercentageDifferenceAsDouble(percentageOfFormerAllowance,percentageOfAllowanceOnDeath)
-
-      math.rint(difference * taperedAllowance.toDouble) toInt
+        math.rint(difference * taperedAllowance.toDouble) toInt
+      }
     }
   }
 
@@ -129,7 +128,7 @@ class Calculator @Inject()(env: Environment) {
       val residenceNilRateAmount = math.min(input.propertyValueCloselyInherited + downsizingAddition, adjustedAllowance)
       val carryForwardAmount = adjustedAllowance - residenceNilRateAmount
 
-      CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount, defaultAllowance)
+      CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount, defaultAllowance, adjustedAllowance)
     }
   }
 
