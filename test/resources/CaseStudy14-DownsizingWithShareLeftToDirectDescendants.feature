@@ -25,8 +25,8 @@ Feature: Case Study 14
     Then I should get an OK response
     And the response body should be
       | applicableNilRateBandAmount | 175000 |
-      | residenceNilRateAmount      | 175000 |
-      | carryForwardAmount          | 0      |
+      | residenceNilRateAmount      | 122500 |
+      | carryForwardAmount          | 52500  |
       | defaultAllowanceAmount      | 175000 |
       | adjustedAllowanceAmount     | 175000 |
 

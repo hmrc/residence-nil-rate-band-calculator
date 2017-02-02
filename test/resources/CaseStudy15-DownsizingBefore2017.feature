@@ -10,9 +10,12 @@ Feature: Case Study 15
       | dateOfDeath                | 2019-12-01 |
       | chargeableTransferAmount   | 80000      |
       | grossEstateValue           | 185000     |
-      | propertyValue              | 0          |
+      | propertyValue              | 105000     |
       | percentageCloselyInherited | 0          |
       | broughtForwardAllowance    | 0          |
+    And these property value after exemption details
+      | value                 | 0 |
+      | valueCloselyInherited | 0 |
     And these downsizing details
       | dateOfDisposal                    | 2016-03-01 |
       | valueOfDisposedProperty           | 150000     |
@@ -22,8 +25,8 @@ Feature: Case Study 15
     Then I should get an OK response
     And the response body should be
       | applicableNilRateBandAmount | 150000 |
-      | residenceNilRateAmount      | 80000  |
-      | carryForwardAmount          | 70000  |
+      | residenceNilRateAmount      | 45000  |
+      | carryForwardAmount          | 105000 |
       | defaultAllowanceAmount      | 150000 |
       | adjustedAllowanceAmount     | 150000 |
 

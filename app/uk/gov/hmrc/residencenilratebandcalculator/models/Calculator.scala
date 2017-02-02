@@ -70,18 +70,18 @@ class Calculator @Inject()(env: Environment) {
 
   def lostRelievableAmount(valueOfDisposedProperty: Int,
                            formerAllowance: Int,
-                           chargeablePropertyValue: Int,
+                           propertyValue: Int,
                            taperedAllowance: Int): Int = {
     require(valueOfDisposedProperty >= 0, "valueOfDisposedProperty cannot be negative")
     require(formerAllowance > 0, "formerAllowance must be greater than zero")
-    require(chargeablePropertyValue >= 0, "chargeablePropertyValue cannot be negative")
+    require(propertyValue >= 0, "propertyValue cannot be negative")
     require(taperedAllowance >= 0, "taperedAllowance cannot be negative")
 
     taperedAllowance match {
       case 0 => 0
       case _ => {
         val percentageOfFormerAllowance = fractionAsBoundedPercent(valueOfDisposedProperty.toDouble / formerAllowance)
-        val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(chargeablePropertyValue.toDouble / taperedAllowance)
+        val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(propertyValue.toDouble / taperedAllowance)
         val difference = boundedPercentageDifferenceAsDouble(percentageOfFormerAllowance,percentageOfAllowanceOnDeath)
 
         math.rint(difference * taperedAllowance.toDouble) toInt
@@ -123,7 +123,7 @@ class Calculator @Inject()(env: Environment) {
       val amountToTaper = math.max(input.grossEstateValue - taperBandOnDeath.threshold, 0) / taperBandOnDeath.rate
       val adjustedAllowance = taperedAllowance(defaultAllowance, amountToTaper)
 
-      val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValueToConsider)
+      val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValue)
 
       val residenceNilRateAmount = math.min(input.propertyValueCloselyInherited + downsizingAddition, adjustedAllowance)
       val carryForwardAmount = adjustedAllowance - residenceNilRateAmount
