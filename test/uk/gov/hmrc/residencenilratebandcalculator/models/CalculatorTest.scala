@@ -210,11 +210,11 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
       assert(caught.getMessage == "requirement failed: formerAllowance must be greater than zero")
     }
 
-    "give an error when property value closely inherited is negative" in {
+    "give an error when property value is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.lostRelievableAmount(1, 1, -1, 1)
       }
-      assert(caught.getMessage == "requirement failed: chargeablePropertyValue cannot be negative")
+      assert(caught.getMessage == "requirement failed: propertyValue cannot be negative")
     }
 
     "give an error when tapered allowance is negative" in {

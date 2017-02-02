@@ -40,11 +40,6 @@ case class CalculationInput(dateOfDeath: LocalDate,
     case Some(values) => values.valueCloselyInherited
     case None => (percentageCloselyInherited percent) * propertyValue toInt
   }
-
-  def propertyValueToConsider = propertyValueAfterExemption match {
-    case Some(values) => values.value
-    case None => propertyValue
-  }
 }
 
 object CalculationInput {
