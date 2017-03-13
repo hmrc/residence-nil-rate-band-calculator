@@ -27,4 +27,11 @@ object HttpConnector {
     Context.responseCode = response.code
     Context.responseBody = response.body
   }
+
+  def get(endpoint: String) = {
+    val response = Http(s"${Env.baseUrl}$endpoint").header("content-type", "application/json").asString
+
+    Context.responseCode = response.code
+    Context.responseBody = response.body
+  }
 }

@@ -19,7 +19,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 import java.io.ByteArrayInputStream
 
 import org.mockito.Matchers._
-import org.mockito.Mockito.when
+import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import play.api.Environment
 import play.api.i18n.MessagesApi

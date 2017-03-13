@@ -16,17 +16,30 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
+import javax.inject.Inject
+
+import org.joda.time.LocalDate
+import play.api.Environment
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, Controller}
+import uk.gov.hmrc.residencenilratebandcalculator.models.GetNilRateAmountFromFile
 
 import scala.concurrent.Future
+import scala.util.{Failure, Success, Try}
 
-class BandController extends Controller {
+class BandController @Inject()(env: Environment) extends Controller {
+
+  lazy val residenceNilRateBand: GetNilRateAmountFromFile = {
+    new GetNilRateAmountFromFile(env, "data/RNRB-amounts-by-year.json")
+  }
 
   def getBand(dateStr: String): Action[AnyContent] = Action.async  {
-      // get correct value, based on date
-      // return value as Json
-      Future.successful(Ok(Json.toJson(BigDecimal(100000))))
+    Try(LocalDate.parse(dateStr)) match {
+      case Success(parsedDate) => residenceNilRateBand(parsedDate) match {
+        case Success(band) => Future.successful(Ok(Json.toJson(band)))
+        case Failure(e) => Future.successful(BadRequest)
+      }
+      case Failure(e) => Future.successful(BadRequest)
     }
-
+  }
 }
