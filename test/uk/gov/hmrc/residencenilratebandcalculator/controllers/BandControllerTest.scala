@@ -45,13 +45,6 @@ class BandControllerTest extends UnitSpec with WithFakeApplication with MockitoS
       status(result) shouldBe 200
     }
 
-//    "return the correct value when requested with a valid date" in {
-//      val result = new BandController(env).getBand("2020-01-01")(fakeRequest)
-//      contentAsString(result) shouldBe "150000"
-//    }
-
-
-
     "return 400 when requested with an invalid date" in {
       val result = new BandController(env).getBand("not a date")(fakeRequest)
       status(result) shouldBe 400
