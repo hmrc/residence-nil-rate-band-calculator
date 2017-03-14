@@ -32,8 +32,8 @@ class Steps extends ScalaDsl with EN with Matchers {
     HttpConnector.post(endpoint, json)
   }
 
-  When("""^I GET the nil rate band for (.*)$""") { (urlSlub: String) =>
-    HttpConnector.get(s"nilrateband/$urlSlub")
+  When("""^I GET the nil rate band for (.*)$""") { (urlSlug: String) =>
+    HttpConnector.get(s"nilrateband/$urlSlug")
   }
 
   When("""^I combine these details$""") { (dataTable: DataTable) =>
