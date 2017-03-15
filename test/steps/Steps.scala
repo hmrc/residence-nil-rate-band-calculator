@@ -32,6 +32,10 @@ class Steps extends ScalaDsl with EN with Matchers {
     HttpConnector.post(endpoint, json)
   }
 
+  When("""^I GET the nil rate band for (.*)$""") { (urlSlug: String) =>
+    HttpConnector.get(s"nilrateband/$urlSlug")
+  }
+
   When("""^I combine these details$""") { (dataTable: DataTable) =>
     Context.details = DataTableHelper.convertToJsValue(dataTable)
   }
@@ -63,5 +67,9 @@ class Steps extends ScalaDsl with EN with Matchers {
       val jsonNode = DataTableHelper.convertToJsonNode(item._1, item._2)
       Context.responseBodyAsMap should contain (jsonNode._1 -> jsonNode._2)
     }
+  }
+
+  Then("""^the band I get back should be (.*)$""") { (expectedBody: String) =>
+    Context.responseBody shouldBe expectedBody
   }
 }
