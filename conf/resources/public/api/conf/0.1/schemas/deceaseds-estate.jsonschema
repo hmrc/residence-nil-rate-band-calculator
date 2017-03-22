@@ -17,7 +17,7 @@
         "dateOfDeath": {
             "$ref": "#/definitions/dateString"
         },
-        "grossEstateValue": {
+        "valueOfEstate": {
             "type": "integer",
             "minimum": 0
         },
@@ -70,5 +70,5 @@
             "required": ["dateOfDisposal", "valueOfDisposedProperty", "valueCloselyInherited", "broughtForwardAllowanceAtDisposal"]
         }
     },
-    "required": ["chargeableTransferAmount", "dateOfDeath", "grossEstateValue", "propertyValue", "percentageCloselyInherited", "broughtForwardAllowance"]
+    "required": ["chargeableTransferAmount", "dateOfDeath", "valueOfEstate", "propertyValue", "percentageCloselyInherited", "broughtForwardAllowance"]
 }

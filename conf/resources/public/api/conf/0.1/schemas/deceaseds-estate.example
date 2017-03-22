@@ -1,7 +1,7 @@
 {
     "chargeableTransferAmount":200,
     "dateOfDeath":"2018-01-01",
-    "grossEstateValue":300,
+    "valueOfEstate":300,
     "propertyValue":300,
     "percentageCloselyInherited": 100,
     "broughtForwardAllowance": 300,

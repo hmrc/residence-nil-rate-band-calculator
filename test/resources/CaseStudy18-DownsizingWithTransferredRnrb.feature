@@ -9,7 +9,7 @@ Feature: Case Study 18
     When I combine these details
       | dateOfDeath                | 2021-03-01 |
       | chargeableTransferAmount   | 500000     |
-      | grossEstateValue           | 500000     |
+      | valueOfEstate              | 500000     |
       | propertyValue              | 0          |
       | percentageCloselyInherited | 0          |
       | broughtForwardAllowance    | 175000     |

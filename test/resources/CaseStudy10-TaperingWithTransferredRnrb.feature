@@ -8,7 +8,7 @@ Feature: Case Study 10
     When I POST these details to calculate
       | dateOfDeath                | 2018-05-01 |
       | chargeableTransferAmount   | 2100000    |
-      | grossEstateValue           | 2100000    |
+      | valueOfEstate              | 2100000    |
       | propertyValue              | 450000     |
       | percentageCloselyInherited | 0          |
       | broughtForwardAllowance    | 0          |
@@ -24,7 +24,7 @@ Feature: Case Study 10
     When I POST these details to calculate
       | dateOfDeath                | 2021-03-25 |
       | chargeableTransferAmount   | 1800000    |
-      | grossEstateValue           | 1800000    |
+      | valueOfEstate              | 1800000    |
       | propertyValue              | 500000     |
       | percentageCloselyInherited | 100        |
       | broughtForwardAllowance    | 105000     |
