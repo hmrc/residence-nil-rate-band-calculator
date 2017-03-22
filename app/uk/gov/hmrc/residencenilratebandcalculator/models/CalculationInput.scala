@@ -24,7 +24,7 @@ import scala.util.{Failure, Success, Try}
 
 case class CalculationInput(dateOfDeath: LocalDate,
                             valueOfEstate: Int,
-                            chargeableTransferAmount: Int,
+                            chargeableEstateValue: Int,
                             propertyValue: Int,
                             percentageCloselyInherited: Int,
                             broughtForwardAllowance: Int,

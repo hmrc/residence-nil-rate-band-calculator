@@ -1,5 +1,5 @@
 {
-    "chargeableTransferAmount":200,
+    "chargeableEstateValue":200,
     "dateOfDeath":"2018-01-01",
     "valueOfEstate":300,
     "propertyValue":300,

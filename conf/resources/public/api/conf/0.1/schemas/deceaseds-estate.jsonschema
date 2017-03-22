@@ -10,7 +10,7 @@
         }
     },
     "properties": {
-        "chargeableTransferAmount": {
+        "chargeableEstateValue": {
             "type": "integer",
             "minimum": 0
         },
@@ -70,5 +70,5 @@
             "required": ["dateOfDisposal", "valueOfDisposedProperty", "valueCloselyInherited", "broughtForwardAllowanceAtDisposal"]
         }
     },
-    "required": ["chargeableTransferAmount", "dateOfDeath", "valueOfEstate", "propertyValue", "percentageCloselyInherited", "broughtForwardAllowance"]
+    "required": ["chargeableEstateValue", "dateOfDeath", "valueOfEstate", "propertyValue", "percentageCloselyInherited", "broughtForwardAllowance"]
 }

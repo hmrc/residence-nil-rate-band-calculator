@@ -7,7 +7,7 @@ Feature: Case Study 6
   Scenario: 6.1 - Case Study 6
     When I POST these details to calculate
       | dateOfDeath                | 2021-01-01 |
-      | chargeableTransferAmount   | 800000     |
+      | chargeableEstateValue   | 800000     |
       | valueOfEstate              | 800000     |
       | propertyValue              | 500000     |
       | percentageCloselyInherited | 50         |
@@ -23,7 +23,7 @@ Feature: Case Study 6
   Scenario: 6.2 - Amount left to direct descendants is less than the maximum RNRB
     When I POST these details to calculate
       | dateOfDeath                | 2021-01-01 |
-      | chargeableTransferAmount   | 750000     |
+      | chargeableEstateValue   | 750000     |
       | valueOfEstate              | 750000     |
       | propertyValue              | 250000     |
       | percentageCloselyInherited | 50         |

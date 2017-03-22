@@ -5,7 +5,7 @@ Feature: Property Exemptions
   Scenario: 1 - Property is partially exempt, and the remaining part is lower than the applicable nil-rate band
     When I combine these details
       | dateOfDeath                | 2021-01-01 |
-      | chargeableTransferAmount   | 490000     |
+      | chargeableEstateValue   | 490000     |
       | valueOfEstate              | 490000     |
       | propertyValue              | 300000     |
       | percentageCloselyInherited | 100        |
