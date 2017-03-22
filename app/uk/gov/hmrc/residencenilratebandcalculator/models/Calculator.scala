@@ -24,10 +24,6 @@ import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 
 import scala.util.{Success, Try}
 
-/* Terms of art:
- * Percentage closely inherited = The percentage of a property passing to a direct descendant
- */
-
 @Singleton
 class Calculator @Inject()(env: Environment) {
 
@@ -125,7 +121,7 @@ class Calculator @Inject()(env: Environment) {
 
       val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValue)
 
-      val residenceNilRateAmount = math.min(input.propertyValueCloselyInherited + downsizingAddition, adjustedAllowance)
+      val residenceNilRateAmount = math.min(input.propertyValuePassedToDirectDescendants + downsizingAddition, adjustedAllowance)
       val carryForwardAmount = adjustedAllowance - residenceNilRateAmount
 
       CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount, defaultAllowance, adjustedAllowance)

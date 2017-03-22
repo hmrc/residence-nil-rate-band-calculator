@@ -3,7 +3,7 @@
     "dateOfDeath":"2018-01-01",
     "valueOfEstate":300,
     "propertyValue":300,
-    "percentageCloselyInherited": 100,
+    "percentagePassedToDirectDescendants": 100,
     "broughtForwardAllowance": 300,
     "propertyValueAfterExemption": {
         "value": 200,

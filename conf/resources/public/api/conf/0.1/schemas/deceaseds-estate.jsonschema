@@ -25,7 +25,7 @@
             "type": "integer",
             "minimum": 0
         },
-        "percentageCloselyInherited": {
+        "percentagePassedToDirectDescendants": {
             "type": "integer",
             "minimum": 0,
             "maximum": 100
@@ -70,5 +70,5 @@
             "required": ["dateOfDisposal", "valueOfDisposedProperty", "valueCloselyInherited", "broughtForwardAllowanceAtDisposal"]
         }
     },
-    "required": ["chargeableEstateValue", "dateOfDeath", "valueOfEstate", "propertyValue", "percentageCloselyInherited", "broughtForwardAllowance"]
+    "required": ["chargeableEstateValue", "dateOfDeath", "valueOfEstate", "propertyValue", "percentagePassedToDirectDescendants", "broughtForwardAllowance"]
 }

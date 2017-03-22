@@ -9,7 +9,7 @@ Feature: Case Study 3
       | chargeableEstateValue   | 450000     |
       | valueOfEstate              | 450000     |
       | propertyValue              | 200000     |
-      | percentageCloselyInherited | 100        |
+      | percentagePassedToDirectDescendants | 100        |
       | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be
@@ -26,7 +26,7 @@ Feature: Case Study 3
       | chargeableEstateValue   | 750000     |
       | valueOfEstate              | 750000     |
       | propertyValue              | 500000     |
-      | percentageCloselyInherited | 100        |
+      | percentagePassedToDirectDescendants | 100        |
       | broughtForwardAllowance    | 0          |
     Then I should get an OK response
     And the response body should be

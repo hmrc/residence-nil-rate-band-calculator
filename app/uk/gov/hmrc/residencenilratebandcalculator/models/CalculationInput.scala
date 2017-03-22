@@ -26,19 +26,19 @@ case class CalculationInput(dateOfDeath: LocalDate,
                             valueOfEstate: Int,
                             chargeableEstateValue: Int,
                             propertyValue: Int,
-                            percentageCloselyInherited: Int,
+                            percentagePassedToDirectDescendants: Int,
                             broughtForwardAllowance: Int,
                             propertyValueAfterExemption: Option[PropertyValueAfterExemption] = None,
                             downsizingDetails: Option[DownsizingDetails] = None) {
   require(valueOfEstate >= 0, """{"valueOfEstate" : "error.expected.number.non_negative"}""")
   require(propertyValue >= 0, """{"propertyValue" : "error.expected.number.non_negative"}""")
-  require(percentageCloselyInherited >= 0, """{"percentageCloselyInherited" : "error.expected.number.non_negative"}""")
-  require(percentageCloselyInherited <= 100, """{"percentageCloselyInherited" : "error.expected.number.100_at_most"}""")
+  require(percentagePassedToDirectDescendants >= 0, """{"percentagePassedToDirectDescendants" : "error.expected.number.non_negative"}""")
+  require(percentagePassedToDirectDescendants <= 100, """{"percentagePassedToDirectDescendants" : "error.expected.number.100_at_most"}""")
   require(broughtForwardAllowance >= 0, """{"broughtForwardAllowance" : "error.expected.number.non_negative"}""")
 
-  def propertyValueCloselyInherited = propertyValueAfterExemption match {
+  def propertyValuePassedToDirectDescendants = propertyValueAfterExemption match {
     case Some(values) => values.valueCloselyInherited
-    case None => (percentageCloselyInherited percent) * propertyValue toInt
+    case None => (percentagePassedToDirectDescendants percent) * propertyValue toInt
   }
 }
 
