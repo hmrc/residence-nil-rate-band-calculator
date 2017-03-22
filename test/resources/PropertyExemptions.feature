@@ -6,7 +6,7 @@ Feature: Property Exemptions
     When I combine these details
       | dateOfDeath                | 2021-01-01 |
       | chargeableTransferAmount   | 490000     |
-      | grossEstateValue           | 490000     |
+      | valueOfEstate              | 490000     |
       | propertyValue              | 300000     |
       | percentageCloselyInherited | 100        |
       | broughtForwardAllowance    | 0          |

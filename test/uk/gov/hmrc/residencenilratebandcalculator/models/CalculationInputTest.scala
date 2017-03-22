@@ -23,11 +23,11 @@ import uk.gov.hmrc.play.test.UnitSpec
 class CalculationInputTest extends UnitSpec {
   "Calculation Input" must {
 
-    "throw an exception when grossEstateValue is less than zero" in {
+    "throw an exception when valueOfEstate is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
         CalculationInput(new LocalDate(), -1, 0, 0, 0, 0)
       }
-      assert(caught.getMessage == "requirement failed: {\"grossEstateValue\" : \"error.expected.number.non_negative\"}")
+      assert(caught.getMessage == "requirement failed: {\"valueOfEstate\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when propertyValue is less than zero" in {
@@ -98,7 +98,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
           | "percentageCloselyInherited": 3,
@@ -109,7 +109,7 @@ class CalculationInputTest extends UnitSpec {
       val input = Json.fromJson[CalculationInput](json).get
 
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
-      assert(input.grossEstateValue == 0)
+      assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
@@ -121,7 +121,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
           | "percentageCloselyInherited": 3,
@@ -136,7 +136,7 @@ class CalculationInputTest extends UnitSpec {
       val input = Json.fromJson[CalculationInput](json).get
 
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
-      assert(input.grossEstateValue == 0)
+      assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
@@ -149,7 +149,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
           | "percentageCloselyInherited": 3,
@@ -166,7 +166,7 @@ class CalculationInputTest extends UnitSpec {
       val input = Json.fromJson[CalculationInput](json).get
 
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
-      assert(input.grossEstateValue == 0)
+      assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
@@ -181,7 +181,7 @@ class CalculationInputTest extends UnitSpec {
       input match {
         case error: JsError =>
           assert(((JsError.toJson(error) \ "obj.dateOfDeath") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
-          assert(((JsError.toJson(error) \ "obj.grossEstateValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+          assert(((JsError.toJson(error) \ "obj.valueOfEstate") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.propertyValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.chargeableTransferAmount") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.percentageCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
@@ -195,7 +195,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
           | "percentageCloselyInherited": 3,
@@ -218,7 +218,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
           | "percentageCloselyInherited": 3,
@@ -243,7 +243,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
           | "percentageCloselyInherited": 3,
@@ -254,7 +254,7 @@ class CalculationInputTest extends UnitSpec {
       val input = CalculationInput(json).right.get
 
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
-      assert(input.grossEstateValue == 0)
+      assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
@@ -266,7 +266,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
           | "percentageCloselyInherited": 3,
@@ -281,7 +281,7 @@ class CalculationInputTest extends UnitSpec {
       val input = CalculationInput(json).right.get
 
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
-      assert(input.grossEstateValue == 0)
+      assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
@@ -294,7 +294,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 1,
           | "chargeableTransferAmount": 2,
           | "percentageCloselyInherited": 3,
@@ -311,7 +311,7 @@ class CalculationInputTest extends UnitSpec {
       val input = CalculationInput(json).right.get
 
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
-      assert(input.grossEstateValue == 0)
+      assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableTransferAmount == 2)
       assert(input.percentageCloselyInherited == 3)
@@ -326,7 +326,7 @@ class CalculationInputTest extends UnitSpec {
 
       val expcetedErrors = Set(
         ("dateOfDeath", "error.path.missing"),
-        ("grossEstateValue", "error.path.missing"),
+        ("valueOfEstate", "error.path.missing"),
         ("propertyValue", "error.path.missing"),
         ("chargeableTransferAmount", "error.path.missing"),
         ("percentageCloselyInherited", "error.path.missing"),
@@ -340,7 +340,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": "0",
+          | "valueOfEstate": "0",
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
           | "percentageCloselyInherited": 0,
@@ -350,7 +350,7 @@ class CalculationInputTest extends UnitSpec {
 
       val errors = CalculationInput(json).left.get
 
-      val expectedErrors = Seq(("grossEstateValue", "error.expected.jsnumber"))
+      val expectedErrors = Seq(("valueOfEstate", "error.expected.jsnumber"))
 
       assert(errors == expectedErrors)
     }
@@ -360,7 +360,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
           | "percentageCloselyInherited": 0,
@@ -380,7 +380,7 @@ class CalculationInputTest extends UnitSpec {
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": -1,
+          | "valueOfEstate": -1,
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
           | "percentageCloselyInherited": 0,
@@ -390,7 +390,7 @@ class CalculationInputTest extends UnitSpec {
 
       val errors = CalculationInput(json).left.get
 
-      val expectedErrors = Seq(("grossEstateValue", "error.expected.number.non_negative"))
+      val expectedErrors = Seq(("valueOfEstate", "error.expected.number.non_negative"))
 
       assert(errors == expectedErrors)
     }

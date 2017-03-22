@@ -120,7 +120,7 @@ class Calculator @Inject()(env: Environment) {
       taperBandOnDeath <- taperBand(input.dateOfDeath)
     } yield {
       val defaultAllowance = rnrbOnDeath + input.broughtForwardAllowance
-      val amountToTaper = math.max(input.grossEstateValue - taperBandOnDeath.threshold, 0) / taperBandOnDeath.rate
+      val amountToTaper = math.max(input.valueOfEstate - taperBandOnDeath.threshold, 0) / taperBandOnDeath.rate
       val adjustedAllowance = taperedAllowance(defaultAllowance, amountToTaper)
 
       val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValue)

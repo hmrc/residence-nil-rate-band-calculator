@@ -54,7 +54,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
           | "percentageCloselyInherited": 0,
@@ -81,7 +81,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": -1,
+          | "valueOfEstate": -1,
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
           | "percentageCloselyInherited": 0,
@@ -94,7 +94,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
       val response = new CalculationController(calculator)(messagesApi).calculate()(fakeRequest)
 
       status(response) shouldBe BAD_REQUEST
-      (contentAsJson(response) \ "errors" \ "grossEstateValue").as[JsString].value shouldBe messages("error.expected.number.non_negative")
+      (contentAsJson(response) \ "errors" \ "valueOfEstate").as[JsString].value shouldBe messages("error.expected.number.non_negative")
     }
 
     "return an error when the calculation fails" in {
@@ -103,7 +103,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
         """
           |{
           | "dateOfDeath": "2018-01-01",
-          | "grossEstateValue": 0,
+          | "valueOfEstate": 0,
           | "propertyValue": 0,
           | "chargeableTransferAmount": 0,
           | "percentageCloselyInherited": 0,
