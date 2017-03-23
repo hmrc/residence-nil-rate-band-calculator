@@ -57,7 +57,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
           | "valueOfEstate": 0,
           | "propertyValue": 0,
           | "chargeableEstateValue": 0,
-          | "percentageCloselyInherited": 0,
+          | "percentagePassedToDirectDescendants": 0,
           | "broughtForwardAllowance": 0
           |}
         """.stripMargin)
@@ -84,7 +84,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
           | "valueOfEstate": -1,
           | "propertyValue": 0,
           | "chargeableEstateValue": 0,
-          | "percentageCloselyInherited": 0,
+          | "percentagePassedToDirectDescendants": 0,
           | "broughtForwardAllowance": 0
           |}
         """.stripMargin)
@@ -106,7 +106,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
           | "valueOfEstate": 0,
           | "propertyValue": 0,
           | "chargeableEstateValue": 0,
-          | "percentageCloselyInherited": 0,
+          | "percentagePassedToDirectDescendants": 0,
           | "broughtForwardAllowance": 0
           |}
         """.stripMargin)

@@ -11,7 +11,7 @@ Feature: Case Study 21
       | chargeableEstateValue   | 1500000    |
       | valueOfEstate              | 1500000    |
       | propertyValue              | 150000     |
-      | percentageCloselyInherited | 100        |
+      | percentagePassedToDirectDescendants | 100        |
       | broughtForwardAllowance    | 0          |
     And these downsizing details
       | dateOfDisposal                    | 2020-05-01 |
@@ -33,7 +33,7 @@ Feature: Case Study 21
       | chargeableEstateValue   | 1500000    |
       | valueOfEstate              | 1500000    |
       | propertyValue              | 150000     |
-      | percentageCloselyInherited | 0          |
+      | percentagePassedToDirectDescendants | 0          |
       | broughtForwardAllowance    | 0          |
     And these downsizing details
       | dateOfDisposal                    | 2020-05-01 |

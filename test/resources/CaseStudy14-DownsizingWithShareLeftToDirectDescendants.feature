@@ -11,7 +11,7 @@ Feature: Case Study 14
       | chargeableEstateValue   | 700000     |
       | valueOfEstate              | 700000     |
       | propertyValue              | 105000     |
-      | percentageCloselyInherited | 50         |
+      | percentagePassedToDirectDescendants | 50         |
       | broughtForwardAllowance    | 0          |
     And these property value after exemption details
       | value                 | 52500 |
@@ -36,7 +36,7 @@ Feature: Case Study 14
       | chargeableEstateValue   | 700000     |
       | valueOfEstate              | 700000     |
       | propertyValue              | 105000     |
-      | percentageCloselyInherited | 50         |
+      | percentagePassedToDirectDescendants | 50         |
       | broughtForwardAllowance    | 0          |
     And these property value after exemption details
       | value                 | 52500 |

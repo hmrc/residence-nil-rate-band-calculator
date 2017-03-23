@@ -8,7 +8,7 @@ Feature: Property Exemptions
       | chargeableEstateValue   | 490000     |
       | valueOfEstate              | 490000     |
       | propertyValue              | 300000     |
-      | percentageCloselyInherited | 100        |
+      | percentagePassedToDirectDescendants | 100        |
       | broughtForwardAllowance    | 0          |
     And these property value after exemption details
       | value                 | 100000 |
