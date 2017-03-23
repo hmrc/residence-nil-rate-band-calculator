@@ -40,7 +40,7 @@ class Calculator @Inject()(env: Environment) {
   val legislativeStartDate = new LocalDate(2017, 4, 6)
 
 
-  def personsFormerAllowance(dateOfDisposal: LocalDate,
+  def personsFormerAllowance(datePropertyWasChanged: LocalDate,
                              rnrbAtDisposal: Int,
                              broughtForwardAllowanceAtDisposal: Int,
                              adjustedBroughtForwardAllowance: Int): Int = {
@@ -48,7 +48,7 @@ class Calculator @Inject()(env: Environment) {
     require(adjustedBroughtForwardAllowance >= 0, "adjustedBroughtForwardAllowance cannot be negative")
     require(rnrbAtDisposal >= 0, "rnrbAtDisposal cannot be negative")
 
-    val availableBroughtForwardAllowance = if (dateOfDisposal.isBefore(legislativeStartDate)) 0 else broughtForwardAllowanceAtDisposal
+    val availableBroughtForwardAllowance = if (datePropertyWasChanged.isBefore(legislativeStartDate)) 0 else broughtForwardAllowanceAtDisposal
     val excessBroughtForwardAllowance = math.max(adjustedBroughtForwardAllowance - availableBroughtForwardAllowance, 0)
 
     rnrbAtDisposal + availableBroughtForwardAllowance + excessBroughtForwardAllowance
@@ -94,10 +94,10 @@ class Calculator @Inject()(env: Environment) {
 
     downsizingDetails match {
       case None => 0
-      case Some(details) if details.dateOfDisposal isBefore earliestDisposalDate => 0
+      case Some(details) if details.datePropertyWasChanged isBefore earliestDisposalDate => 0
       case Some(details) =>
         val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
-        val formerAllowance = personsFormerAllowance(details.dateOfDisposal, rnrbAtDisposal, details.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
+        val formerAllowance = personsFormerAllowance(details.datePropertyWasChanged, rnrbAtDisposal, details.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
         val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
         val lostAmount = lostRelievableAmount(details.valueOfDisposedProperty, formerAllowance, propertyValue, adjustedAllowance)
 
@@ -110,7 +110,7 @@ class Calculator @Inject()(env: Environment) {
     for {
       rnrbOnDeath <- residenceNilRateBand(input.dateOfDeath)
       rnrbAtDisposal <- input.downsizingDetails match {
-        case Some(details) => residenceNilRateBand(details.dateOfDisposal)
+        case Some(details) => residenceNilRateBand(details.datePropertyWasChanged)
         case None => Success(0)
       }
       taperBandOnDeath <- taperBand(input.dateOfDeath)

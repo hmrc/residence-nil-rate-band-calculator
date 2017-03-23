@@ -10,7 +10,7 @@
         "inheritedValue": 200
     },
     "downsizingDetails": {
-        "dateOfDisposal":"2017-01-01",
+        "datePropertyWasChanged":"2017-01-01",
         "valueOfDisposedProperty":100,
         "valueCloselyInherited": 100,
         "broughtForwardAllowanceAtDisposal": 0
