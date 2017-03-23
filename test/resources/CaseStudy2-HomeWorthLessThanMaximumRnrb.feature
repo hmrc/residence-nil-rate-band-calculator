@@ -7,7 +7,7 @@ Feature: Case Study 2
   Scenario: 2.1 - Case Study 2
     When I POST these details to calculate
       | dateOfDeath                | 2021-01-01 |
-      | chargeableTransferAmount   | 500000     |
+      | chargeableEstateValue   | 500000     |
       | valueOfEstate              | 1000000    |
       | propertyValue              | 100000     |
       | percentageCloselyInherited | 100        |
@@ -23,7 +23,7 @@ Feature: Case Study 2
   Scenario: 2.2 - Death occurs in an earlier tax year
     When I POST these details to calculate
       | dateOfDeath                | 2019-01-01 |
-      | chargeableTransferAmount   | 500000     |
+      | chargeableEstateValue   | 500000     |
       | valueOfEstate              | 1000000    |
       | propertyValue              | 100000     |
       | percentageCloselyInherited | 100        |

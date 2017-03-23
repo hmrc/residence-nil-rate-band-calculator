@@ -8,7 +8,7 @@ Feature: Case Study 16
   Scenario: 16.1 - Case Study 16
     When I combine these details
       | dateOfDeath                | 2021-03-01 |
-      | chargeableTransferAmount   | 500000     |
+      | chargeableEstateValue   | 500000     |
       | valueOfEstate              | 500000     |
       | propertyValue              | 0          |
       | percentageCloselyInherited | 0          |
@@ -30,7 +30,7 @@ Feature: Case Study 16
   Scenario: 16.2 - Case Study 16A
     When I combine these details
       | dateOfDeath                | 2021-03-01 |
-      | chargeableTransferAmount   | 500000     |
+      | chargeableEstateValue   | 500000     |
       | valueOfEstate              | 500000     |
       | propertyValue              | 0          |
       | percentageCloselyInherited | 0          |

@@ -100,7 +100,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": 0,
           | "propertyValue": 1,
-          | "chargeableTransferAmount": 2,
+          | "chargeableEstateValue": 2,
           | "percentageCloselyInherited": 3,
           | "broughtForwardAllowance": 4
           |}
@@ -111,7 +111,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
-      assert(input.chargeableTransferAmount == 2)
+      assert(input.chargeableEstateValue == 2)
       assert(input.percentageCloselyInherited == 3)
       assert(input.broughtForwardAllowance == 4)
     }
@@ -123,7 +123,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": 0,
           | "propertyValue": 1,
-          | "chargeableTransferAmount": 2,
+          | "chargeableEstateValue": 2,
           | "percentageCloselyInherited": 3,
           | "broughtForwardAllowance": 4,
           | "propertyValueAfterExemption": {
@@ -138,7 +138,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
-      assert(input.chargeableTransferAmount == 2)
+      assert(input.chargeableEstateValue == 2)
       assert(input.percentageCloselyInherited == 3)
       assert(input.broughtForwardAllowance == 4)
       assert(input.propertyValueAfterExemption.contains(PropertyValueAfterExemption(5, 6)))
@@ -151,7 +151,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": 0,
           | "propertyValue": 1,
-          | "chargeableTransferAmount": 2,
+          | "chargeableEstateValue": 2,
           | "percentageCloselyInherited": 3,
           | "broughtForwardAllowance": 4,
           | "downsizingDetails": {
@@ -168,7 +168,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
-      assert(input.chargeableTransferAmount == 2)
+      assert(input.chargeableEstateValue == 2)
       assert(input.percentageCloselyInherited == 3)
       assert(input.broughtForwardAllowance == 4)
       assert(input.downsizingDetails.contains(DownsizingDetails(new LocalDate(2017, 1, 1), 5, 6, 7)))
@@ -183,7 +183,7 @@ class CalculationInputTest extends UnitSpec {
           assert(((JsError.toJson(error) \ "obj.dateOfDeath") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.valueOfEstate") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.propertyValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
-          assert(((JsError.toJson(error) \ "obj.chargeableTransferAmount") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+          assert(((JsError.toJson(error) \ "obj.chargeableEstateValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.percentageCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.broughtForwardAllowance") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
         case _ => fail("Invalid JSON object construction succeeded")
@@ -197,7 +197,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": 0,
           | "propertyValue": 1,
-          | "chargeableTransferAmount": 2,
+          | "chargeableEstateValue": 2,
           | "percentageCloselyInherited": 3,
           | "broughtForwardAllowance": 4,
           | "propertyValueAfterExemption": {}
@@ -220,7 +220,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": 0,
           | "propertyValue": 1,
-          | "chargeableTransferAmount": 2,
+          | "chargeableEstateValue": 2,
           | "percentageCloselyInherited": 3,
           | "broughtForwardAllowance": 4,
           | "downsizingDetails": {}
@@ -245,7 +245,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": 0,
           | "propertyValue": 1,
-          | "chargeableTransferAmount": 2,
+          | "chargeableEstateValue": 2,
           | "percentageCloselyInherited": 3,
           | "broughtForwardAllowance": 4
           |}
@@ -256,7 +256,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
-      assert(input.chargeableTransferAmount == 2)
+      assert(input.chargeableEstateValue == 2)
       assert(input.percentageCloselyInherited == 3)
       assert(input.broughtForwardAllowance == 4)
     }
@@ -268,7 +268,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": 0,
           | "propertyValue": 1,
-          | "chargeableTransferAmount": 2,
+          | "chargeableEstateValue": 2,
           | "percentageCloselyInherited": 3,
           | "broughtForwardAllowance": 4,
           | "propertyValueAfterExemption": {
@@ -283,7 +283,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
-      assert(input.chargeableTransferAmount == 2)
+      assert(input.chargeableEstateValue == 2)
       assert(input.percentageCloselyInherited == 3)
       assert(input.broughtForwardAllowance == 4)
       assert(input.propertyValueAfterExemption.contains(PropertyValueAfterExemption(5, 6)))
@@ -296,7 +296,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": 0,
           | "propertyValue": 1,
-          | "chargeableTransferAmount": 2,
+          | "chargeableEstateValue": 2,
           | "percentageCloselyInherited": 3,
           | "broughtForwardAllowance": 4,
           | "downsizingDetails": {
@@ -313,7 +313,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
-      assert(input.chargeableTransferAmount == 2)
+      assert(input.chargeableEstateValue == 2)
       assert(input.percentageCloselyInherited == 3)
       assert(input.broughtForwardAllowance == 4)
       assert(input.downsizingDetails.contains(DownsizingDetails(new LocalDate(2017, 1, 1), 5, 6, 7)))
@@ -328,7 +328,7 @@ class CalculationInputTest extends UnitSpec {
         ("dateOfDeath", "error.path.missing"),
         ("valueOfEstate", "error.path.missing"),
         ("propertyValue", "error.path.missing"),
-        ("chargeableTransferAmount", "error.path.missing"),
+        ("chargeableEstateValue", "error.path.missing"),
         ("percentageCloselyInherited", "error.path.missing"),
         ("broughtForwardAllowance", "error.path.missing"))
 
@@ -342,7 +342,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": "0",
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0,
+          | "chargeableEstateValue": 0,
           | "percentageCloselyInherited": 0,
           | "broughtForwardAllowance": 0
           |}
@@ -362,7 +362,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "",
           | "valueOfEstate": 0,
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0,
+          | "chargeableEstateValue": 0,
           | "percentageCloselyInherited": 0,
           | "broughtForwardAllowance": 0
           |}
@@ -382,7 +382,7 @@ class CalculationInputTest extends UnitSpec {
           | "dateOfDeath": "2018-01-01",
           | "valueOfEstate": -1,
           | "propertyValue": 0,
-          | "chargeableTransferAmount": 0,
+          | "chargeableEstateValue": 0,
           | "percentageCloselyInherited": 0,
           | "broughtForwardAllowance": 0
           |}

@@ -7,7 +7,7 @@ Feature: Case Study 9
   Scenario: 9.1 - Case Study 9
     When I POST these details to calculate
       | dateOfDeath                | 2018-12-01 |
-      | chargeableTransferAmount   | 2100000    |
+      | chargeableEstateValue   | 2100000    |
       | valueOfEstate              | 2100000    |
       | propertyValue              | 450000     |
       | percentageCloselyInherited | 100        |
