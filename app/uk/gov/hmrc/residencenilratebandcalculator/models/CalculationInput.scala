@@ -37,7 +37,7 @@ case class CalculationInput(dateOfDeath: LocalDate,
   require(broughtForwardAllowance >= 0, """{"broughtForwardAllowance" : "error.expected.number.non_negative"}""")
 
   def propertyValuePassedToDirectDescendants = propertyValueAfterExemption match {
-    case Some(values) => values.valueCloselyInherited
+    case Some(values) => values.inheritedValue
     case None => (percentagePassedToDirectDescendants percent) * propertyValue toInt
   }
 }
@@ -68,9 +68,9 @@ object CalculationInput {
   }
 }
 
-case class PropertyValueAfterExemption(value: Int, valueCloselyInherited: Int) {
+case class PropertyValueAfterExemption(value: Int, inheritedValue: Int) {
   require(value >= 0, """{"value" : "error.expected.number.non_negative"}""")
-  require(valueCloselyInherited >= 0, """{"valueCloselyInherited" : "error.expected.number.non_negative"}""")
+  require(inheritedValue >= 0, """{"inheritedValue" : "error.expected.number.non_negative"}""")
 }
 
 object PropertyValueAfterExemption {

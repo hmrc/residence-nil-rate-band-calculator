@@ -65,11 +65,11 @@ class CalculationInputTest extends UnitSpec {
       assert(caught.getMessage == "requirement failed: {\"value\" : \"error.expected.number.non_negative\"}")
     }
 
-    "throw an exception when propertyValueAfterExemption is present but its valueCloselyInherited is less than 0" in {
+    "throw an exception when propertyValueAfterExemption is present but its inheritedValue is less than 0" in {
       val caught = intercept[IllegalArgumentException] {
         CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, Some(PropertyValueAfterExemption(0, -1)))
       }
-      assert(caught.getMessage == "requirement failed: {\"valueCloselyInherited\" : \"error.expected.number.non_negative\"}")
+      assert(caught.getMessage == "requirement failed: {\"inheritedValue\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when downsizingDetails are present but valueOfDisposedProperty is less than 0" in {
@@ -128,7 +128,7 @@ class CalculationInputTest extends UnitSpec {
           | "broughtForwardAllowance": 4,
           | "propertyValueAfterExemption": {
           |   "value": 5,
-          |   "valueCloselyInherited": 6
+          |   "inheritedValue": 6
           | }
           |}
         """.stripMargin)
@@ -208,7 +208,7 @@ class CalculationInputTest extends UnitSpec {
       input match {
         case error: JsError =>
           assert(((JsError.toJson(error) \ "obj.propertyValueAfterExemption.value") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
-          assert(((JsError.toJson(error) \ "obj.propertyValueAfterExemption.valueCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+          assert(((JsError.toJson(error) \ "obj.propertyValueAfterExemption.inheritedValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
         case _ => fail("Invalid JSON object construction succeeded")
       }
     }
@@ -273,7 +273,7 @@ class CalculationInputTest extends UnitSpec {
           | "broughtForwardAllowance": 4,
           | "propertyValueAfterExemption": {
           |   "value": 5,
-          |   "valueCloselyInherited": 6
+          |   "inheritedValue": 6
           | }
           |}
         """.stripMargin)
@@ -395,7 +395,7 @@ class CalculationInputTest extends UnitSpec {
       assert(errors == expectedErrors)
     }
 
-    "return propertyValueAfterExemption.valueCloselyInherited as the propertyValueCloselyInherited when it is present" in {
+    "return propertyValueAfterExemption.inheritedValue as the propertyValueCloselyInherited when it is present" in {
       CalculationInput(new LocalDate(), 1, 2, 3, 4, 5, Some(PropertyValueAfterExemption(6, 7))).propertyValuePassedToDirectDescendants shouldBe 7
     }
 

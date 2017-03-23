@@ -14,8 +14,8 @@ Feature: Case Study 14
       | percentagePassedToDirectDescendants | 50         |
       | broughtForwardAllowance    | 0          |
     And these property value after exemption details
-      | value                 | 52500 |
-      | valueCloselyInherited | 52500 |
+      | value          | 52500 |
+      | inheritedValue | 52500 |
     And these downsizing details
       | dateOfDisposal                    | 2019-02-01 |
       | valueOfDisposedProperty           | 400000     |
@@ -39,8 +39,8 @@ Feature: Case Study 14
       | percentagePassedToDirectDescendants | 50         |
       | broughtForwardAllowance    | 0          |
     And these property value after exemption details
-      | value                 | 52500 |
-      | valueCloselyInherited | 52500 |
+      | value          | 52500 |
+      | inheritedValue | 52500 |
     And these downsizing details
       | dateOfDisposal                    | 2019-02-01 |
       | valueOfDisposedProperty           | 400000     |
