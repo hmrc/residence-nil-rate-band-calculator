@@ -7,7 +7,7 @@
     "broughtForwardAllowance": 300,
     "propertyValueAfterExemption": {
         "value": 200,
-        "valueCloselyInherited": 200
+        "inheritedValue": 200
     },
     "downsizingDetails": {
         "dateOfDisposal":"2017-01-01",

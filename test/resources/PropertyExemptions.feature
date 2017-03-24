@@ -11,8 +11,8 @@ Feature: Property Exemptions
       | percentagePassedToDirectDescendants | 100        |
       | broughtForwardAllowance    | 0          |
     And these property value after exemption details
-      | value                 | 100000 |
-      | valueCloselyInherited | 100000 |
+      | value          | 100000 |
+      | inheritedValue | 100000 |
     And POST the details to calculate
     Then I should get an OK response
     And the response body should be
