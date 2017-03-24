@@ -133,7 +133,7 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
 
   "calculating persons former allowance" must {
 
-    "ignore brought forward allowance at disposal when the date of disposal is before 6 April 2017" in {
+    "ignore brought forward allowance at disposal when the date property was changed is before 6 April 2017" in {
       calculator.personsFormerAllowance(new LocalDate(2015, 4, 5), 100000, 50000, 0) shouldBe 100000
     }
 

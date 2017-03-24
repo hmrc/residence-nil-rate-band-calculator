@@ -17,7 +17,7 @@ Feature: Case Study 14
       | value          | 52500 |
       | inheritedValue | 52500 |
     And these downsizing details
-      | dateOfDisposal                    | 2019-02-01 |
+      | datePropertyWasChanged                    | 2019-02-01 |
       | valueOfDisposedProperty           | 400000     |
       | valueCloselyInherited             | 150000     |
       | broughtForwardAllowanceAtDisposal | 0          |
@@ -42,7 +42,7 @@ Feature: Case Study 14
       | value          | 52500 |
       | inheritedValue | 52500 |
     And these downsizing details
-      | dateOfDisposal                    | 2019-02-01 |
+      | datePropertyWasChanged                    | 2019-02-01 |
       | valueOfDisposedProperty           | 400000     |
       | valueCloselyInherited             | 20000      |
       | broughtForwardAllowanceAtDisposal | 0          |

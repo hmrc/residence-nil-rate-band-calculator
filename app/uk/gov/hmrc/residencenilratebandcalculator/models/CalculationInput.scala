@@ -77,7 +77,7 @@ object PropertyValueAfterExemption {
   implicit val formats: OFormat[PropertyValueAfterExemption] = Json.format[PropertyValueAfterExemption]
 }
 
-case class DownsizingDetails(dateOfDisposal: LocalDate,
+case class DownsizingDetails(datePropertyWasChanged: LocalDate,
                              valueOfDisposedProperty: Int,
                              valueCloselyInherited: Int,
                              broughtForwardAllowanceAtDisposal: Int) {

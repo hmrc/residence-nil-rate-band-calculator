@@ -51,7 +51,7 @@
         "downsizingDetails": {
             "type": "object",
             "properties": {
-                "dateOfDisposal": {
+                "datePropertyWasChanged": {
                     "$ref": "#/definitions/dateString"
                 },
                 "valueOfDisposedProperty": {
@@ -67,7 +67,7 @@
                     "minimum": 0
                 }
             },
-            "required": ["dateOfDisposal", "valueOfDisposedProperty", "valueCloselyInherited", "broughtForwardAllowanceAtDisposal"]
+            "required": ["datePropertyWasChanged", "valueOfDisposedProperty", "valueCloselyInherited", "broughtForwardAllowanceAtDisposal"]
         }
     },
     "required": ["chargeableEstateValue", "dateOfDeath", "valueOfEstate", "propertyValue", "percentagePassedToDirectDescendants", "broughtForwardAllowance"]

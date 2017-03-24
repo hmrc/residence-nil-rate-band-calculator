@@ -155,7 +155,7 @@ class CalculationInputTest extends UnitSpec {
           | "percentagePassedToDirectDescendants": 3,
           | "broughtForwardAllowance": 4,
           | "downsizingDetails": {
-          |   "dateOfDisposal": "2017-01-01",
+          |   "datePropertyWasChanged": "2017-01-01",
           |   "valueOfDisposedProperty": 5,
           |   "valueCloselyInherited": 6,
           |   "broughtForwardAllowanceAtDisposal": 7
@@ -230,7 +230,7 @@ class CalculationInputTest extends UnitSpec {
       val input: JsResult[CalculationInput] = Json.fromJson[CalculationInput](json)
       input match {
         case error: JsError =>
-          assert(((JsError.toJson(error) \ "obj.downsizingDetails.dateOfDisposal") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+          assert(((JsError.toJson(error) \ "obj.downsizingDetails.datePropertyWasChanged") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.downsizingDetails.valueOfDisposedProperty") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.downsizingDetails.valueCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.downsizingDetails.broughtForwardAllowanceAtDisposal") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
@@ -300,7 +300,7 @@ class CalculationInputTest extends UnitSpec {
           | "percentagePassedToDirectDescendants": 3,
           | "broughtForwardAllowance": 4,
           | "downsizingDetails": {
-          |   "dateOfDisposal": "2017-01-01",
+          |   "datePropertyWasChanged": "2017-01-01",
           |   "valueOfDisposedProperty": 5,
           |   "valueCloselyInherited": 6,
           |   "broughtForwardAllowanceAtDisposal": 7
