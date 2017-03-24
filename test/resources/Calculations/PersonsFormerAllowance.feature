@@ -6,7 +6,7 @@ Feature: Persons Former Allowance
 
   Where "excess BFA" = (adjusted BFA) - BFA
 
-  However, brought Forward Allowance is reduced to 0 if the property was disposed of before 6 April 2017
+  However, brought Forward Allowance is reduced to 0 if the property was changed before 6 April 2017
 
   Scenario Outline: Persons Former Allowance
     When I calculate persons former allowance with <datePropertyWasChanged>, <rnrbAtDisposal>, <broughtForwardAllowanceAtDisposal> and <adjustedBroughtForwardAllowance>
@@ -14,7 +14,7 @@ Feature: Persons Former Allowance
 
     Examples:
       | datePropertyWasChanged | rnrbAtDisposal | broughtForwardAllowanceAtDisposal | adjustedBroughtForwardAllowance | expectedAnswer |
-      | 2017-04-05     | 100000         | 50000                             | 0                               | 100000         |
-      | 2017-04-06     | 100000         | 50000                             | 0                               | 150000         |
-      | 2017-04-06     | 100000         | 50000                             | 50000                           | 150000         |
-      | 2017-04-06     | 100000         | 50000                             | 60000                           | 160000         |
+      | 2017-04-05             | 100000         | 50000                             | 0                               | 100000         |
+      | 2017-04-06             | 100000         | 50000                             | 0                               | 150000         |
+      | 2017-04-06             | 100000         | 50000                             | 50000                           | 150000         |
+      | 2017-04-06             | 100000         | 50000                             | 60000                           | 160000         |
