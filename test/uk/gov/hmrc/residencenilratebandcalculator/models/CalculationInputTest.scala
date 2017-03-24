@@ -51,11 +51,11 @@ class CalculationInputTest extends UnitSpec {
       assert(caught.getMessage == "requirement failed: {\"percentagePassedToDirectDescendants\" : \"error.expected.number.100_at_most\"}")
     }
 
-    "throw an exception when broughtForwardAllowance is less than zero" in {
+    "throw an exception when valueBeingTransferred is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
         CalculationInput(new LocalDate(), 0, 0, 0, 0, -1)
       }
-      assert(caught.getMessage == "requirement failed: {\"broughtForwardAllowance\" : \"error.expected.number.non_negative\"}")
+      assert(caught.getMessage == "requirement failed: {\"valueBeingTransferred\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when propertyValueAfterExemption is present but its value is less than 0" in {
@@ -102,7 +102,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 1,
           | "chargeableEstateValue": 2,
           | "percentagePassedToDirectDescendants": 3,
-          | "broughtForwardAllowance": 4
+          | "valueBeingTransferred": 4
           |}
         """.stripMargin)
 
@@ -113,7 +113,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
       assert(input.percentagePassedToDirectDescendants == 3)
-      assert(input.broughtForwardAllowance == 4)
+      assert(input.valueBeingTransferred == 4)
     }
 
     "be constructable from JSON with property value after exemption present" in {
@@ -125,7 +125,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 1,
           | "chargeableEstateValue": 2,
           | "percentagePassedToDirectDescendants": 3,
-          | "broughtForwardAllowance": 4,
+          | "valueBeingTransferred": 4,
           | "propertyValueAfterExemption": {
           |   "value": 5,
           |   "inheritedValue": 6
@@ -140,7 +140,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
       assert(input.percentagePassedToDirectDescendants == 3)
-      assert(input.broughtForwardAllowance == 4)
+      assert(input.valueBeingTransferred == 4)
       assert(input.propertyValueAfterExemption.contains(PropertyValueAfterExemption(5, 6)))
     }
 
@@ -153,7 +153,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 1,
           | "chargeableEstateValue": 2,
           | "percentagePassedToDirectDescendants": 3,
-          | "broughtForwardAllowance": 4,
+          | "valueBeingTransferred": 4,
           | "downsizingDetails": {
           |   "datePropertyWasChanged": "2017-01-01",
           |   "valueOfChangedProperty": 5,
@@ -170,7 +170,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
       assert(input.percentagePassedToDirectDescendants == 3)
-      assert(input.broughtForwardAllowance == 4)
+      assert(input.valueBeingTransferred == 4)
       assert(input.downsizingDetails.contains(DownsizingDetails(new LocalDate(2017, 1, 1), 5, 6, 7)))
     }
 
@@ -185,7 +185,7 @@ class CalculationInputTest extends UnitSpec {
           assert(((JsError.toJson(error) \ "obj.propertyValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.chargeableEstateValue") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.percentagePassedToDirectDescendants") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
-          assert(((JsError.toJson(error) \ "obj.broughtForwardAllowance") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+          assert(((JsError.toJson(error) \ "obj.valueBeingTransferred") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
         case _ => fail("Invalid JSON object construction succeeded")
       }
     }
@@ -199,7 +199,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 1,
           | "chargeableEstateValue": 2,
           | "percentagePassedToDirectDescendants": 3,
-          | "broughtForwardAllowance": 4,
+          | "valueBeingTransferred": 4,
           | "propertyValueAfterExemption": {}
           |}
         """.stripMargin)
@@ -222,7 +222,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 1,
           | "chargeableEstateValue": 2,
           | "percentagePassedToDirectDescendants": 3,
-          | "broughtForwardAllowance": 4,
+          | "valueBeingTransferred": 4,
           | "downsizingDetails": {}
           |}
         """.stripMargin)
@@ -247,7 +247,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 1,
           | "chargeableEstateValue": 2,
           | "percentagePassedToDirectDescendants": 3,
-          | "broughtForwardAllowance": 4
+          | "valueBeingTransferred": 4
           |}
         """.stripMargin)
 
@@ -258,7 +258,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
       assert(input.percentagePassedToDirectDescendants == 3)
-      assert(input.broughtForwardAllowance == 4)
+      assert(input.valueBeingTransferred == 4)
     }
 
     "be constructable from a valid JsValue with property value after exemption present" in {
@@ -270,7 +270,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 1,
           | "chargeableEstateValue": 2,
           | "percentagePassedToDirectDescendants": 3,
-          | "broughtForwardAllowance": 4,
+          | "valueBeingTransferred": 4,
           | "propertyValueAfterExemption": {
           |   "value": 5,
           |   "inheritedValue": 6
@@ -285,7 +285,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
       assert(input.percentagePassedToDirectDescendants == 3)
-      assert(input.broughtForwardAllowance == 4)
+      assert(input.valueBeingTransferred == 4)
       assert(input.propertyValueAfterExemption.contains(PropertyValueAfterExemption(5, 6)))
     }
 
@@ -298,7 +298,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 1,
           | "chargeableEstateValue": 2,
           | "percentagePassedToDirectDescendants": 3,
-          | "broughtForwardAllowance": 4,
+          | "valueBeingTransferred": 4,
           | "downsizingDetails": {
           |   "datePropertyWasChanged": "2017-01-01",
           |   "valueOfChangedProperty": 5,
@@ -315,7 +315,7 @@ class CalculationInputTest extends UnitSpec {
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
       assert(input.percentagePassedToDirectDescendants == 3)
-      assert(input.broughtForwardAllowance == 4)
+      assert(input.valueBeingTransferred == 4)
       assert(input.downsizingDetails.contains(DownsizingDetails(new LocalDate(2017, 1, 1), 5, 6, 7)))
     }
 
@@ -330,7 +330,7 @@ class CalculationInputTest extends UnitSpec {
         ("propertyValue", "error.path.missing"),
         ("chargeableEstateValue", "error.path.missing"),
         ("percentagePassedToDirectDescendants", "error.path.missing"),
-        ("broughtForwardAllowance", "error.path.missing"))
+        ("valueBeingTransferred", "error.path.missing"))
 
       assert(errors.toSet == expcetedErrors)
     }
@@ -344,7 +344,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 0,
           | "chargeableEstateValue": 0,
           | "percentagePassedToDirectDescendants": 0,
-          | "broughtForwardAllowance": 0
+          | "valueBeingTransferred": 0
           |}
         """.stripMargin)
 
@@ -364,7 +364,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 0,
           | "chargeableEstateValue": 0,
           | "percentagePassedToDirectDescendants": 0,
-          | "broughtForwardAllowance": 0
+          | "valueBeingTransferred": 0
           |}
         """.stripMargin)
 
@@ -384,7 +384,7 @@ class CalculationInputTest extends UnitSpec {
           | "propertyValue": 0,
           | "chargeableEstateValue": 0,
           | "percentagePassedToDirectDescendants": 0,
-          | "broughtForwardAllowance": 0
+          | "valueBeingTransferred": 0
           |}
         """.stripMargin)
 

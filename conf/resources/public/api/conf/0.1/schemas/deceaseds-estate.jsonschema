@@ -30,7 +30,7 @@
             "minimum": 0,
             "maximum": 100
         },
-        "broughtForwardAllowance": {
+        "valueBeingTransferred": {
             "type": "integer",
             "minimum": 0
         },
@@ -70,5 +70,5 @@
             "required": ["datePropertyWasChanged", "valueOfChangedProperty", "valueCloselyInherited", "valueAvailableWhenPropertyChanged"]
         }
     },
-    "required": ["chargeableEstateValue", "dateOfDeath", "valueOfEstate", "propertyValue", "percentagePassedToDirectDescendants", "broughtForwardAllowance"]
+    "required": ["chargeableEstateValue", "dateOfDeath", "valueOfEstate", "propertyValue", "percentagePassedToDirectDescendants", "valueBeingTransferred"]
 }

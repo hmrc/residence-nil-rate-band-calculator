@@ -43,25 +43,25 @@ class Calculator @Inject()(env: Environment) {
   def personsFormerAllowance(datePropertyWasChanged: LocalDate,
                              rnrbOnPropertyChange: Int,
                              valueAvailableWhenPropertyChanged: Int,
-                             adjustedBroughtForwardAllowance: Int): Int = {
+                             adjustedValueBeingTransferred: Int): Int = {
     require(valueAvailableWhenPropertyChanged >= 0, "valueAvailableWhenPropertyChanged cannot be negative")
-    require(adjustedBroughtForwardAllowance >= 0, "adjustedBroughtForwardAllowance cannot be negative")
+    require(adjustedValueBeingTransferred >= 0, "adjustedValueBeingTransferred cannot be negative")
     require(rnrbOnPropertyChange >= 0, "rnrnOnPropertyChange cannot be negative")
 
-    val availableBroughtForwardAllowance = if (datePropertyWasChanged.isBefore(legislativeStartDate)) 0 else valueAvailableWhenPropertyChanged
-    val excessBroughtForwardAllowance = math.max(adjustedBroughtForwardAllowance - availableBroughtForwardAllowance, 0)
+    val availableValueBeingTransferred = if (datePropertyWasChanged.isBefore(legislativeStartDate)) 0 else valueAvailableWhenPropertyChanged
+    val excessValueBeingTransferred = math.max(adjustedValueBeingTransferred - availableValueBeingTransferred, 0)
 
-    rnrbOnPropertyChange + availableBroughtForwardAllowance + excessBroughtForwardAllowance
+    rnrbOnPropertyChange + availableValueBeingTransferred + excessValueBeingTransferred
   }
 
-  def adjustedBroughtForwardAllowance(totalAllowance: Int,
+  def adjustedValueBeingTransferred(totalAllowance: Int,
                                       amountToTaper: Int,
-                                      broughtForwardAllowance: Int): Int = {
+                                      valueBeingTransferred: Int): Int = {
     require(totalAllowance >= 0, "totalAllowance cannot be negative")
     require(amountToTaper >= 0, "amountToTaper cannot be negative")
-    require(broughtForwardAllowance >= 0, "broughtForwardAllowance cannot be negative")
+    require(valueBeingTransferred >= 0, "valueBeingTransferred cannot be negative")
 
-    math.max(broughtForwardAllowance - (amountToTaper.toDouble * (broughtForwardAllowance.toDouble / totalAllowance)), 0.0) toInt
+    math.max(valueBeingTransferred - (amountToTaper.toDouble * (valueBeingTransferred.toDouble / totalAllowance)), 0.0) toInt
   }
 
   def lostRelievableAmount(valueOfChangedProperty: Int,
@@ -89,14 +89,14 @@ class Calculator @Inject()(env: Environment) {
                           rnrnOnPropertyChange: Int,
                           totalAllowance: Int,
                           amountToTaper: Int,
-                          broughtForwardAllowance: Int,
+                          valueBeingTransferred: Int,
                           propertyValue: Int): Int = {
 
     downsizingDetails match {
       case None => 0
       case Some(details) if details.datePropertyWasChanged isBefore earliestDisposalDate => 0
       case Some(details) =>
-        val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
+        val adjustedBroughtForward = adjustedValueBeingTransferred(totalAllowance, amountToTaper, valueBeingTransferred)
         val formerAllowance = personsFormerAllowance(details.datePropertyWasChanged, rnrnOnPropertyChange, details.valueAvailableWhenPropertyChanged, adjustedBroughtForward)
         val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
         val lostAmount = lostRelievableAmount(details.valueOfChangedProperty, formerAllowance, propertyValue, adjustedAllowance)
@@ -115,11 +115,11 @@ class Calculator @Inject()(env: Environment) {
       }
       taperBandOnDeath <- taperBand(input.dateOfDeath)
     } yield {
-      val defaultAllowance = rnrbOnDeath + input.broughtForwardAllowance
+      val defaultAllowance = rnrbOnDeath + input.valueBeingTransferred
       val amountToTaper = math.max(input.valueOfEstate - taperBandOnDeath.threshold, 0) / taperBandOnDeath.rate
       val adjustedAllowance = taperedAllowance(defaultAllowance, amountToTaper)
 
-      val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbOnPropertyChange, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValue)
+      val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbOnPropertyChange, defaultAllowance, amountToTaper, input.valueBeingTransferred, input.propertyValue)
 
       val residenceNilRateAmount = math.min(input.propertyValuePassedToDirectDescendants + downsizingAddition, adjustedAllowance)
       val carryForwardAmount = adjustedAllowance - residenceNilRateAmount

@@ -25,24 +25,24 @@ import uk.gov.hmrc.residencenilratebandcalculator.models.Calculator
 
 class CalculatorSteps extends ScalaDsl with EN with Matchers with MockitoSugar {
 
-  When("""^I calculate adjusted brought forwards allowance with (\d*), (\d*) and (\d*)$""") {
-    (totalAllowance: Int, amountToTaper: Int, broughtForwardAllowance: Int) =>
+  When("""^I calculate adjusted value being transferred with (\d*), (\d*) and (\d*)$""") {
+    (totalAllowance: Int, amountToTaper: Int, valueBeingTransferred: Int) =>
       val env = mock[Environment]
       var calculator = new Calculator(env)
-      CalculationContext.adjustedBroughtForwardAllowance = calculator.adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
+      CalculationContext.adjustedValueBeingTransferred = calculator.adjustedValueBeingTransferred(totalAllowance, amountToTaper, valueBeingTransferred)
   }
 
   When("""^I calculate persons former allowance with (.*), (\d*), (\d*) and (\d*)$""") {
-    (datePropertyWasChanged: String, rnrnOnPropertyChange: Int, valueAvailableWhenPropertyChanged: Int, adjustedBroughtForwardAllowance: Int) =>
+    (datePropertyWasChanged: String, rnrnOnPropertyChange: Int, valueAvailableWhenPropertyChanged: Int, adjustedValueBeingTransferred: Int) =>
       val env = mock[Environment]
       var calculator = new Calculator(env)
       val parsedDate = LocalDate.parse(datePropertyWasChanged)
       CalculationContext.personsFormerAllowance =
-        calculator.personsFormerAllowance(parsedDate, rnrnOnPropertyChange, valueAvailableWhenPropertyChanged, adjustedBroughtForwardAllowance)
+        calculator.personsFormerAllowance(parsedDate, rnrnOnPropertyChange, valueAvailableWhenPropertyChanged, adjustedValueBeingTransferred)
   }
 
-  Then("""^the adjusted brought forward allowance should be (\d*)$""") { (expectedAnswer: Int) =>
-    CalculationContext.adjustedBroughtForwardAllowance shouldBe expectedAnswer
+  Then("""^the adjusted Value Being Transferred should be (\d*)$""") { (expectedAnswer: Int) =>
+    CalculationContext.adjustedValueBeingTransferred shouldBe expectedAnswer
   }
 
   Then("""^the persons former allowance should be (\d*)$""") { (expectedAnswer: Int) =>

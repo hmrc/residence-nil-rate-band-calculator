@@ -12,7 +12,7 @@ Feature: Case Study 15
       | valueOfEstate              | 185000     |
       | propertyValue              | 105000     |
       | percentagePassedToDirectDescendants | 0          |
-      | broughtForwardAllowance    | 0          |
+      | valueBeingTransferred    | 0          |
     And these property value after exemption details
       | value          | 0 |
       | inheritedValue | 0 |
@@ -37,7 +37,7 @@ Feature: Case Study 15
       | valueOfEstate              | 185000     |
       | propertyValue              | 0          |
       | percentagePassedToDirectDescendants | 0          |
-      | broughtForwardAllowance    | 0          |
+      | valueBeingTransferred    | 0          |
     And these downsizing details
       | datePropertyWasChanged                    | 2016-03-01 |
       | valueOfChangedProperty           | 150000     |

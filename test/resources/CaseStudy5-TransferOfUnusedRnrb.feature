@@ -11,7 +11,7 @@ Feature: Case Study 5
       | valueOfEstate              | 1000000    |
       | propertyValue              | 400000     |
       | percentagePassedToDirectDescendants | 100        |
-      | broughtForwardAllowance    | 150000     |
+      | valueBeingTransferred    | 150000     |
     Then I should get an OK response
     And the response body should be
       | applicableNilRateBandAmount | 150000 |
@@ -27,7 +27,7 @@ Feature: Case Study 5
       | valueOfEstate              | 750000     |
       | propertyValue              | 250000     |
       | percentagePassedToDirectDescendants | 100        |
-      | broughtForwardAllowance    | 150000     |
+      | valueBeingTransferred    | 150000     |
     Then I should get an OK response
     And the response body should be
       | applicableNilRateBandAmount | 150000 |

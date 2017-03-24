@@ -12,7 +12,7 @@ Feature: Case Study 14
       | valueOfEstate              | 700000     |
       | propertyValue              | 105000     |
       | percentagePassedToDirectDescendants | 50         |
-      | broughtForwardAllowance    | 0          |
+      | valueBeingTransferred    | 0          |
     And these property value after exemption details
       | value          | 52500 |
       | inheritedValue | 52500 |
@@ -37,7 +37,7 @@ Feature: Case Study 14
       | valueOfEstate              | 700000     |
       | propertyValue              | 105000     |
       | percentagePassedToDirectDescendants | 50         |
-      | broughtForwardAllowance    | 0          |
+      | valueBeingTransferred    | 0          |
     And these property value after exemption details
       | value          | 52500 |
       | inheritedValue | 52500 |

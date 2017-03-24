@@ -3,7 +3,7 @@
 @Downsizing
 Feature: Case Study 19
 
-  Variants on Case Study 19, downsizing and leaving a property with brought forward allowance
+  Variants on Case Study 19, downsizing and leaving a property with Value Being Transferred
 
   Scenario: 19.1 - Case Study 19
     When I combine these details
@@ -12,7 +12,7 @@ Feature: Case Study 19
       | valueOfEstate              | 635000     |
       | propertyValue              | 210000     |
       | percentagePassedToDirectDescendants | 100        |
-      | broughtForwardAllowance    | 175000     |
+      | valueBeingTransferred    | 175000     |
     And these downsizing details
       | datePropertyWasChanged                    | 2015-09-01 |
       | valueOfChangedProperty           | 300000     |

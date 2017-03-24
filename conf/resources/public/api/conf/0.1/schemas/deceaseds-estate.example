@@ -4,7 +4,7 @@
     "valueOfEstate":300,
     "propertyValue":300,
     "percentagePassedToDirectDescendants": 100,
-    "broughtForwardAllowance": 300,
+    "valueBeingTransferred": 300,
     "propertyValueAfterExemption": {
         "value": 200,
         "inheritedValue": 200

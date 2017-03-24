@@ -9,7 +9,7 @@ Feature: Property Exemptions
       | valueOfEstate              | 490000     |
       | propertyValue              | 300000     |
       | percentagePassedToDirectDescendants | 100        |
-      | broughtForwardAllowance    | 0          |
+      | valueBeingTransferred    | 0          |
     And these property value after exemption details
       | value          | 100000 |
       | inheritedValue | 100000 |

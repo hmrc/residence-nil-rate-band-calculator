@@ -52,7 +52,7 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
         calculator(input) shouldBe Success(CalculationResult(150000, 150000, 0, 150000, 150000))
       }
 
-      "include brought forward RNRB in the RNRA and carry-forward amount results" in {
+      "include transferred value in the RNRA and carry-forward amount results" in {
         val input = CalculationInput(new LocalDate(2021, 1, 1), 500000, 500000, 250000, 100, 175000)
         calculator(input) shouldBe Success(CalculationResult(250000, 175000, 100000, 350000, 350000))
       }
@@ -107,27 +107,27 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
     }
   }
 
-  "calculating adjusted brought forward allowance" must {
+  "calculating adjusted Value Being Transferred" must {
 
     "give an error when total allowance is negative" in {
       val caught = intercept[IllegalArgumentException] {
-        calculator.adjustedBroughtForwardAllowance(-1, 1, 1)
+        calculator.adjustedValueBeingTransferred(-1, 1, 1)
       }
       assert(caught.getMessage == "requirement failed: totalAllowance cannot be negative")
     }
 
     "give an error when amount to taper is negative" in {
       val caught = intercept[IllegalArgumentException] {
-        calculator.adjustedBroughtForwardAllowance(1, -1, 1)
+        calculator.adjustedValueBeingTransferred(1, -1, 1)
       }
       assert(caught.getMessage == "requirement failed: amountToTaper cannot be negative")
     }
 
-    "give an error when brought forward allowance is negative" in {
+    "give an error when Value Being Transferred is negative" in {
       val caught = intercept[IllegalArgumentException] {
-        calculator.adjustedBroughtForwardAllowance(1, 1, -1)
+        calculator.adjustedValueBeingTransferred(1, 1, -1)
       }
-      assert(caught.getMessage == "requirement failed: broughtForwardAllowance cannot be negative")
+      assert(caught.getMessage == "requirement failed: valueBeingTransferred cannot be negative")
     }
   }
 
@@ -151,11 +151,11 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
       assert(caught.getMessage == "requirement failed: valueAvailableWhenPropertyChanged cannot be negative")
     }
 
-    "give an error when adjusted brought forward allowance is negative" in {
+    "give an error when adjusted Value Being Transferred is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.personsFormerAllowance(new LocalDate(), 1, 1, -1)
       }
-      assert(caught.getMessage == "requirement failed: adjustedBroughtForwardAllowance cannot be negative")
+      assert(caught.getMessage == "requirement failed: adjustedValueBeingTransferred cannot be negative")
     }
   }
 
