@@ -78,10 +78,10 @@ object PropertyValueAfterExemption {
 }
 
 case class DownsizingDetails(datePropertyWasChanged: LocalDate,
-                             valueOfDisposedProperty: Int,
+                             valueOfChangedProperty: Int,
                              valueCloselyInherited: Int,
                              broughtForwardAllowanceAtDisposal: Int) {
-  require(valueOfDisposedProperty >= 0, """{"valueOfDisposedProperty" : "error.expected.number.non_negative"}""")
+  require(valueOfChangedProperty >= 0, """{"valueOfChangedProperty" : "error.expected.number.non_negative"}""")
   require(valueCloselyInherited >= 0, """{"valueCloselyInherited" : "error.expected.number.non_negative"}""")
   require(broughtForwardAllowanceAtDisposal >= 0, """{"broughtForwardAllowanceAtDisposal" : "error.expected.number.non_negative"}""")
 }

@@ -161,7 +161,7 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
 
   "calculating lost relievable amount" must {
 
-    "return 0 when the value of the disposed property is 0" in {
+    "return 0 when the value of the changed property is 0" in {
       calculator.lostRelievableAmount(0, 100000, 100000, 100000) shouldBe 0
     }
 
@@ -169,12 +169,12 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
       calculator.lostRelievableAmount(100000, 100000, 100000, 0) shouldBe 0
     }
 
-    "return a value equal to the tapered allowance when the chargeable property value is 0 and the disposed property value is greater than or equal to the former allowance" in {
+    "return a value equal to the tapered allowance when the chargeable property value is 0 and the changed property value is greater than or equal to the former allowance" in {
       calculator.lostRelievableAmount(200000, 100000, 0, 150000) shouldBe 150000
       calculator.lostRelievableAmount(200000, 200000, 0, 150000) shouldBe 150000
     }
 
-    "return [tapered allowance] * [value of disposed property / former allowance] when the chargeable property value is 0 and the disposed property value is less than the former allowance" in {
+    "return [tapered allowance] * [value of changed property / former allowance] when the chargeable property value is 0 and the changed property value is less than the former allowance" in {
       calculator.lostRelievableAmount(100000, 200000, 0, 150000) shouldBe 75000
     }
 
@@ -189,11 +189,11 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
       calculator.lostRelievableAmount(400000, 125000, 52500, 175000) shouldBe 122500
     }
 
-    "give an error when value of disposed property is negative" in {
+    "give an error when value of changed property is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.lostRelievableAmount(-1, 1, 1, 1)
       }
-      assert(caught.getMessage == "requirement failed: valueOfDisposedProperty cannot be negative")
+      assert(caught.getMessage == "requirement failed: valueOfChangedProperty cannot be negative")
     }
 
     "give an error when former allowance is negative" in {

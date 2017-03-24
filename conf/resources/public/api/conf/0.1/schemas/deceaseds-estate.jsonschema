@@ -54,7 +54,7 @@
                 "datePropertyWasChanged": {
                     "$ref": "#/definitions/dateString"
                 },
-                "valueOfDisposedProperty": {
+                "valueOfChangedProperty": {
                     "type": "integer",
                     "minimum": 0
                 },
@@ -67,7 +67,7 @@
                     "minimum": 0
                 }
             },
-            "required": ["datePropertyWasChanged", "valueOfDisposedProperty", "valueCloselyInherited", "broughtForwardAllowanceAtDisposal"]
+            "required": ["datePropertyWasChanged", "valueOfChangedProperty", "valueCloselyInherited", "broughtForwardAllowanceAtDisposal"]
         }
     },
     "required": ["chargeableEstateValue", "dateOfDeath", "valueOfEstate", "propertyValue", "percentagePassedToDirectDescendants", "broughtForwardAllowance"]

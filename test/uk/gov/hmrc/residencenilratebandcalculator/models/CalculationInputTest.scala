@@ -72,11 +72,11 @@ class CalculationInputTest extends UnitSpec {
       assert(caught.getMessage == "requirement failed: {\"inheritedValue\" : \"error.expected.number.non_negative\"}")
     }
 
-    "throw an exception when downsizingDetails are present but valueOfDisposedProperty is less than 0" in {
+    "throw an exception when downsizingDetails are present but valueOfChangedProperty is less than 0" in {
       val caught = intercept[IllegalArgumentException] {
         CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, None, Some(DownsizingDetails(new LocalDate(), -1, 0, 0)))
       }
-      assert(caught.getMessage == "requirement failed: {\"valueOfDisposedProperty\" : \"error.expected.number.non_negative\"}")
+      assert(caught.getMessage == "requirement failed: {\"valueOfChangedProperty\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when downsizingDetails are present but valueCloselyInherited is less than 0" in {
@@ -156,7 +156,7 @@ class CalculationInputTest extends UnitSpec {
           | "broughtForwardAllowance": 4,
           | "downsizingDetails": {
           |   "datePropertyWasChanged": "2017-01-01",
-          |   "valueOfDisposedProperty": 5,
+          |   "valueOfChangedProperty": 5,
           |   "valueCloselyInherited": 6,
           |   "broughtForwardAllowanceAtDisposal": 7
           | }
@@ -231,7 +231,7 @@ class CalculationInputTest extends UnitSpec {
       input match {
         case error: JsError =>
           assert(((JsError.toJson(error) \ "obj.downsizingDetails.datePropertyWasChanged") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
-          assert(((JsError.toJson(error) \ "obj.downsizingDetails.valueOfDisposedProperty") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
+          assert(((JsError.toJson(error) \ "obj.downsizingDetails.valueOfChangedProperty") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.downsizingDetails.valueCloselyInherited") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
           assert(((JsError.toJson(error) \ "obj.downsizingDetails.broughtForwardAllowanceAtDisposal") \ 0 \ "msg").as[Array[String]].head == "error.path.missing")
         case _ => fail("Invalid JSON object construction succeeded")
@@ -301,7 +301,7 @@ class CalculationInputTest extends UnitSpec {
           | "broughtForwardAllowance": 4,
           | "downsizingDetails": {
           |   "datePropertyWasChanged": "2017-01-01",
-          |   "valueOfDisposedProperty": 5,
+          |   "valueOfChangedProperty": 5,
           |   "valueCloselyInherited": 6,
           |   "broughtForwardAllowanceAtDisposal": 7
           | }

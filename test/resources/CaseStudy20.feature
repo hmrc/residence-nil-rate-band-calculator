@@ -15,7 +15,7 @@ Feature: Case Study 20
       | broughtForwardAllowance    | 150000     |
     And these downsizing details
       | datePropertyWasChanged                    | 2019-07-01 |
-      | valueOfDisposedProperty           | 285000     |
+      | valueOfChangedProperty           | 285000     |
       | valueCloselyInherited             | 1660000    |
       | broughtForwardAllowanceAtDisposal | 150000     |
     And POST the details to calculate
@@ -37,7 +37,7 @@ Feature: Case Study 20
       | broughtForwardAllowance    | 150000     |
     And these downsizing details
       | datePropertyWasChanged                    | 2017-07-01 |
-      | valueOfDisposedProperty           | 285000     |
+      | valueOfChangedProperty           | 285000     |
       | valueCloselyInherited             | 1660000    |
       | broughtForwardAllowanceAtDisposal | 100000     |
     And POST the details to calculate

@@ -64,11 +64,11 @@ class Calculator @Inject()(env: Environment) {
     math.max(broughtForwardAllowance - (amountToTaper.toDouble * (broughtForwardAllowance.toDouble / totalAllowance)), 0.0) toInt
   }
 
-  def lostRelievableAmount(valueOfDisposedProperty: Int,
+  def lostRelievableAmount(valueOfChangedProperty: Int,
                            formerAllowance: Int,
                            propertyValue: Int,
                            taperedAllowance: Int): Int = {
-    require(valueOfDisposedProperty >= 0, "valueOfDisposedProperty cannot be negative")
+    require(valueOfChangedProperty >= 0, "valueOfChangedProperty cannot be negative")
     require(formerAllowance > 0, "formerAllowance must be greater than zero")
     require(propertyValue >= 0, "propertyValue cannot be negative")
     require(taperedAllowance >= 0, "taperedAllowance cannot be negative")
@@ -76,7 +76,7 @@ class Calculator @Inject()(env: Environment) {
     taperedAllowance match {
       case 0 => 0
       case _ => {
-        val percentageOfFormerAllowance = fractionAsBoundedPercent(valueOfDisposedProperty.toDouble / formerAllowance)
+        val percentageOfFormerAllowance = fractionAsBoundedPercent(valueOfChangedProperty.toDouble / formerAllowance)
         val percentageOfAllowanceOnDeath = fractionAsBoundedPercent(propertyValue.toDouble / taperedAllowance)
         val difference = boundedPercentageDifferenceAsDouble(percentageOfFormerAllowance,percentageOfAllowanceOnDeath)
 
@@ -99,7 +99,7 @@ class Calculator @Inject()(env: Environment) {
         val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
         val formerAllowance = personsFormerAllowance(details.datePropertyWasChanged, rnrbAtDisposal, details.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
         val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
-        val lostAmount = lostRelievableAmount(details.valueOfDisposedProperty, formerAllowance, propertyValue, adjustedAllowance)
+        val lostAmount = lostRelievableAmount(details.valueOfChangedProperty, formerAllowance, propertyValue, adjustedAllowance)
 
         math.min(details.valueCloselyInherited, lostAmount)
     }
