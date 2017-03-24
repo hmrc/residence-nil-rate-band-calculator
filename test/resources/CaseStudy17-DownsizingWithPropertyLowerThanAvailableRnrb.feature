@@ -17,7 +17,7 @@ Feature: Case Study 17
       | datePropertyWasChanged                    | 2019-05-01 |
       | valueOfChangedProperty           | 90000      |
       | valueCloselyInherited             | 600000     |
-      | broughtForwardAllowanceAtDisposal | 0          |
+      | valueAvailableWhenPropertyChanged | 0          |
     And POST the details to calculate
     Then I should get an OK response
     And the response body should be
@@ -40,7 +40,7 @@ Feature: Case Study 17
       | datePropertyWasChanged                    | 2019-05-01 |
       | valueOfChangedProperty           | 90000      |
       | valueCloselyInherited             | 100000     |
-      | broughtForwardAllowanceAtDisposal | 0          |
+      | valueAvailableWhenPropertyChanged | 0          |
     And POST the details to calculate
     Then I should get an OK response
     And the response body should be

@@ -41,17 +41,17 @@ class Calculator @Inject()(env: Environment) {
 
 
   def personsFormerAllowance(datePropertyWasChanged: LocalDate,
-                             rnrbAtDisposal: Int,
-                             broughtForwardAllowanceAtDisposal: Int,
+                             rnrbOnPropertyChange: Int,
+                             valueAvailableWhenPropertyChanged: Int,
                              adjustedBroughtForwardAllowance: Int): Int = {
-    require(broughtForwardAllowanceAtDisposal >= 0, "broughtForwardAllowanceAtDisposal cannot be negative")
+    require(valueAvailableWhenPropertyChanged >= 0, "valueAvailableWhenPropertyChanged cannot be negative")
     require(adjustedBroughtForwardAllowance >= 0, "adjustedBroughtForwardAllowance cannot be negative")
-    require(rnrbAtDisposal >= 0, "rnrbAtDisposal cannot be negative")
+    require(rnrbOnPropertyChange >= 0, "rnrnOnPropertyChange cannot be negative")
 
-    val availableBroughtForwardAllowance = if (datePropertyWasChanged.isBefore(legislativeStartDate)) 0 else broughtForwardAllowanceAtDisposal
+    val availableBroughtForwardAllowance = if (datePropertyWasChanged.isBefore(legislativeStartDate)) 0 else valueAvailableWhenPropertyChanged
     val excessBroughtForwardAllowance = math.max(adjustedBroughtForwardAllowance - availableBroughtForwardAllowance, 0)
 
-    rnrbAtDisposal + availableBroughtForwardAllowance + excessBroughtForwardAllowance
+    rnrbOnPropertyChange + availableBroughtForwardAllowance + excessBroughtForwardAllowance
   }
 
   def adjustedBroughtForwardAllowance(totalAllowance: Int,
@@ -86,7 +86,7 @@ class Calculator @Inject()(env: Environment) {
   }
 
   def downsizingAllowance(downsizingDetails: Option[DownsizingDetails],
-                          rnrbAtDisposal: Int,
+                          rnrnOnPropertyChange: Int,
                           totalAllowance: Int,
                           amountToTaper: Int,
                           broughtForwardAllowance: Int,
@@ -97,7 +97,7 @@ class Calculator @Inject()(env: Environment) {
       case Some(details) if details.datePropertyWasChanged isBefore earliestDisposalDate => 0
       case Some(details) =>
         val adjustedBroughtForward = adjustedBroughtForwardAllowance(totalAllowance, amountToTaper, broughtForwardAllowance)
-        val formerAllowance = personsFormerAllowance(details.datePropertyWasChanged, rnrbAtDisposal, details.broughtForwardAllowanceAtDisposal, adjustedBroughtForward)
+        val formerAllowance = personsFormerAllowance(details.datePropertyWasChanged, rnrnOnPropertyChange, details.valueAvailableWhenPropertyChanged, adjustedBroughtForward)
         val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
         val lostAmount = lostRelievableAmount(details.valueOfChangedProperty, formerAllowance, propertyValue, adjustedAllowance)
 

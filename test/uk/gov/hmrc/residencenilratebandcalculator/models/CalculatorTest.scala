@@ -133,22 +133,22 @@ class CalculatorTest extends UnitSpec with WithFakeApplication with MockitoSugar
 
   "calculating persons former allowance" must {
 
-    "ignore brought forward allowance at disposal when the date property was changed is before 6 April 2017" in {
+    "ignore Value Available When Property Changed when the date property was changed is before 6 April 2017" in {
       calculator.personsFormerAllowance(new LocalDate(2015, 4, 5), 100000, 50000, 0) shouldBe 100000
     }
 
-    "give an error when RNRB at disposal is negative" in {
+    "give an error when RNRB on property change is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.personsFormerAllowance(new LocalDate(), -1, 1, 1)
       }
-      assert(caught.getMessage == "requirement failed: rnrbAtDisposal cannot be negative")
+      assert(caught.getMessage == "requirement failed: rnrnOnPropertyChange cannot be negative")
     }
 
-    "give an error when brought forward allowance at disposal is negative" in {
+    "give an error when Value Available When Property Changed is negative" in {
       val caught = intercept[IllegalArgumentException] {
         calculator.personsFormerAllowance(new LocalDate(), 1, -1, 1)
       }
-      assert(caught.getMessage == "requirement failed: broughtForwardAllowanceAtDisposal cannot be negative")
+      assert(caught.getMessage == "requirement failed: valueAvailableWhenPropertyChanged cannot be negative")
     }
 
     "give an error when adjusted brought forward allowance is negative" in {
