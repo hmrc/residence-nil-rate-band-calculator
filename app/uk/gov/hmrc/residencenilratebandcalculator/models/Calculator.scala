@@ -109,7 +109,7 @@ class Calculator @Inject()(env: Environment) {
 
     for {
       rnrbOnDeath <- residenceNilRateBand(input.dateOfDeath)
-      rnrbAtDisposal <- input.downsizingDetails match {
+      rnrbOnPropertyChange <- input.downsizingDetails match {
         case Some(details) => residenceNilRateBand(details.datePropertyWasChanged)
         case None => Success(0)
       }
@@ -119,7 +119,7 @@ class Calculator @Inject()(env: Environment) {
       val amountToTaper = math.max(input.valueOfEstate - taperBandOnDeath.threshold, 0) / taperBandOnDeath.rate
       val adjustedAllowance = taperedAllowance(defaultAllowance, amountToTaper)
 
-      val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbAtDisposal, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValue)
+      val downsizingAddition = downsizingAllowance(input.downsizingDetails, rnrbOnPropertyChange, defaultAllowance, amountToTaper, input.broughtForwardAllowance, input.propertyValue)
 
       val residenceNilRateAmount = math.min(input.propertyValuePassedToDirectDescendants + downsizingAddition, adjustedAllowance)
       val carryForwardAmount = adjustedAllowance - residenceNilRateAmount
