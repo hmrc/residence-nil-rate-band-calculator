@@ -11,7 +11,7 @@ Feature: Case Study 11
       | valueOfEstate              | 850000     |
       | propertyValue              | 0          |
       | percentagePassedToDirectDescendants | 0          |
-      | broughtForwardAllowance    | 175000     |
+      | valueBeingTransferred    | 175000     |
     And these downsizing details
       | datePropertyWasChanged                    | 2018-06-01 |
       | valueOfChangedProperty           | 195000     |

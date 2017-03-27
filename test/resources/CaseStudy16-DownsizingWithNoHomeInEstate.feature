@@ -12,7 +12,7 @@ Feature: Case Study 16
       | valueOfEstate              | 500000     |
       | propertyValue              | 0          |
       | percentagePassedToDirectDescendants | 0          |
-      | broughtForwardAllowance    | 0          |
+      | valueBeingTransferred    | 0          |
     And these downsizing details
       | datePropertyWasChanged                    | 2018-10-01 |
       | valueOfChangedProperty           | 285000     |
@@ -34,7 +34,7 @@ Feature: Case Study 16
       | valueOfEstate              | 500000     |
       | propertyValue              | 0          |
       | percentagePassedToDirectDescendants | 0          |
-      | broughtForwardAllowance    | 0          |
+      | valueBeingTransferred    | 0          |
     And these downsizing details
       | datePropertyWasChanged                    | 2018-10-01 |
       | valueOfChangedProperty           | 285000     |

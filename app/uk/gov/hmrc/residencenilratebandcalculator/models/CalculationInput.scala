@@ -27,14 +27,14 @@ case class CalculationInput(dateOfDeath: LocalDate,
                             chargeableEstateValue: Int,
                             propertyValue: Int,
                             percentagePassedToDirectDescendants: Int,
-                            broughtForwardAllowance: Int,
+                            valueBeingTransferred: Int,
                             propertyValueAfterExemption: Option[PropertyValueAfterExemption] = None,
                             downsizingDetails: Option[DownsizingDetails] = None) {
   require(valueOfEstate >= 0, """{"valueOfEstate" : "error.expected.number.non_negative"}""")
   require(propertyValue >= 0, """{"propertyValue" : "error.expected.number.non_negative"}""")
   require(percentagePassedToDirectDescendants >= 0, """{"percentagePassedToDirectDescendants" : "error.expected.number.non_negative"}""")
   require(percentagePassedToDirectDescendants <= 100, """{"percentagePassedToDirectDescendants" : "error.expected.number.100_at_most"}""")
-  require(broughtForwardAllowance >= 0, """{"broughtForwardAllowance" : "error.expected.number.non_negative"}""")
+  require(valueBeingTransferred >= 0, """{"valueBeingTransferred" : "error.expected.number.non_negative"}""")
 
   def propertyValuePassedToDirectDescendants = propertyValueAfterExemption match {
     case Some(values) => values.inheritedValue

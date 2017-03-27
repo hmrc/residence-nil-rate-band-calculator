@@ -17,6 +17,6 @@
 package steps
 
 object CalculationContext {
-  var adjustedBroughtForwardAllowance: Int = -1
+  var adjustedValueBeingTransferred: Int = -1
   var personsFormerAllowance: Int = -1
 }
