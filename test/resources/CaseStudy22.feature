@@ -16,7 +16,7 @@ Feature: Case Study 22
     And these downsizing details
       | datePropertyWasChanged                    | 2020-05-01 |
       | valueOfChangedProperty           | 200000     |
-      | valueCloselyInherited             | 200000     |
+      | valueOfAssetsPassing             | 200000     |
       | valueAvailableWhenPropertyChanged | 0          |
     And POST the details to calculate
     Then I should get an OK response

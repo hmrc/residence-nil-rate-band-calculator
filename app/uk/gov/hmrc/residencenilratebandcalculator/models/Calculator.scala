@@ -101,7 +101,7 @@ class Calculator @Inject()(env: Environment) {
         val adjustedAllowance = taperedAllowance(totalAllowance, amountToTaper)
         val lostAmount = lostRelievableAmount(details.valueOfChangedProperty, formerAllowance, propertyValue, adjustedAllowance)
 
-        math.min(details.valueCloselyInherited, lostAmount)
+        math.min(details.valueOfAssetsPassing, lostAmount)
     }
   }
 

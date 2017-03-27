@@ -12,7 +12,7 @@
     "downsizingDetails": {
         "datePropertyWasChanged":"2017-01-01",
         "valueOfChangedProperty":100,
-        "valueCloselyInherited": 100,
+        "valueOfAssetsPassing": 100,
         "valueAvailableWhenPropertyChanged": 0
     }
 }
