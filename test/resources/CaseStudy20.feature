@@ -16,7 +16,7 @@ Feature: Case Study 20
     And these downsizing details
       | datePropertyWasChanged                    | 2019-07-01 |
       | valueOfChangedProperty           | 285000     |
-      | valueCloselyInherited             | 1660000    |
+      | valueOfAssetsPassing             | 1660000    |
       | valueAvailableWhenPropertyChanged | 150000     |
     And POST the details to calculate
     Then I should get an OK response
@@ -38,7 +38,7 @@ Feature: Case Study 20
     And these downsizing details
       | datePropertyWasChanged                    | 2017-07-01 |
       | valueOfChangedProperty           | 285000     |
-      | valueCloselyInherited             | 1660000    |
+      | valueOfAssetsPassing             | 1660000    |
       | valueAvailableWhenPropertyChanged | 100000     |
     And POST the details to calculate
     Then I should get an OK response
