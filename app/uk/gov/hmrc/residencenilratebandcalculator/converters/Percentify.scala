@@ -25,4 +25,5 @@ object Percentify {
   }
 
   implicit def doubleToPercent(double: Double) = new Percentifier(double)
+  implicit def bigDecimalToPercent(bigDecimal: BigDecimal) = new Percentifier(bigDecimal.toDouble)
 }

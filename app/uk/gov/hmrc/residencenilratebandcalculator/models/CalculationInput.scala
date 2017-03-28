@@ -26,7 +26,7 @@ case class CalculationInput(dateOfDeath: LocalDate,
                             valueOfEstate: Int,
                             chargeableEstateValue: Int,
                             propertyValue: Int,
-                            percentagePassedToDirectDescendants: Int,
+                            percentagePassedToDirectDescendants: BigDecimal,
                             valueBeingTransferred: Int,
                             propertyValueAfterExemption: Option[PropertyValueAfterExemption] = None,
                             downsizingDetails: Option[DownsizingDetails] = None) {

@@ -10,7 +10,7 @@ Feature: Case Study 6
       | chargeableEstateValue   | 800000     |
       | valueOfEstate              | 800000     |
       | propertyValue              | 500000     |
-      | percentagePassedToDirectDescendants | 50         |
+      | percentagePassedToDirectDescendants | 50.01         |
       | valueBeingTransferred    | 0          |
     Then I should get an OK response
     And the response body should be
@@ -26,12 +26,12 @@ Feature: Case Study 6
       | chargeableEstateValue   | 750000     |
       | valueOfEstate              | 750000     |
       | propertyValue              | 250000     |
-      | percentagePassedToDirectDescendants | 50         |
+      | percentagePassedToDirectDescendants | 50.01         |
       | valueBeingTransferred    | 0          |
     Then I should get an OK response
     And the response body should be
       | applicableNilRateBandAmount | 175000 |
-      | residenceNilRateAmount      | 125000 |
-      | carryForwardAmount          | 50000  |
+      | residenceNilRateAmount      | 125025 |
+      | carryForwardAmount          | 49975  |
       | defaultAllowanceAmount      | 175000 |
       | adjustedAllowanceAmount     | 175000 |

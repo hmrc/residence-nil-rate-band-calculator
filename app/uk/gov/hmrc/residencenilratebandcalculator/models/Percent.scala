@@ -24,4 +24,5 @@ case class Percent(value: Double) extends Ordered[Percent] {
   def -(p: Percent): Percent = Percent(this.value - p.value)
   def *(d: Double): Double = this.asDecimal * d
   def *(i: Int): Double  = this.asDecimal * i
+  def *(bg: BigDecimal): Double = (this.asDecimal * bg).toDouble
 }
