@@ -23,11 +23,11 @@ import play.api.http.Status.{BAD_REQUEST, NOT_FOUND}
 import play.api.mvc.{RequestHeader, Result, Results}
 import play.api.routing.Router
 import play.api.{Configuration, Environment, OptionalSourceMapper, UsefulException}
-import uk.gov.hmrc.play.audit.http.config.ErrorAuditingSettings
 import uk.gov.hmrc.play.microservice.bootstrap.JsonErrorHandling
 import uk.gov.hmrc.residencenilratebandcalculator.connectors.MicroserviceAuditConnector
 
 import scala.concurrent.Future
+import uk.gov.hmrc.play.microservice.config.ErrorAuditingSettings
 
 @Singleton
 class ErrorHandler @Inject()(env: Environment,
