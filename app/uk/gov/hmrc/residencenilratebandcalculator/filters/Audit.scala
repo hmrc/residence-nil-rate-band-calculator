@@ -20,10 +20,10 @@ import javax.inject.Inject
 
 import akka.stream.Materializer
 import play.api.mvc.EssentialFilter
-import uk.gov.hmrc.play.audit.filters.AuditFilter
 import uk.gov.hmrc.play.config.AppName
 import uk.gov.hmrc.residencenilratebandcalculator.connectors.MicroserviceAuditConnector
 import uk.gov.hmrc.residencenilratebandcalculator.controllers.ControllerConfiguration
+import uk.gov.hmrc.play.microservice.filters.AuditFilter
 
 class Audit @Inject()(controllerConfiguration: ControllerConfiguration, microserviceAuditConnector: MicroserviceAuditConnector)
                      (implicit val mat: Materializer)
