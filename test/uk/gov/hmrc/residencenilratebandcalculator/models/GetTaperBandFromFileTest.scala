@@ -19,9 +19,9 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 import java.io.ByteArrayInputStream
 
 import org.joda.time.LocalDate
-import org.scalatest.mock.MockitoSugar
-import org.mockito.Matchers._
-import org.mockito.Mockito.when
+import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers._
+import org.scalatest.mockito.MockitoSugar
 import play.api.Environment
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 

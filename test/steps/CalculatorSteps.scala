@@ -19,7 +19,7 @@ package steps
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.joda.time.LocalDate
 import org.scalatest.Matchers
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.mockito.MockitoSugar
 import play.api.Environment
 import uk.gov.hmrc.residencenilratebandcalculator.models.Calculator
 
