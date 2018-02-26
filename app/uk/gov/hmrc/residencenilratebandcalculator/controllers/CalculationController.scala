@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import javax.inject.Inject
 
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
 import play.api.mvc.{Action, BodyParsers, Controller}
@@ -35,9 +36,12 @@ class CalculationController @Inject()(calculator: Calculator)(implicit val messa
         case Right(input) =>
           calculator(input) match {
             case Success(result) => Future.successful(Ok(Json.toJson(result)))
-            case Failure(error) => Future.successful(InternalServerError(HttpErrorResponse(INTERNAL_SERVER_ERROR, error.getMessage)))
+            case Failure(error) =>
+              Logger.error("[CalculationController][calculate] : Unable to calculate", error)
+              Future.successful(InternalServerError(HttpErrorResponse(INTERNAL_SERVER_ERROR, error.getMessage)))
           }
         case Left(jsonErrors) =>
+          Logger.error("[CalculationController][calculate] : Failed to parse the provided JSON object")
           Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", jsonErrors)))
       }
     }
