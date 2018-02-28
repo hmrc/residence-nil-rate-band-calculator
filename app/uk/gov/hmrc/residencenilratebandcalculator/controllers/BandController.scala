@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 import javax.inject.Inject
 
 import org.joda.time.LocalDate
-import play.api.Environment
+import play.api.{Environment, Logger}
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, Controller}
 import uk.gov.hmrc.residencenilratebandcalculator.models.GetNilRateAmountFromFile
@@ -37,9 +37,13 @@ class BandController @Inject()(env: Environment) extends Controller {
     Try(LocalDate.parse(dateStr)) match {
       case Success(parsedDate) => residenceNilRateBand(parsedDate) match {
         case Success(band) => Future.successful(Ok(Json.toJson(band)))
-        case Failure(e) => Future.successful(BadRequest)
+        case Failure(e) =>
+          Logger.error("[BandController][getBand] : Unable to get band", e)
+          Future.successful(BadRequest)
       }
-      case Failure(e) => Future.successful(BadRequest)
+      case Failure(e) =>
+        Logger.error(s"[BandController][getBand] : Unable to parse date $dateStr", e)
+        Future.successful(BadRequest)
     }
   }
 }
