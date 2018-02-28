@@ -1,4 +1,4 @@
-# Residence Nil Rate Band Calculator
+# Residence Nil Rate Band Calculator 
 
 [![Build Status](https://travis-ci.org/hmrc/residence-nil-rate-band-calculator.svg?branch=master)](https://travis-ci.org/hmrc/residence-nil-rate-band-calculator) [ ![Download](https://api.bintray.com/packages/hmrc/releases/residence-nil-rate-band-calculator/images/download.svg) ](https://bintray.com/hmrc/releases/residence-nil-rate-band-calculator/_latestVersion)
 
