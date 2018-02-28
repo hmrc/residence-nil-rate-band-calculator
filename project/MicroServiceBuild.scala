@@ -15,17 +15,17 @@ private object AppDependencies {
   import play.sbt.PlayImport._
   import play.core.PlayVersion
 
-  private val microserviceBootstrapVersion = "6.9.0"
+  private val microserviceBootstrapVersion = "6.15.0"
   private val playUrlBindersVersion = "2.1.0"
-  private val domainVersion = "4.1.0"
-  private val hmrcTestVersion = "2.4.0"
-  private val scalaTestVersion = "2.2.6"
+  private val domainVersion = "5.1.0"
+  private val hmrcTestVersion = "3.0.0"
+  private val scalaTestVersion = "3.0.0"
   private val pegdownVersion = "1.6.0"
   private val cukesVersion = "1.2.4"
-  private val cucumberRunnerVersion = "0.0.3"
+  private val cucumberRunnerVersion = "0.0.8"
   private val testInterfaceVersion = "0.5"
   private val scalajHttpVersion = "2.3.0"
-  private val mockitoAllVersion = "1.10.19"
+  private val mockitoCoreVersion = "2.13.0"
 
   val compile = Seq(
 
@@ -55,7 +55,7 @@ private object AppDependencies {
         "info.cukes" % "cucumber-junit" % cukesVersion,
         "org.scala-tools.testing" % "test-interface" % testInterfaceVersion,
         "com.waioeka.sbt" %% "cucumber-runner" % cucumberRunnerVersion,
-        "org.mockito" % "mockito-all" % mockitoAllVersion % scope
+        "org.mockito" % "mockito-core" % mockitoCoreVersion % scope
       )
     }.test
   }
