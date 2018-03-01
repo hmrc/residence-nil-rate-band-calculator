@@ -26,6 +26,7 @@ private object AppDependencies {
   private val testInterfaceVersion = "0.5"
   private val scalajHttpVersion = "2.3.0"
   private val mockitoCoreVersion = "2.13.0"
+  private val scalaTestPlusVersion = "2.0.0"
 
   val compile = Seq(
 
@@ -45,6 +46,7 @@ private object AppDependencies {
     def apply() = new TestDependencies {
       override lazy val test = Seq(
         "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % scope,
+        "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestPlusVersion % scope,
         "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
         "org.pegdown" % "pegdown" % pegdownVersion % scope,
         "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
