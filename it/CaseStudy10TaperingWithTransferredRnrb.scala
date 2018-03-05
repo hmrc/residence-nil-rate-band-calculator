@@ -13,7 +13,7 @@ class CaseStudy10TaperingWithTransferredRnrb extends BaseComponentClass {
           .post(
             jsonHelper.jsonRequestFactory(
               dateOfDeath = LocalDate.of(2018,5,1),
-              valueOfEstate = 3100000,
+              valueOfEstate = 2100000,
               propertyValue = 4500010,
               chargeableEstateValue = 2100000,
               percentagePassedToDirectDescendants = 0,

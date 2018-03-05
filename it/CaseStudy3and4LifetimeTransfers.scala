@@ -37,7 +37,7 @@ class CaseStudy3and4LifetimeTransfers extends BaseComponentClass {
         def request: WSResponse = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2019, 1 ,1),
+              dateOfDeath = LocalDate.of(2021, 1 ,1),
               valueOfEstate = 750000,
               propertyValue = 500000,
               chargeableEstateValue = 750000,
