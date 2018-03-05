@@ -21,8 +21,6 @@ private object AppDependencies {
   private val hmrcTestVersion = "3.0.0"
   private val scalaTestVersion = "3.0.0"
   private val pegdownVersion = "1.6.0"
-  private val cukesVersion = "1.2.4"
-  private val cucumberRunnerVersion = "0.0.8"
   private val testInterfaceVersion = "0.5"
   private val scalajHttpVersion = "2.3.0"
   private val mockitoCoreVersion = "2.13.0"
@@ -50,13 +48,7 @@ private object AppDependencies {
         "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
         "org.pegdown" % "pegdown" % pegdownVersion % scope,
         "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
-        "info.cukes" % "cucumber-scala_2.11" % cukesVersion,
-        "info.cukes" % "cucumber-junit" % cukesVersion,
-        "info.cukes" % "cucumber-core" % cukesVersion,
-        "info.cukes" % "cucumber-jvm" % cukesVersion,
-        "info.cukes" % "cucumber-junit" % cukesVersion,
         "org.scala-tools.testing" % "test-interface" % testInterfaceVersion,
-        "com.waioeka.sbt" %% "cucumber-runner" % cucumberRunnerVersion,
         "org.mockito" % "mockito-core" % mockitoCoreVersion % scope
       )
     }.test
