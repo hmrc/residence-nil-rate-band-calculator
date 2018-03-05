@@ -1,32 +1,32 @@
 import java.time.LocalDate
 
 import helpers.BaseComponentClass
-import play.api.libs.ws.WSResponse
 import play.api.http.Status._
+import play.api.libs.ws.WSResponse
 
-class CaseStudy7SaleOfHome extends BaseComponentClass{
+class CaseStudy9TaperingSpec extends BaseComponentClass {
 
   "The calculate route" should{
     "return a valid OK response" when{
-      "following case study 7.1 - A simple case" in{
+      "following case study 9.1 - A simple case" in{
         def request: WSResponse = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2019, 12 ,1),
-              valueOfEstate = 900000,
-              propertyValue = 500000,
-              chargeableEstateValue = 900000,
+              dateOfDeath = LocalDate.of(2018, 12 ,1),
+              valueOfEstate = 2100000,
+              propertyValue = 450000,
+              chargeableEstateValue = 2100000,
               percentagePassedToDirectDescendants = 100,
               valueBeingTransferred = 0
             )
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 150000,
-          applicableNilRateBandAmount = 150000,
+          residenceNilRateAmount = 75000,
+          applicableNilRateBandAmount = 125000,
           carryForwardAmount = 0,
-          defaultAllowanceAmount = 150000,
-          adjustedAllowanceAmount =150000
+          defaultAllowanceAmount = 125000,
+          adjustedAllowanceAmount =75000
         )
 
         request.status shouldBe OK

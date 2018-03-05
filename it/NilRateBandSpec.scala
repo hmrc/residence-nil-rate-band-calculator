@@ -2,7 +2,7 @@ import helpers.BaseComponentClass
 import play.api.http.Status._
 import play.api.libs.ws.WSResponse
 
-class NilRateBand extends BaseComponentClass{
+class NilRateBandSpec extends BaseComponentClass{
 
   "The calculate route" should{
     "return a valid OK response" when{

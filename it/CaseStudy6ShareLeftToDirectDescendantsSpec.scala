@@ -4,7 +4,7 @@ import helpers.BaseComponentClass
 import play.api.http.Status._
 import play.api.libs.ws.WSResponse
 
-class CaseStudy6ShareLeftToDirectDescendants extends BaseComponentClass{
+class CaseStudy6ShareLeftToDirectDescendantsSpec extends BaseComponentClass{
 
   "The calculate route" should{
     "return a valid OK response" when{

@@ -5,25 +5,25 @@ import play.api.http.Status._
 import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
 
-class CaseStudy11 extends BaseComponentClass{
+class CaseStudy22DownsizingAndLeavingNoPropertySpec extends BaseComponentClass{
 
   "The calculate route" should{
     "return a valid OK response" when{
-      "following case study 11.1 - A simple case" in{
+      "following case study 22.1 - downsizing and leaving no property" in{
         val testDownsizingDetails = DownsizingDetails(
-          datePropertyWasChanged = LocalDate.parse("2018-06-1"),
-          valueAvailableWhenPropertyChanged = 125000,
-          valueOfChangedProperty = 195000,
-          valueOfAssetsPassing = 850000
+          datePropertyWasChanged = LocalDate.parse("2020-05-01"),
+          valueAvailableWhenPropertyChanged = 0,
+          valueOfChangedProperty = 200000,
+          valueOfAssetsPassing = 200000
         )
 
         def request: WSResponse = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2018,5,1),
-              valueOfEstate = 2100000,
-              propertyValue = 450000,
-              chargeableEstateValue = 2100000,
+              dateOfDeath = javaLocalDate.of(2020,8,1),
+              valueOfEstate = 1500000,
+              propertyValue = 0,
+              chargeableEstateValue = 1500000,
               percentagePassedToDirectDescendants = 0,
               valueBeingTransferred = 0,
               downsizingDetails = testDownsizingDetails
@@ -31,17 +31,16 @@ class CaseStudy11 extends BaseComponentClass{
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 0,
-          applicableNilRateBandAmount = 125000,
-          carryForwardAmount = 75000,
-          defaultAllowanceAmount = 125000,
-          adjustedAllowanceAmount =75000
+          residenceNilRateAmount = 175000,
+          applicableNilRateBandAmount = 175000,
+          carryForwardAmount = 0,
+          defaultAllowanceAmount = 175000,
+          adjustedAllowanceAmount =175000
         )
 
         request.status shouldBe OK
         request.json shouldBe response
       }
-
     }
   }
 }

@@ -4,27 +4,27 @@ import helpers.BaseComponentClass
 import play.api.http.Status._
 import play.api.libs.ws.WSResponse
 
-class CaseStudy2HomeWorthLessThanMaximumRnrb extends BaseComponentClass{
+class CaseStudy1SimpleCaseSpec extends BaseComponentClass {
 
   "The calculate route" should{
     "return a valid OK response" when{
-      "following case study 2.1 - A simple case" in{
+      "following case study 1.1 - A simple case" in{
         def request: WSResponse = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
               dateOfDeath = LocalDate.of(2021, 1 ,1),
-              valueOfEstate = 1000000,
-              propertyValue = 100000,
-              chargeableEstateValue = 500000,
+              valueOfEstate = 490000,
+              propertyValue = 300000,
+              chargeableEstateValue = 490000,
               percentagePassedToDirectDescendants = 100,
               valueBeingTransferred = 0
             )
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 100000,
+          residenceNilRateAmount = 175000,
           applicableNilRateBandAmount = 175000,
-          carryForwardAmount = 75000,
+          carryForwardAmount = 0,
           defaultAllowanceAmount = 175000,
           adjustedAllowanceAmount =175000
         )
@@ -33,14 +33,14 @@ class CaseStudy2HomeWorthLessThanMaximumRnrb extends BaseComponentClass{
         request.json shouldBe response
       }
 
-      "following case study 2.2 - Death occurs in an earlier tax year" in{
+      "following case study 1.2 - Death occurs in an earlier tax year" in{
         def request: WSResponse = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2019, 1 ,1),
-              valueOfEstate = 1000000,
-              propertyValue = 100000,
-              chargeableEstateValue = 500000,
+              dateOfDeath = LocalDate.of(2018, 1 ,1),
+              valueOfEstate = 490000,
+              propertyValue = 300000,
+              chargeableEstateValue = 490000,
               percentagePassedToDirectDescendants = 100,
               valueBeingTransferred = 0
             )
@@ -48,10 +48,10 @@ class CaseStudy2HomeWorthLessThanMaximumRnrb extends BaseComponentClass{
 
         val response = jsonHelper.jsonResponseFactory(
           residenceNilRateAmount = 100000,
-          applicableNilRateBandAmount = 125000,
-          carryForwardAmount = 25000,
-          defaultAllowanceAmount = 125000,
-          adjustedAllowanceAmount =125000
+          applicableNilRateBandAmount = 100000,
+          carryForwardAmount = 0,
+          defaultAllowanceAmount = 100000,
+          adjustedAllowanceAmount =100000
         )
 
         request.status shouldBe OK

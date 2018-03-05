@@ -11,7 +11,7 @@ import helpers.BaseComponentClass
   It cannot be negative, so is set to zero if the above equation is negative.
 */
 
-class AdjustedBroughtForwardAllowance extends BaseComponentClass{
+class AdjustedBroughtForwardAllowanceSpec extends BaseComponentClass{
 
   "Adjusted Value Being Transferred" should {
     "return the correctly calculated value" when {

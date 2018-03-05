@@ -5,7 +5,7 @@ import play.api.http.Status._
 import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.{DownsizingDetails, PropertyValueAfterExemption}
 
-class CaseStudy15DownsizingBefore2017 extends BaseComponentClass {
+class CaseStudy15DownsizingBefore2017Spec extends BaseComponentClass {
 
   "The calculate route" should{
     "return a valid OK response" when{

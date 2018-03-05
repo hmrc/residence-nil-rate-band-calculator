@@ -4,7 +4,7 @@ import play.api.http.Status._
 import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.PropertyValueAfterExemption
 
-class PropertyExemptions extends BaseComponentClass {
+class PropertyExemptionsSpec extends BaseComponentClass {
 
   "The calculate route" should{
     "return a valid OK response" when{
