@@ -1,4 +1,3 @@
-import com.waioeka.sbt.CucumberPlugin
 import sbt.Keys._
 import sbt.Tests.{Group, SubProcess}
 import sbt._
@@ -26,8 +25,7 @@ trait MicroService {
 
 
   lazy val microservice = Project(appName, file("."))
-    .enablePlugins(Seq(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, CucumberPlugin) ++ plugins : _*)
-    .settings(CucumberPlugin.glue := "steps")
+    .enablePlugins(Seq(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin) ++ plugins : _*)
     .settings(testFrameworks += new TestFramework("com.waioeka.sbt.runner"))
     .settings(playSettings : _*)
     .settings(
