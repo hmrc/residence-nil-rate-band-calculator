@@ -16,7 +16,6 @@ private object AppDependencies {
   import play.core.PlayVersion
 
   private val microserviceBootstrapVersion = "8.3.0"
-  private val playUrlBindersVersion = "2.1.0"
   private val domainVersion = "5.2.0"
   private val hmrcTestVersion = "3.1.0"
   private val scalaTestVersion = "3.0.0"
@@ -30,7 +29,6 @@ private object AppDependencies {
 
     ws,
     "uk.gov.hmrc" %% "microservice-bootstrap" % microserviceBootstrapVersion,
-    "uk.gov.hmrc" %% "play-url-binders" % playUrlBindersVersion,
     "uk.gov.hmrc" %% "domain" % domainVersion,
     "org.scalaj" %% "scalaj-http" % scalajHttpVersion
   )
