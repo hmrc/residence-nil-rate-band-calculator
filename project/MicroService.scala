@@ -2,6 +2,7 @@ import sbt.Keys._
 import sbt._
 import scoverage.ScoverageKeys
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
+import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 
 trait MicroService {
@@ -11,6 +12,7 @@ trait MicroService {
   import uk.gov.hmrc.SbtAutoBuildPlugin
   import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
   import uk.gov.hmrc.versioning.SbtGitVersioning
+  import uk.gov.hmrc.SbtArtifactory
 
   val appName: String
 
@@ -20,7 +22,7 @@ trait MicroService {
 
 
   lazy val microservice = Project(appName, file("."))
-    .enablePlugins(Seq(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin) ++ plugins : _*)
+    .enablePlugins(Seq(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory) ++ plugins : _*)
     .settings(testFrameworks += new TestFramework("com.waioeka.sbt.runner"))
     .settings(playSettings : _*)
     .settings(
@@ -47,6 +49,8 @@ trait MicroService {
     .configs(IntegrationTest)
     .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
     .settings(integrationTestSettings())
+    .settings(majorVersion := 0)
+
 
 
 }
