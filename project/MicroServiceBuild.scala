@@ -1,8 +1,4 @@
-import sbt.Keys._
 import sbt._
-import uk.gov.hmrc.SbtAutoBuildPlugin
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin
-import uk.gov.hmrc.versioning.SbtGitVersioning
 
 object MicroServiceBuild extends Build with MicroService {
 
@@ -15,7 +11,7 @@ private object AppDependencies {
   import play.sbt.PlayImport._
   import play.core.PlayVersion
 
-  private val microserviceBootstrapVersion = "8.7.0"
+  private val bootstrapPlayVersion = "4.6.0"
   private val domainVersion = "5.3.0"
   private val hmrcTestVersion = "3.3.0"
   private val scalaTestVersion = "3.0.0"
@@ -28,7 +24,7 @@ private object AppDependencies {
   val compile = Seq(
 
     ws,
-    "uk.gov.hmrc" %% "microservice-bootstrap" % microserviceBootstrapVersion,
+    "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlayVersion,
     "uk.gov.hmrc" %% "domain" % domainVersion,
     "org.scalaj" %% "scalaj-http" % scalajHttpVersion
   )

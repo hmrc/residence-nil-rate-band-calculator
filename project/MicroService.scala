@@ -37,7 +37,7 @@ trait MicroService {
       parallelExecution := false
     )
     .settings(scalaSettings: _*)
-    .settings(scalaVersion :="2.11.11")
+    .settings(scalaVersion :="2.11.12")
     .settings(publishingSettings: _*)
     .settings(defaultSettings(): _*)
     .settings(

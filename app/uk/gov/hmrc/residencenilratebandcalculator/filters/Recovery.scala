@@ -20,8 +20,7 @@ import javax.inject.Inject
 
 import akka.stream.Materializer
 import play.api.mvc.{EssentialAction, EssentialFilter}
-import uk.gov.hmrc.play.microservice.filters.RecoveryFilter
 
 class Recovery @Inject()(implicit val mat: Materializer) extends EssentialFilter {
-  override def apply(next: EssentialAction): EssentialAction = RecoveryFilter(next)
+  override def apply(next: EssentialAction): EssentialAction = Recovery.this(next)
 }

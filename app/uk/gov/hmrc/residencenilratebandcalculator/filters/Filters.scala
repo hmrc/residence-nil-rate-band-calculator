@@ -23,7 +23,6 @@ import play.filters.cors.CORSFilter
 
 class Filters @Inject()(metrics: Metrics,
                         logging: Logging,
-                        audit: Audit,
                         recovery: Recovery,
                         corsFilter: CORSFilter)
-  extends DefaultHttpFilters(metrics, audit, logging, recovery, corsFilter)
+  extends DefaultHttpFilters(metrics, logging, recovery, corsFilter)
