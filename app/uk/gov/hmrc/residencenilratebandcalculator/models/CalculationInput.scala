@@ -43,7 +43,7 @@ case class CalculationInput(dateOfDeath: LocalDate,
 }
 
 object CalculationInput {
-  implicit val formats: OFormat[CalculationInput] = Json.format[CalculationInput]
+  implicit val formats: Format[CalculationInput] = Json.format[CalculationInput]
 
   private def extractErrors(errors: JsValue): Seq[(String, String)] = {
     errors.as[JsObject].fields.map {

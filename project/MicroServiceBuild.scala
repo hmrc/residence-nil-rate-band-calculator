@@ -11,18 +11,17 @@ private object AppDependencies {
   import play.sbt.PlayImport._
   import play.core.PlayVersion
 
-  private val bootstrapPlayVersion = "4.6.0"
+  private val bootstrapPlayVersion = "4.8.0"
   private val domainVersion = "5.3.0"
-  private val hmrcTestVersion = "3.3.0"
-  private val scalaTestVersion = "3.0.0"
+  private val hmrcTestVersion = "3.4.0-play-25"
+  private val scalaTestVersion = "3.0.5"
   private val pegdownVersion = "1.6.0"
   private val testInterfaceVersion = "0.5"
   private val scalajHttpVersion = "2.3.0"
-  private val mockitoCoreVersion = "2.13.0"
-  private val scalaTestPlusVersion = "2.0.0"
+  private val mockitoCoreVersion = "2.23.4"
+  private val scalaTestPlusVersion = "2.0.1"
 
   val compile = Seq(
-
     ws,
     "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlayVersion,
     "uk.gov.hmrc" %% "domain" % domainVersion,
@@ -38,7 +37,6 @@ private object AppDependencies {
     def apply() = new TestDependencies {
       override lazy val test = Seq(
         "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % scope,
-        "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestPlusVersion % scope,
         "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
         "org.pegdown" % "pegdown" % pegdownVersion % scope,
         "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
