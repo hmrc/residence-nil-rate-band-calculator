@@ -21,8 +21,8 @@ import play.api.libs.json._
 import uk.gov.hmrc.play.test.UnitSpec
 
 class CalculationInputTest extends UnitSpec {
-  "Calculation Input" must {
 
+  "Calculation Input" must {
     "throw an exception when valueOfEstate is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
         CalculationInput(new LocalDate(), -1, 0, 0, 0, 0)
