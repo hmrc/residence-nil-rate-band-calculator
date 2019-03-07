@@ -24,6 +24,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.Environment
 import play.api.i18n.MessagesApi
 import play.api.libs.json._
+import play.api.mvc.{ControllerComponents, PlayBodyParsers}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
@@ -35,6 +36,8 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
 
   def fakeRequest = FakeRequest()
   def messagesApi = fakeApplication.injector.instanceOf[MessagesApi]
+  def injectedComps = fakeApplication.injector.instanceOf[ControllerComponents]
+  def injectedParsers = fakeApplication.injector.instanceOf[PlayBodyParsers]
   def messages = messagesApi.preferred(fakeRequest)
 
   val env = mock[Environment]
@@ -64,7 +67,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
 
       val fakeRequest = FakeRequest("POST", "").withHeaders(("Content-Type", "application/json")).withBody(json)
 
-      val response = new CalculationController(calculator)(messagesApi).calculate()(fakeRequest)
+      val response = new CalculationController(calculator)(injectedComps, injectedParsers).calculate()(fakeRequest)
 
       status(response) shouldBe OK
       contentAsJson(response) shouldBe JsObject(Map(
@@ -91,7 +94,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
 
       val fakeRequest = FakeRequest("POST", "").withHeaders(("Content-Type", "application/json")).withBody(json)
 
-      val response = new CalculationController(calculator)(messagesApi).calculate()(fakeRequest)
+      val response = new CalculationController(calculator)(injectedComps, injectedParsers).calculate()(fakeRequest)
 
       status(response) shouldBe BAD_REQUEST
       (contentAsJson(response) \ "errors" \ "valueOfEstate").as[JsString].value shouldBe messages("error.expected.number.non_negative")
@@ -116,7 +119,7 @@ class CalculationControllerTest extends UnitSpec with WithFakeApplication with M
       val mockCalculator = mock[Calculator]
       when(mockCalculator.apply(any[CalculationInput])) thenReturn Failure(new RuntimeException("error.resource_access_failure"))
 
-      val response = new CalculationController(mockCalculator)(messagesApi).calculate()(fakeRequest)
+      val response = new CalculationController(mockCalculator)(injectedComps, injectedParsers).calculate()(fakeRequest)
 
       status(response) shouldBe INTERNAL_SERVER_ERROR
       (contentAsJson(response) \ "message").as[JsString].value shouldBe messages("error.resource_access_failure")

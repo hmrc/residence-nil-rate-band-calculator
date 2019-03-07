@@ -17,23 +17,26 @@
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import akka.stream.Materializer
+import play.api.mvc.ControllerComponents
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class RamlControllerTest extends UnitSpec with WithFakeApplication {
+  def injectedComps = fakeApplication.injector.instanceOf[ControllerComponents]
+
   "Raml Controller" must {
     implicit val mat = fakeApplication.injector.instanceOf[Materializer]
     val request = FakeRequest()
 
     "return a valid RAML file when requested" in {
-      val result = new RamlController().getRaml("0.1")(request)
+      val result = new RamlController(injectedComps).getRaml("0.1")(request)
       status(result) shouldBe 200
       contentAsString(result) should include("#%RAML 1.0")
     }
 
     "return a valid JSON schema when requested" in {
-      val result = new RamlController().getSchema("0.1", "deceaseds-estate.jsonschema")(request)
+      val result = new RamlController(injectedComps).getSchema("0.1", "deceaseds-estate.jsonschema")(request)
       status(result) shouldBe 200
       contentAsString(result) should include(""""$schema": "http://json-schema.org/draft-04/schema#"""")
     }

@@ -17,20 +17,21 @@
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import javax.inject.Inject
-
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.libs.json._
-import play.api.mvc.{Action, BodyParsers, Controller}
+import play.api.mvc.{Action, BodyParsers, ControllerComponents, PlayBodyParsers}
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import uk.gov.hmrc.residencenilratebandcalculator.converters.HttpErrorResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calculator}
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-class CalculationController @Inject()(calculator: Calculator)(implicit val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class CalculationController @Inject()(calculator: Calculator)(cc: ControllerComponents,
+                                                              bodyParsers: PlayBodyParsers) extends BackendController(cc) with I18nSupport {
 
-  def calculate() = Action.async(BodyParsers.parse.json) {
+  def calculate(): Action[JsValue] = Action.async(bodyParsers.json) {
     implicit request => {
       CalculationInput(request.body) match {
         case Right(input) =>

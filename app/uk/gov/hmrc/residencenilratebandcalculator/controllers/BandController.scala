@@ -17,17 +17,18 @@
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import javax.inject.Inject
-
 import org.joda.time.LocalDate
 import play.api.{Environment, Logger}
 import play.api.libs.json._
-import play.api.mvc.{Action, AnyContent, Controller}
+import play.api.mvc.{Action, AnyContent, Controller, ControllerComponents}
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import uk.gov.hmrc.residencenilratebandcalculator.models.GetNilRateAmountFromFile
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
-class BandController @Inject()(env: Environment) extends Controller {
+class BandController @Inject()(env: Environment,
+                               cc: ControllerComponents) extends BackendController(cc) {
 
   lazy val residenceNilRateBand: GetNilRateAmountFromFile = {
     new GetNilRateAmountFromFile(env, "data/RNRB-amounts-by-year.json")
