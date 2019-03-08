@@ -17,12 +17,10 @@
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import javax.inject.{Inject, Singleton}
-
 import com.typesafe.config.Config
 import net.ceedubs.ficus.Ficus._
 import play.api.Configuration
-import uk.gov.hmrc.play.config.ControllerConfig
-
+import uk.gov.hmrc.play.bootstrap.config.ControllerConfig
 
 @Singleton
 class ControllerConfiguration @Inject()(configuration: Configuration) extends ControllerConfig {

@@ -24,6 +24,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.Environment
 import play.api.i18n.MessagesApi
 import play.api.libs.json._
+import play.api.mvc.ControllerComponents
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
@@ -32,6 +33,7 @@ class BandControllerTest extends UnitSpec with WithFakeApplication with MockitoS
 
   def fakeRequest = FakeRequest()
   def messagesApi = fakeApplication.injector.instanceOf[MessagesApi]
+  def injectedComps = fakeApplication.injector.instanceOf[ControllerComponents]
   def messages = messagesApi.preferred(fakeRequest)
 
   val env = mock[Environment]
@@ -41,12 +43,12 @@ class BandControllerTest extends UnitSpec with WithFakeApplication with MockitoS
   "Band Controller" must {
 
     "return 200 when requested with a valid date" in {
-      val result = new BandController(env).getBand("2020-01-01")(fakeRequest)
+      val result = new BandController(env, injectedComps).getBand("2020-01-01")(fakeRequest)
       status(result) shouldBe 200
     }
 
     "return 400 when requested with an invalid date" in {
-      val result = new BandController(env).getBand("not a date")(fakeRequest)
+      val result = new BandController(env, injectedComps).getBand("not a date")(fakeRequest)
       status(result) shouldBe 400
     }
   }

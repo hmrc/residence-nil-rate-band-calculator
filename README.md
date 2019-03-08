@@ -6,7 +6,7 @@
 This service provides RESTful endpoints to calculate the [residence nil-rate band](https://www.gov.uk/guidance/inheritance-tax-residence-nil-rate-band) an estate can qualify for.
 
 ### Requirements
-This service is written in Scala and Play 2.5, so needs at least a JRE to run.
+This service is written in Scala and Play 2.6, so needs at least a JRE to run.
 
 ### Running locally
 To run the service locally:

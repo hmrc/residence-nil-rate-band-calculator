@@ -11,21 +11,23 @@ private object AppDependencies {
   import play.sbt.PlayImport._
   import play.core.PlayVersion
 
-  private val bootstrapPlayVersion = "4.8.0"
+  private val bootstrapPlayVersion = "0.36.0"
   private val domainVersion = "5.3.0"
-  private val hmrcTestVersion = "3.4.0-play-25"
+  private val hmrcTestVersion = "3.4.0-play-26"
   private val scalaTestVersion = "3.0.5"
   private val pegdownVersion = "1.6.0"
   private val testInterfaceVersion = "0.5"
   private val scalajHttpVersion = "2.3.0"
-  private val mockitoCoreVersion = "2.23.4"
-  private val scalaTestPlusVersion = "2.0.1"
+  private val mockitoCoreVersion = "2.24.5"
+  private val scalaTestPlusVersion = "3.1.2"
+  private val jsonJodaVersion = "2.6.10"
 
   val compile = Seq(
     ws,
-    "uk.gov.hmrc" %% "bootstrap-play-25" % bootstrapPlayVersion,
+    "uk.gov.hmrc" %% "bootstrap-play-26" % bootstrapPlayVersion,
     "uk.gov.hmrc" %% "domain" % domainVersion,
-    "org.scalaj" %% "scalaj-http" % scalajHttpVersion
+    "org.scalaj" %% "scalaj-http" % scalajHttpVersion,
+    "com.typesafe.play" %% "play-json-joda" % jsonJodaVersion
   )
 
   trait TestDependencies {
@@ -54,10 +56,10 @@ private object AppDependencies {
       override lazy val test = Seq(
         "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % scope,
         "org.scalatest" %% "scalatest" % scalaTestVersion % scope,
-        "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestPlusVersion % scope,
         "org.pegdown" % "pegdown" % pegdownVersion % scope,
-        "org.mockito" % "mockito-core" % mockitoCoreVersion % scope,
-        "com.typesafe.play" %% "play-test" % PlayVersion.current % scope
+        "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
+        "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestPlusVersion % scope,
+        "org.mockito" % "mockito-core" % mockitoCoreVersion % scope
       )
     }.test
   }

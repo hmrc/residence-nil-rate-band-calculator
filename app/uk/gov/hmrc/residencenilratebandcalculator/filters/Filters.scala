@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.filters
 
+import com.kenshoo.play.metrics.MetricsFilter
 import javax.inject.Inject
-
 import play.api.http.DefaultHttpFilters
 import play.filters.cors.CORSFilter
+import uk.gov.hmrc.play.bootstrap.filters.LoggingFilter
 
-class Filters @Inject()(metrics: Metrics,
-                        logging: Logging,
-                        recovery: Recovery,
+class Filters @Inject()(metrics: MetricsFilter,
+                        logging: LoggingFilter,
+                        defaultFilters: DefaultHttpFilters,
                         corsFilter: CORSFilter)
-  extends DefaultHttpFilters(metrics, logging, recovery, corsFilter)
+  extends DefaultHttpFilters(defaultFilters.filters :+ logging :+ metrics: _*)

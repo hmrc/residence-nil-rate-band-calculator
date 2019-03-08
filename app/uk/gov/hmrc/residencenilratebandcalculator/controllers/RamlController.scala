@@ -17,15 +17,15 @@
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import java.nio.file.Paths
-import javax.inject.{Inject, Singleton}
 
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.BaseController
+import javax.inject.{Inject, Singleton}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.play.bootstrap.controller.BackendController
 
 import scala.concurrent.Future
 
 @Singleton
-class RamlController @Inject()() extends BaseController {
+class RamlController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
 
   private def getResource(resource: String): Action[AnyContent] = Action.async {
     Future.successful(Ok.sendResource(
