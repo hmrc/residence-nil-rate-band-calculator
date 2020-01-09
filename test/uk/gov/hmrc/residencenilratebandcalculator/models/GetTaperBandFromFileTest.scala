@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.io.ByteArrayInputStream
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.Environment
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 

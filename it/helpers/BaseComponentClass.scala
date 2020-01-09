@@ -1,6 +1,6 @@
 package helpers
 
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.{Application, Environment}
 import uk.gov.hmrc.play.test.UnitSpec
