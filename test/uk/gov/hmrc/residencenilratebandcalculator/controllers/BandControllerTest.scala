@@ -23,10 +23,8 @@ import org.mockito.ArgumentMatchers._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Environment
 import play.api.i18n.MessagesApi
-import play.api.libs.json._
 import play.api.mvc.ControllerComponents
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 class BandControllerTest extends UnitSpec with WithFakeApplication with MockitoSugar {
