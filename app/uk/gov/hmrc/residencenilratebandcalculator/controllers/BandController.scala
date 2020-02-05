@@ -20,7 +20,7 @@ import javax.inject.Inject
 import org.joda.time.LocalDate
 import play.api.{Environment, Logger}
 import play.api.libs.json._
-import play.api.mvc.{Action, AnyContent, Controller, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import uk.gov.hmrc.residencenilratebandcalculator.models.GetNilRateAmountFromFile
 

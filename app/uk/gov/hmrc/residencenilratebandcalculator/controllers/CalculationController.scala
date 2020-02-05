@@ -20,7 +20,7 @@ import javax.inject.Inject
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.libs.json._
-import play.api.mvc.{Action, BodyParsers, ControllerComponents, PlayBodyParsers}
+import play.api.mvc.{Action, ControllerComponents, PlayBodyParsers}
 import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import uk.gov.hmrc.residencenilratebandcalculator.converters.HttpErrorResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calculator}
