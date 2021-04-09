@@ -7,7 +7,7 @@ private object AppDependencies {
 
   val compile = Seq(
     ws,
-    "uk.gov.hmrc"         %% "bootstrap-play-26"      % "1.3.0",
+    "uk.gov.hmrc"         %% "bootstrap-play-26"      % "1.13.0",
     "uk.gov.hmrc"         %% "domain"                 % "5.6.0-play-26",
     "org.scalaj"          %% "scalaj-http"            % "2.4.2",
     "com.typesafe.play"   %% "play-json-joda"         % "2.8.1"
