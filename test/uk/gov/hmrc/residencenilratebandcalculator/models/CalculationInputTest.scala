@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
+import common.CommonPlaySpec
 import org.joda.time.LocalDate
 import play.api.libs.json._
-import uk.gov.hmrc.play.test.UnitSpec
 
-class CalculationInputTest extends UnitSpec {
+class CalculationInputTest extends CommonPlaySpec {
 
   "Calculation Input" must {
     "throw an exception when valueOfEstate is less than zero" in {

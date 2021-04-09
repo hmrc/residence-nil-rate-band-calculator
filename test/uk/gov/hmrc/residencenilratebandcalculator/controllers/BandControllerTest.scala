@@ -18,6 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import java.io.ByteArrayInputStream
 
+import common.{CommonPlaySpec, WithCommonFakeApplication}
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
 import org.scalatestplus.mockito.MockitoSugar
@@ -25,9 +26,8 @@ import play.api.Environment
 import play.api.i18n.MessagesApi
 import play.api.mvc.ControllerComponents
 import play.api.test.FakeRequest
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class BandControllerTest extends UnitSpec with WithFakeApplication with MockitoSugar {
+class BandControllerTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
   def fakeRequest = FakeRequest()
   def messagesApi = fakeApplication.injector.instanceOf[MessagesApi]

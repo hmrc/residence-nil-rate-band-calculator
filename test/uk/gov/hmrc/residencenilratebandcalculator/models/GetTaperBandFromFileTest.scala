@@ -18,16 +18,16 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import java.io.ByteArrayInputStream
 
+import common.{CommonPlaySpec, WithCommonFakeApplication}
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Environment
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 import scala.util.Success
 
-class GetTaperBandFromFileTest extends UnitSpec with WithFakeApplication with MockitoSugar {
+class GetTaperBandFromFileTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
   val env = mock[Environment]
   when(env.resourceAsStream(anyString)) thenReturn Some(new ByteArrayInputStream(

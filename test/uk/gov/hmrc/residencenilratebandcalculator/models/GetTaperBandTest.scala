@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
+import common.{CommonPlaySpec, WithCommonFakeApplication}
 import org.joda.time.LocalDate
 import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 import scala.util.{Failure, Success}
 
-class GetTaperBandTest  extends UnitSpec with WithFakeApplication with MockitoSugar {
+class GetTaperBandTest  extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
   val basedAsJson = """{ "2017-04-06": {"threshold": 1, "rate": 2}, "2020-04-06": {"threshold": 3, "rate": 4}}"""
 

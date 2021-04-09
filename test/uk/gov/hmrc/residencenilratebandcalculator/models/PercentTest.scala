@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import uk.gov.hmrc.play.test.UnitSpec
+import common.CommonPlaySpec
 
-class PercentTest extends UnitSpec {
+class PercentTest extends CommonPlaySpec {
 
   "Percent" when {
 

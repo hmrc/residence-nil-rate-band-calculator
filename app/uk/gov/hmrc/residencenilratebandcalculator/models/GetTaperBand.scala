@@ -18,13 +18,13 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
 import play.api.libs.json.{JsError, JsSuccess, Json}
-import play.api.Logger
+import play.api.Logging
 import uk.gov.hmrc.residencenilratebandcalculator.models.DateTaperBandSortedMap._
 
 import scala.collection.immutable.SortedMap
 import scala.util.{Failure, Success, Try}
 
-object GetTaperBand {
+object GetTaperBand extends Logging {
 
   private def getBand(date: LocalDate, bands: SortedMap[LocalDate, TaperBand]): Option[(LocalDate, TaperBand)] =
     bands.find {
@@ -41,11 +41,11 @@ object GetTaperBand {
               case None => TaperBand(0, 1)
             })
           case error: JsError =>
-            Logger.error(s"Invalid taper band JSON:\n$bandAsJson")
+            logger.error(s"Invalid taper band JSON:\n$bandAsJson")
             Failure(new RuntimeException(error.toString))
         }
       case Failure(error) =>
-        Logger.error(error.getMessage, error)
+        logger.error(error.getMessage, error)
         Failure(error)
     }
   }

@@ -17,17 +17,16 @@
 package uk.gov.hmrc.residencenilratebandcalculator.components
 
 import javax.inject.{Inject, Singleton}
-
 import org.slf4j.MDC
-import play.api.{Application, Configuration, Logger}
+import play.api.{Application, Configuration, Logging}
 
 @Singleton
-class Global @Inject()(config: Configuration)(implicit app: Application) {
+class Global @Inject()(config: Configuration)(implicit app: Application) extends Logging{
 
   lazy val appName = config.getString("appName").getOrElse("APP NAME NOT SET")
-  lazy val loggerDateFormat: Option[String] = config.getString("logger.json.dateformat")
+  lazy val loggerDateFormat: Option[String] = config.get[Option[String]]("logger.json.dateformat")
 
-  Logger.info(s"Starting microservice : $appName : in mode : ${app.mode}")
+  logger.info(s"Starting microservice : $appName : in mode : ${app.mode}")
   MDC.put("appName", appName)
   loggerDateFormat.foreach(str => MDC.put("logger.json.dateformat", str))
 }

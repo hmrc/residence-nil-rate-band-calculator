@@ -17,7 +17,7 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json._
 
 import scala.collection.immutable.SortedMap
@@ -25,7 +25,7 @@ import scala.util.{Failure, Success, Try}
 
 class InvalidJsonException extends RuntimeException
 
-object DateIntSortedMap extends SortedMapOrdering {
+object DateIntSortedMap extends SortedMapOrdering with Logging {
 
   val dateIntSortedMapReads = new Reads[SortedMap[LocalDate, Int]] {
     override def reads(json: JsValue) =
@@ -34,7 +34,7 @@ object DateIntSortedMap extends SortedMapOrdering {
       }) match {
         case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, Int](bandsMap.toArray: _*))
         case Failure(error) => {
-          Logger.error(error.getMessage, error)
+          logger.error(error.getMessage, error)
           JsError(error.getMessage)
         }
       }

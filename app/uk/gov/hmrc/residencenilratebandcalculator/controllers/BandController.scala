@@ -18,17 +18,17 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import javax.inject.Inject
 import org.joda.time.LocalDate
-import play.api.{Environment, Logger}
+import play.api.{Environment, Logging}
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.residencenilratebandcalculator.models.GetNilRateAmountFromFile
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
 class BandController @Inject()(env: Environment,
-                               cc: ControllerComponents) extends BackendController(cc) {
+                               cc: ControllerComponents) extends BackendController(cc) with Logging {
 
   lazy val residenceNilRateBand: GetNilRateAmountFromFile = {
     new GetNilRateAmountFromFile(env, "data/RNRB-amounts-by-year.json")
@@ -39,11 +39,11 @@ class BandController @Inject()(env: Environment,
       case Success(parsedDate) => residenceNilRateBand(parsedDate) match {
         case Success(band) => Future.successful(Ok(Json.toJson(band)))
         case Failure(e) =>
-          Logger.error("[BandController][getBand] : Unable to get band", e)
+          logger.error("[BandController][getBand] : Unable to get band", e)
           Future.successful(BadRequest)
       }
       case Failure(e) =>
-        Logger.error(s"[BandController][getBand] : Unable to parse date $dateStr", e)
+        logger.error(s"[BandController][getBand] : Unable to parse date $dateStr", e)
         Future.successful(BadRequest)
     }
   }

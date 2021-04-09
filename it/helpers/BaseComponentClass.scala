@@ -1,14 +1,14 @@
 package helpers
 
+import common.CommonPlaySpec
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.{Application, Environment}
-import uk.gov.hmrc.play.test.UnitSpec
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
 import uk.gov.hmrc.residencenilratebandcalculator.models.Calculator
 
-class BaseComponentClass extends UnitSpec with GuiceOneServerPerSuite with MockitoSugar {
+class BaseComponentClass extends CommonPlaySpec with GuiceOneServerPerSuite with MockitoSugar {
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
     .build()
 

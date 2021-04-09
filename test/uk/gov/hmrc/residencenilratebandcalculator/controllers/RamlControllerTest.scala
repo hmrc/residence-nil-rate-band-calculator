@@ -17,12 +17,12 @@
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import akka.stream.Materializer
+import common.{CommonPlaySpec, WithCommonFakeApplication}
 import play.api.mvc.ControllerComponents
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class RamlControllerTest extends UnitSpec with WithFakeApplication {
+class RamlControllerTest extends CommonPlaySpec with WithCommonFakeApplication {
   def injectedComps = fakeApplication.injector.instanceOf[ControllerComponents]
 
   "Raml Controller" must {
