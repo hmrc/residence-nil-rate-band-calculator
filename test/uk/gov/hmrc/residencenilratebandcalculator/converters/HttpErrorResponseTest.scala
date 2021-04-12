@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.converters
 
+import common.{CommonPlaySpec, WithCommonFakeApplication}
 import play.api.i18n.MessagesApi
 import play.api.libs.json.{JsNumber, JsString}
 import play.api.test.FakeRequest
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 import play.api.test.Helpers._
 
-class HttpErrorResponseTest extends UnitSpec with WithFakeApplication {
+class HttpErrorResponseTest extends CommonPlaySpec with WithCommonFakeApplication {
 
   implicit val fakeRequest = FakeRequest()
   implicit val messages = fakeApplication.injector.instanceOf[MessagesApi].preferred(fakeRequest)

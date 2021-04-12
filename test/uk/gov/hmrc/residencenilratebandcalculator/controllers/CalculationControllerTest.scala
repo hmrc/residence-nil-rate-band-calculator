@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import java.io.ByteArrayInputStream
 
+import common.{CommonPlaySpec, WithCommonFakeApplication}
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
 import org.scalatestplus.mockito.MockitoSugar
@@ -27,12 +28,11 @@ import play.api.libs.json._
 import play.api.mvc.{ControllerComponents, PlayBodyParsers}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calculator}
 
 import scala.util.Failure
 
-class CalculationControllerTest extends UnitSpec with WithFakeApplication with MockitoSugar {
+class CalculationControllerTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
   def fakeRequest = FakeRequest()
   def messagesApi = fakeApplication.injector.instanceOf[MessagesApi]

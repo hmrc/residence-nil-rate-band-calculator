@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json._
 
 import scala.collection.immutable.SortedMap
 import scala.util.{Failure, Success, Try}
 
-object DateTaperBandSortedMap extends SortedMapOrdering {
+object DateTaperBandSortedMap extends SortedMapOrdering with Logging {
 
   val dateTaperBandSortedMapReads = new Reads[SortedMap[LocalDate, TaperBand]] {
     override def reads(json: JsValue) =
@@ -32,7 +32,7 @@ object DateTaperBandSortedMap extends SortedMapOrdering {
       }) match {
         case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, TaperBand](bandsMap.toArray: _*))
         case Failure(error) =>
-          Logger.error(error.getMessage, error)
+          logger.error(error.getMessage, error)
           JsError(error.getMessage)
       }
     }

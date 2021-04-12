@@ -9,7 +9,7 @@ lazy val plugins : Seq[Plugins] = Seq.empty
 lazy val playSettings : Seq[Setting[_]] = Seq.empty
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(Seq(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory) ++ plugins : _*)
+  .enablePlugins(Seq(play.sbt.PlayScala,SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin) ++ plugins : _*)
   .disablePlugins(JUnitXmlReportPlugin) // this is an experimental plugin that is (currently) enabled by default and prevents deployment to QA environment
   .settings(testFrameworks += new TestFramework("com.waioeka.sbt.runner"))
   .settings(playSettings : _*)
@@ -25,7 +25,7 @@ lazy val microservice = Project(appName, file("."))
     parallelExecution := false
   )
   .settings(scalaSettings: _*)
-  .settings(scalaVersion :="2.12.10")
+  .settings(scalaVersion :="2.12.12")
   .settings(publishingSettings: _*)
   .settings(defaultSettings(): _*)
   .settings(

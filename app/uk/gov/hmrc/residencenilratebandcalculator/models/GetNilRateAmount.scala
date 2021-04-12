@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import org.joda.time.LocalDate
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json._
 import uk.gov.hmrc.residencenilratebandcalculator.models.DateIntSortedMap._
 
 import scala.collection.immutable.SortedMap
 import scala.util.{Failure, Success, Try}
 
-object GetNilRateAmount {
+object GetNilRateAmount extends Logging {
 
   private def getRateBand(date: LocalDate, rateBands: SortedMap[LocalDate, Int]): Option[(LocalDate, Int)] =
     rateBands.find {
@@ -41,12 +41,12 @@ object GetNilRateAmount {
               case None => 0
             })
           case error: JsError => {
-            Logger.error(s"Invalid rate band JSON:\n$rateBandAsJson")
+            logger.error(s"Invalid rate band JSON:\n$rateBandAsJson")
             Failure(new RuntimeException(error.toString))
           }
         }
       case Failure(error) => {
-        Logger.error(error.getMessage, error)
+        logger.error(error.getMessage, error)
         Failure(error)
       }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
+import common.CommonPlaySpec
 import org.joda.time.LocalDate
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.residencenilratebandcalculator.models.DateIntSortedMap._
 
 import scala.collection.immutable.SortedMap
 
-class DateIntSortedMapTest extends UnitSpec {
+class DateIntSortedMapTest extends CommonPlaySpec {
   val json = Json.parse("""{"2018-01-01": 1, "2019-01-01": 2}""")
   val data = SortedMap[LocalDate, Int](new LocalDate(2019, 1, 1) -> 2, new LocalDate(2018, 1, 1) -> 1)
 

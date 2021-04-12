@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import uk.gov.hmrc.play.test.UnitSpec
+import common.CommonPlaySpec
 
-class PercentTest extends UnitSpec {
+class PercentTest extends CommonPlaySpec {
 
   "Percent" when {
 

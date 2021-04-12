@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
 import javax.inject.Inject
-import play.api.Logger
+import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.libs.json._
 import play.api.mvc.{Action, ControllerComponents, PlayBodyParsers}
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.residencenilratebandcalculator.converters.HttpErrorResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calculator}
 
@@ -29,7 +29,7 @@ import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 class CalculationController @Inject()(calculator: Calculator)(cc: ControllerComponents,
-                                                              bodyParsers: PlayBodyParsers) extends BackendController(cc) with I18nSupport {
+                                                              bodyParsers: PlayBodyParsers) extends BackendController(cc) with I18nSupport with Logging {
 
   def calculate(): Action[JsValue] = Action.async(bodyParsers.json) {
     implicit request => {
@@ -38,11 +38,11 @@ class CalculationController @Inject()(calculator: Calculator)(cc: ControllerComp
           calculator(input) match {
             case Success(result) => Future.successful(Ok(Json.toJson(result)))
             case Failure(error) =>
-              Logger.error("[CalculationController][calculate] : Unable to calculate", error)
+              logger.error("[CalculationController][calculate] : Unable to calculate", error)
               Future.successful(InternalServerError(HttpErrorResponse(INTERNAL_SERVER_ERROR, error.getMessage)))
           }
         case Left(jsonErrors) =>
-          Logger.error("[CalculationController][calculate] : Failed to parse the provided JSON object")
+          logger.error("[CalculationController][calculate] : Failed to parse the provided JSON object")
           Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", jsonErrors)))
       }
     }
