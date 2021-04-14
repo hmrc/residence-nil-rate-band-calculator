@@ -1,13 +1,30 @@
+/*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import org.joda.time.LocalDate
 import java.time.{LocalDate => javaLocalDate}
 import helpers.BaseComponentClass
-import play.api.http.Status._
+import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
+import scala.concurrent.Future
 
 class CaseStudy11ASimpleCaseWithDownsizingSpec extends BaseComponentClass{
 
-  "The calculate route" should{
+  "The calculate route" must{
     "return a valid OK response" when{
       "following case study 11.1 - A simple case" in{
         val testDownsizingDetails = DownsizingDetails(
@@ -17,7 +34,7 @@ class CaseStudy11ASimpleCaseWithDownsizingSpec extends BaseComponentClass{
           valueOfAssetsPassing = 850000
         )
 
-        def request: WSResponse = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
               dateOfDeath = javaLocalDate.of(2018,5,1),
@@ -38,8 +55,8 @@ class CaseStudy11ASimpleCaseWithDownsizingSpec extends BaseComponentClass{
           adjustedAllowanceAmount =75000
         )
 
-        request.status shouldBe OK
-        request.json shouldBe response
+        await(request).status shouldBe OK
+        await(request).json shouldBe response
       }
 
     }
