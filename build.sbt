@@ -35,8 +35,8 @@ lazy val microservice = Project(appName, file("."))
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     libraryDependencies ++= appDependencies,
     libraryDependencies ++= Seq(
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.3" cross CrossVersion.full),
-      "com.github.ghik" % "silencer-lib" % "1.7.2" % Provided cross CrossVersion.full
+      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.1" cross CrossVersion.full),
+      "com.github.ghik" % "silencer-lib" % "1.7.1" % Provided cross CrossVersion.full
     ),
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
