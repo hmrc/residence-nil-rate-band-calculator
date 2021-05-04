@@ -23,7 +23,7 @@ import play.api.{Application, Configuration, Logging}
 @Singleton
 class Global @Inject()(config: Configuration)(implicit app: Application) extends Logging{
 
-  lazy val appName = config.getString("appName").getOrElse("APP NAME NOT SET")
+  lazy val appName = config.getOptional[String]("appName").getOrElse("APP NAME NOT SET")
   lazy val loggerDateFormat: Option[String] = config.get[Option[String]]("logger.json.dateformat")
 
   logger.info(s"Starting microservice : $appName : in mode : ${app.mode}")
