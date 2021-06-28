@@ -22,15 +22,15 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RamlController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
+class RamlController @Inject()(cc: ControllerComponents)(implicit ec: ExecutionContext) extends BackendController(cc) {
 
   private def getResource(resource: String): Action[AnyContent] = Action.async {
     Future.successful(Ok.sendResource(
       resource = resource,
-      inline = true).withHeaders(CONTENT_TYPE -> "text/plain"))
+      inline = true)(ec, fileMimeTypes).withHeaders(CONTENT_TYPE -> "text/plain"))
   }
 
   def getRaml(version: String): Action[AnyContent] = {
