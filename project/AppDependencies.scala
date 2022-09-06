@@ -10,24 +10,23 @@ private object AppDependencies {
     "uk.gov.hmrc"         %% "bootstrap-backend-play-28"   % "5.25.0",
     "org.scalaj"          %% "scalaj-http"                 % "2.4.2",
     "com.typesafe.play"   %% "play-json-joda"              % "2.9.2",
-    "org.scalatestplus"   %%  "scalatestplus-mockito"     % "1.0.0-M2"
   )
 
   trait TestDependencies {
-    lazy val scope: String = "test"
+    lazy val scope: String = "it,test"
     lazy val test : Seq[ModuleID] = ???
   }
 
   object Test {
     def apply() = new TestDependencies {
       override lazy val test = Seq(
-        "uk.gov.hmrc"               %% "bootstrap-test-play-28" % "5.24.0"        % scope,
-        "org.pegdown"               %  "pegdown"            % "1.6.0"             % scope,
-        "com.typesafe.play"         %% "play-test"          % PlayVersion.current % scope,
+        "uk.gov.hmrc"               %% "bootstrap-test-play-28" % "5.24.0",
+        "org.pegdown"               %  "pegdown"            % "1.6.0",
+        "com.typesafe.play"         %% "play-test"          % PlayVersion.current,
         "org.scala-tools.testing"   %  "test-interface"     % "0.5",
-        "org.mockito"               %  "mockito-core"       % "3.12.4"             % scope,
-        "org.scalatestplus"         %%  "scalatestplus-mockito"     % "1.0.0-M2"          % scope,
-      )
+        "org.mockito"               %  "mockito-core"       % "3.12.4",
+        "org.scalatestplus"         %%  "scalatestplus-mockito"     % "1.0.0-M2",
+      ).map(_ % scope)
     }.test
   }
 
