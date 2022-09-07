@@ -19,7 +19,7 @@ lazy val microservice = Project(appName, file("."))
       ".*uk.gov.hmrc.residencenilratebandcalculator.handlers.*;.*BuildInfo.*;" +
       ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.ControllerConfiguration*;" +
       ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController*",
-    ScoverageKeys.coverageMinimum := 90,
+    ScoverageKeys.coverageMinimumStmtTotal  := 90,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
     parallelExecution := false
