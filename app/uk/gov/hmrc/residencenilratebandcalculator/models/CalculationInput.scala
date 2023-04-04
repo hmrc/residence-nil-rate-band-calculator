@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,13 +50,13 @@ object CalculationInput {
   private def extractErrors(errors: JsValue): Seq[(String, String)] = {
     errors.as[JsObject].fields.map {
       error => (error._1.stripPrefix("obj."), (error._2 \ 0 \ "msg" \ 0).as[String])
-    }
+    }.toSeq
   }
 
   private def extractErrors(throwable: Throwable): Seq[(String, String)] = {
     Json.parse(throwable.getMessage.stripPrefix("requirement failed: ")).as[JsObject].fields.map {
       error => (error._1, error._2.as[String])
-    }
+    }.toSeq
   }
 
   def apply(json: JsValue): Either[Seq[(String, String)], CalculationInput] = {

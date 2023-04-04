@@ -7,6 +7,7 @@ lazy val appName = "residence-nil-rate-band-calculator"
 lazy val appDependencies: Seq[ModuleID] = AppDependencies()
 lazy val plugins : Seq[Plugins] = Seq.empty
 lazy val playSettings : Seq[Setting[_]] = Seq.empty
+val silencerVersion = "1.7.12"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins : _*)
@@ -25,7 +26,7 @@ lazy val microservice = Project(appName, file("."))
     parallelExecution := false
   )
   .settings(scalaSettings: _*)
-  .settings(scalaVersion :="2.12.12")
+  .settings(scalaVersion :="2.13.8")
   .settings(publishingSettings: _*)
   .settings(defaultSettings(): _*)
   .settings(
@@ -35,8 +36,8 @@ lazy val microservice = Project(appName, file("."))
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     libraryDependencies ++= appDependencies,
     libraryDependencies ++= Seq(
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.1" cross CrossVersion.full),
-      "com.github.ghik" % "silencer-lib" % "1.7.1" % Provided cross CrossVersion.full
+      compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
+      "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full
     ),
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
