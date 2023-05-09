@@ -31,6 +31,11 @@ To get the RAML console up and running:
 
 5. If your service is running on port 7112 you can probably "Load from URL" from http://localhost:7112/residence-nil-rate-band-calculator/raml
 
+#### Test Coverage
+To run the test coverage suite
+
+`sbt clean coverage test coverageReport`
+
 ### License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
