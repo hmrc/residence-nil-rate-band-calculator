@@ -16,7 +16,9 @@
 
 package helpers
 
-import org.scalatest.{Matchers, OptionValues, WordSpecLike}
+import org.scalatest.OptionValues
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.{Application, Environment}
@@ -24,7 +26,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
 import uk.gov.hmrc.residencenilratebandcalculator.models.Calculator
 
-class BaseComponentClass extends WordSpecLike with Matchers with OptionValues with GuiceOneServerPerSuite with MockitoSugar {
+class BaseComponentClass extends AnyWordSpecLike with Matchers with OptionValues with GuiceOneServerPerSuite with MockitoSugar {
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
     .build()
 

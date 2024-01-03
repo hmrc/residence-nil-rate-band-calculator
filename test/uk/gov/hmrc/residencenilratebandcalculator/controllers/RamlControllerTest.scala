@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.controllers
 
-import akka.stream.Materializer
+import org.apache.pekko.stream.Materializer
 import common.{CommonPlaySpec, WithCommonFakeApplication}
 import play.api.mvc.ControllerComponents
 import play.api.test.FakeRequest
