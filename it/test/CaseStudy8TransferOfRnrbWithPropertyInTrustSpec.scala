@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,27 @@
  * limitations under the License.
  */
 
-import org.joda.time.LocalDate
-import java.time.{LocalDate => javaLocalDate}
+import java.time.LocalDate
+
 import helpers.BaseComponentClass
 import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
-import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
 import scala.concurrent.Future
 
-class CaseStudy19DownsizingAndLeavingAPropertySpec extends BaseComponentClass {
+class CaseStudy8TransferOfRnrbWithPropertyInTrustSpec extends BaseComponentClass{
 
   "The calculate route" should{
     "return a valid OK response" when{
-      "following case study 19.1 - A simple case of downsizing and leaving a property with Value Being Transferred" in{
-        val testDownsizingDetails = DownsizingDetails(
-          datePropertyWasChanged = LocalDate.parse("2015-09-01"),
-          valueAvailableWhenPropertyChanged = 0,
-          valueOfChangedProperty = 300000,
-          valueOfAssetsPassing = 425000
-        )
-
+      "following case study 8.1 - A simple case" in{
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
-            jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2020,5,1),
-              valueOfEstate = 635000,
-              propertyValue = 210000,
-              chargeableEstateValue = 635000,
+            jsonHelper.jsonRequestFactory(
+              dateOfDeath = LocalDate.of(2020, 12 ,1),
+              valueOfEstate = 1200000,
+              propertyValue = 400000,
+              chargeableEstateValue = 1250000,
               percentagePassedToDirectDescendants = 100,
-              valueBeingTransferred = 175000,
-              downsizingDetails = testDownsizingDetails
+              valueBeingTransferred = 175000
             )
           )
 
@@ -60,5 +51,4 @@ class CaseStudy19DownsizingAndLeavingAPropertySpec extends BaseComponentClass {
       }
     }
   }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,11 @@ import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
 import scala.concurrent.Future
 
-class CaseStudy21SellingAResidenceAndLeavingAnotherSpec extends BaseComponentClass{
+class CaseStudy22DownsizingAndLeavingNoPropertySpec extends BaseComponentClass{
 
   "The calculate route" should{
     "return a valid OK response" when{
-      "following case study 21.1 - selling a residence and leaving another" in{
+      "following case study 22.1 - downsizing and leaving no property" in{
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2020-05-01"),
           valueAvailableWhenPropertyChanged = 0,
@@ -39,9 +39,9 @@ class CaseStudy21SellingAResidenceAndLeavingAnotherSpec extends BaseComponentCla
             jsonHelper.jsonRequestFactoryWithDownsizing(
               dateOfDeath = javaLocalDate.of(2020,8,1),
               valueOfEstate = 1500000,
-              propertyValue = 150000,
+              propertyValue = 0,
               chargeableEstateValue = 1500000,
-              percentagePassedToDirectDescendants = 100,
+              percentagePassedToDirectDescendants = 0,
               valueBeingTransferred = 0,
               downsizingDetails = testDownsizingDetails
             )
@@ -58,40 +58,6 @@ class CaseStudy21SellingAResidenceAndLeavingAnotherSpec extends BaseComponentCla
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
-
-      "following case study 21.2 - selling a residence and leaving another" in{
-        val testDownsizingDetails = DownsizingDetails(
-          datePropertyWasChanged = LocalDate.parse("2020-05-01"),
-          valueAvailableWhenPropertyChanged = 0,
-          valueOfChangedProperty = 200000,
-          valueOfAssetsPassing = 200000
-        )
-
-        def request: Future[WSResponse] = ws.url(calculateUrl)
-          .post(
-            jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2020,8,1),
-              valueOfEstate = 1500000,
-              propertyValue = 150000,
-              chargeableEstateValue = 1500000,
-              percentagePassedToDirectDescendants = 0,
-              valueBeingTransferred = 0,
-              downsizingDetails = testDownsizingDetails
-            )
-          )
-
-        val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 25000,
-          applicableNilRateBandAmount = 175000,
-          carryForwardAmount = 150000,
-          defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
-        )
-
-        await(request).status shouldBe OK
-        await(request).json shouldBe response
-      }
     }
   }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,43 +22,43 @@ import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
 import scala.concurrent.Future
 
-class CaseStudy12DownsizingNotApplicableSpec extends BaseComponentClass{
+class CaseStudy18DownsizingWithTransferredRnrbSpec extends BaseComponentClass {
 
-  "The calculate route" must{
+  "The calculate route" should{
     "return a valid OK response" when{
-      "following case study 12.1 - A simple case where downsizing is not due" in{
+      "following case study 18.1 - A simple case of downsizing from a property which was worth less than the available RNRB" in{
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2018-10-01"),
-          valueAvailableWhenPropertyChanged = 0,
-          valueOfChangedProperty = 450000,
-          valueOfAssetsPassing = 500000
+          valueAvailableWhenPropertyChanged = 125000,
+          valueOfChangedProperty = 285000,
+          valueOfAssetsPassing = 250000
         )
 
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2020,8,1),
-              valueOfEstate = 700000,
-              propertyValue = 200000,
-              chargeableEstateValue = 700000,
+              dateOfDeath = javaLocalDate.of(2021,3,1),
+              valueOfEstate = 500000,
+              propertyValue = 0,
+              chargeableEstateValue = 500000,
               percentagePassedToDirectDescendants = 0,
-              valueBeingTransferred = 0,
+              valueBeingTransferred = 175000,
               downsizingDetails = testDownsizingDetails
             )
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 0,
+          residenceNilRateAmount = 250000,
           applicableNilRateBandAmount = 175000,
-          carryForwardAmount = 175000,
-          defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          carryForwardAmount = 100000,
+          defaultAllowanceAmount = 350000,
+          adjustedAllowanceAmount = 350000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
-
     }
   }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,25 +22,25 @@ import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
 import scala.concurrent.Future
 
-class CaseStudy17DownsizingWithPropertyLowerThanAvailableRnrbSpec extends BaseComponentClass {
+class CaseStudy16DownsizingWithNoHomeInEstateSpec extends BaseComponentClass {
 
   "The calculate route" must{
     "return a valid OK response" when{
-      "following case study 17.1 - A simple case of downsizing from a property which was worth less than the available RNRB" in{
+      "following case study 16.1 - A simple case of downsizing with no property remaining in the estate" in{
         val testDownsizingDetails = DownsizingDetails(
-          datePropertyWasChanged = LocalDate.parse("2019-05-01"),
+          datePropertyWasChanged = LocalDate.parse("2018-10-01"),
           valueAvailableWhenPropertyChanged = 0,
-          valueOfChangedProperty = 90000,
-          valueOfAssetsPassing = 600000
+          valueOfChangedProperty = 285000,
+          valueOfAssetsPassing = 250000
         )
 
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2021,1,1),
-              valueOfEstate = 600000,
+              dateOfDeath = javaLocalDate.of(2021,3,1),
+              valueOfEstate = 500000,
               propertyValue = 0,
-              chargeableEstateValue = 600000,
+              chargeableEstateValue = 500000,
               percentagePassedToDirectDescendants = 0,
               valueBeingTransferred = 0,
               downsizingDetails = testDownsizingDetails
@@ -48,9 +48,9 @@ class CaseStudy17DownsizingWithPropertyLowerThanAvailableRnrbSpec extends BaseCo
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 105000,
+          residenceNilRateAmount = 175000,
           applicableNilRateBandAmount = 175000,
-          carryForwardAmount = 70000,
+          carryForwardAmount = 0,
           defaultAllowanceAmount = 175000,
           adjustedAllowanceAmount =175000
         )
@@ -59,21 +59,21 @@ class CaseStudy17DownsizingWithPropertyLowerThanAvailableRnrbSpec extends BaseCo
         await(request).json shouldBe response
       }
 
-      "following case study 17.2 - A simple case of downsizing from a property which was worth less than the available RNRB" in{
+      "following case study 16.2 - A simple case of downsizing with no property remaining in the estate" in{
         val testDownsizingDetails = DownsizingDetails(
-          datePropertyWasChanged = LocalDate.parse("2019-05-01"),
+          datePropertyWasChanged = LocalDate.parse("2018-10-01"),
           valueAvailableWhenPropertyChanged = 0,
-          valueOfChangedProperty = 90000,
+          valueOfChangedProperty = 285000,
           valueOfAssetsPassing = 100000
         )
 
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2021,1,1),
-              valueOfEstate = 100000,
+              dateOfDeath = javaLocalDate.of(2021,3,1),
+              valueOfEstate = 500000,
               propertyValue = 0,
-              chargeableEstateValue = 100000,
+              chargeableEstateValue = 500000,
               percentagePassedToDirectDescendants = 0,
               valueBeingTransferred = 0,
               downsizingDetails = testDownsizingDetails
@@ -93,4 +93,5 @@ class CaseStudy17DownsizingWithPropertyLowerThanAvailableRnrbSpec extends BaseCo
       }
     }
   }
+
 }

@@ -1,19 +1,19 @@
 import scoverage.ScoverageKeys
-import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, integrationTestSettings, scalaSettings}
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
-
+import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, scalaSettings, itSettings}
 
 lazy val appName = "residence-nil-rate-band-calculator"
 lazy val appDependencies: Seq[ModuleID] = AppDependencies()
 lazy val plugins : Seq[Plugins] = Seq.empty
-lazy val playSettings : Seq[Setting[_]] = Seq.empty
-val silencerVersion = "1.7.12"
+lazy val playSettings : Seq[Setting[?]] = Seq.empty
+
+ThisBuild / majorVersion := 0
+ThisBuild / scalaVersion := "2.13.12"
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins : _*)
+  .enablePlugins((Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins):_*)
   .disablePlugins(JUnitXmlReportPlugin) // this is an experimental plugin that is (currently) enabled by default and prevents deployment to QA environment
   .settings(testFrameworks += new TestFramework("com.waioeka.sbt.runner"))
-  .settings(playSettings : _*)
+  .settings(playSettings:_*)
   .settings(
     ScoverageKeys.coverageExcludedFiles := ".*com.kenshoo.play.metrics.*;.*Routes.*;.*uk.gov.hmrc.residencenilratebandcalculator.components.*;" +
       ".*uk.gov.hmrc.residencenilratebandcalculator.connectors.*;.*uk.gov.hmrc.residencenilratebandcalculator.filters.*;" +
@@ -25,24 +25,20 @@ lazy val microservice = Project(appName, file("."))
     ScoverageKeys.coverageHighlighting := true,
     parallelExecution := false
   )
-  .settings(scalaSettings: _*)
-  .settings(scalaVersion :="2.13.8")
-  .settings(publishingSettings: _*)
-  .settings(defaultSettings(): _*)
+  .settings(scalaSettings:_*)
+  .settings(defaultSettings():_*)
   .settings(
     scalacOptions ++= Seq("-feature", "-language:implicitConversions", "-language:postfixOps"),
-    scalacOptions += "-P:silencer:pathFilters=routes",
-    scalacOptions += "-P:silencer:lineContentFilters=^\\w",
+    scalacOptions += "-Wconf:cat=unused-imports&src=routes/.*:s",
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     libraryDependencies ++= appDependencies,
-    libraryDependencies ++= Seq(
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
-      "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full
-    ),
     retrieveManaged := true,
-    evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
+    update / evictionWarningOptions  := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
   )
-  .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
-  .settings(integrationTestSettings())
-  .settings(majorVersion := 0)
+  .settings(PlayKeys.playDefaultPort := 7112)
+
+lazy val it = project
+  .enablePlugins(PlayScala)
+  .dependsOn(microservice % "test->test")
+  .settings(itSettings():_*)
+  .settings(libraryDependencies ++= AppDependencies.itDependencies)

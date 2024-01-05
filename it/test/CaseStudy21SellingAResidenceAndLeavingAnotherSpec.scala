@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,58 +22,58 @@ import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
 import scala.concurrent.Future
 
-class CaseStudy15DownsizingBefore2017Spec extends BaseComponentClass {
+class CaseStudy21SellingAResidenceAndLeavingAnotherSpec extends BaseComponentClass{
 
-  "The calculate route" must{
+  "The calculate route" should{
     "return a valid OK response" when{
-      "following case study 15.1 - A simple case of downsizing before 6 April 2017" in{
+      "following case study 21.1 - selling a residence and leaving another" in{
         val testDownsizingDetails = DownsizingDetails(
-          datePropertyWasChanged = LocalDate.parse("2016-03-01"),
+          datePropertyWasChanged = LocalDate.parse("2020-05-01"),
           valueAvailableWhenPropertyChanged = 0,
-          valueOfChangedProperty = 150000,
-          valueOfAssetsPassing = 80000
+          valueOfChangedProperty = 200000,
+          valueOfAssetsPassing = 200000
         )
 
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2019,12,1),
-              valueOfEstate = 185000,
-              propertyValue = 105000,
-              chargeableEstateValue = 80000,
-              percentagePassedToDirectDescendants = 0,
+              dateOfDeath = javaLocalDate.of(2020,8,1),
+              valueOfEstate = 1500000,
+              propertyValue = 150000,
+              chargeableEstateValue = 1500000,
+              percentagePassedToDirectDescendants = 100,
               valueBeingTransferred = 0,
               downsizingDetails = testDownsizingDetails
             )
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 45000,
-          applicableNilRateBandAmount = 150000,
-          carryForwardAmount = 105000,
-          defaultAllowanceAmount = 150000,
-          adjustedAllowanceAmount =150000
+          residenceNilRateAmount = 175000,
+          applicableNilRateBandAmount = 175000,
+          carryForwardAmount = 0,
+          defaultAllowanceAmount = 175000,
+          adjustedAllowanceAmount =175000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 15.2 - A simple case of downsizing before 6 April 2017" in{
+      "following case study 21.2 - selling a residence and leaving another" in{
         val testDownsizingDetails = DownsizingDetails(
-          datePropertyWasChanged = LocalDate.parse("2016-03-01"),
+          datePropertyWasChanged = LocalDate.parse("2020-05-01"),
           valueAvailableWhenPropertyChanged = 0,
-          valueOfChangedProperty = 150000,
-          valueOfAssetsPassing = 10000
+          valueOfChangedProperty = 200000,
+          valueOfAssetsPassing = 200000
         )
 
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2019,12,1),
-              valueOfEstate = 185000,
-              propertyValue = 0,
-              chargeableEstateValue = 80000,
+              dateOfDeath = javaLocalDate.of(2020,8,1),
+              valueOfEstate = 1500000,
+              propertyValue = 150000,
+              chargeableEstateValue = 1500000,
               percentagePassedToDirectDescendants = 0,
               valueBeingTransferred = 0,
               downsizingDetails = testDownsizingDetails
@@ -81,11 +81,11 @@ class CaseStudy15DownsizingBefore2017Spec extends BaseComponentClass {
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 10000,
-          applicableNilRateBandAmount = 150000,
-          carryForwardAmount = 140000,
-          defaultAllowanceAmount = 150000,
-          adjustedAllowanceAmount =150000
+          residenceNilRateAmount = 25000,
+          applicableNilRateBandAmount = 175000,
+          carryForwardAmount = 150000,
+          defaultAllowanceAmount = 175000,
+          adjustedAllowanceAmount =175000
         )
 
         await(request).status shouldBe OK
@@ -93,4 +93,5 @@ class CaseStudy15DownsizingBefore2017Spec extends BaseComponentClass {
       }
     }
   }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,31 +19,57 @@ import java.time.LocalDate
 import helpers.BaseComponentClass
 import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
+
 import scala.concurrent.Future
 
-class CaseStudy9TaperingSpec extends BaseComponentClass {
+class CaseStudy10TaperingWithTransferredRnrbSpec extends BaseComponentClass {
 
-  "The calculate route" should{
+  "The calculate route" must{
     "return a valid OK response" when{
-      "following case study 9.1 - A simple case" in{
+      "following case study 10.1 - A simple case" in{
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2018, 12 ,1),
+              dateOfDeath = LocalDate.of(2018,5,1),
               valueOfEstate = 2100000,
-              propertyValue = 450000,
+              propertyValue = 4500010,
               chargeableEstateValue = 2100000,
-              percentagePassedToDirectDescendants = 100,
+              percentagePassedToDirectDescendants = 0,
               valueBeingTransferred = 0
             )
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 75000,
+          residenceNilRateAmount = 0,
           applicableNilRateBandAmount = 125000,
-          carryForwardAmount = 0,
+          carryForwardAmount = 75000,
           defaultAllowanceAmount = 125000,
           adjustedAllowanceAmount =75000
+        )
+
+        await(request).status shouldBe OK
+        await(request).json shouldBe response
+      }
+
+      "following case study 10.2" in{
+        def request: Future[WSResponse] = ws.url(calculateUrl)
+          .post(
+            jsonHelper.jsonRequestFactory(
+              dateOfDeath = LocalDate.of(2021,3,25),
+              valueOfEstate = 1800000,
+              propertyValue = 500000,
+              chargeableEstateValue = 1800000,
+              percentagePassedToDirectDescendants = 100,
+              valueBeingTransferred = 105000
+            )
+          )
+
+        val response = jsonHelper.jsonResponseFactory(
+          residenceNilRateAmount = 280000,
+          applicableNilRateBandAmount = 175000,
+          carryForwardAmount = 0,
+          defaultAllowanceAmount = 280000,
+          adjustedAllowanceAmount =280000
         )
 
         await(request).status shouldBe OK

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,54 +22,54 @@ import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class CaseStudy3and4LifetimeTransfersSpec extends BaseComponentClass {
+class CaseStudy5TransferOfUnusedRnrbSpec extends BaseComponentClass {
 
   "The calculate route" should{
     "return a valid OK response" when{
-      "following case study 3.1 - A simple case" in{
+      "following case study 5.1 - A simple case" in{
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2021, 1 ,1),
-              valueOfEstate = 450000,
-              propertyValue = 200000,
-              chargeableEstateValue = 450000,
+              dateOfDeath = LocalDate.of(2019, 7 ,30),
+              valueOfEstate = 1000000,
+              propertyValue = 400000,
+              chargeableEstateValue = 1000000,
               percentagePassedToDirectDescendants = 100,
-              valueBeingTransferred = 0
+              valueBeingTransferred = 150000
             )
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 175000,
-          applicableNilRateBandAmount = 175000,
+          residenceNilRateAmount = 300000,
+          applicableNilRateBandAmount = 150000,
           carryForwardAmount = 0,
-          defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          defaultAllowanceAmount = 300000,
+          adjustedAllowanceAmount =300000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 4.1 - A simple case" in{
+      "following case study 5.2 - Property worth less than the RNRB + unused allowance" in{
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2021, 1 ,1),
+              dateOfDeath = LocalDate.of(2019, 7 ,30),
               valueOfEstate = 750000,
-              propertyValue = 500000,
+              propertyValue = 250000,
               chargeableEstateValue = 750000,
               percentagePassedToDirectDescendants = 100,
-              valueBeingTransferred = 0
+              valueBeingTransferred = 150000
             )
           )
 
         val response = jsonHelper.jsonResponseFactory(
-          residenceNilRateAmount = 175000,
-          applicableNilRateBandAmount = 175000,
-          carryForwardAmount = 0,
-          defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          residenceNilRateAmount = 250000,
+          applicableNilRateBandAmount = 150000,
+          carryForwardAmount = 50000,
+          defaultAllowanceAmount = 300000,
+          adjustedAllowanceAmount = 300000
         )
 
         await(request).status shouldBe OK
