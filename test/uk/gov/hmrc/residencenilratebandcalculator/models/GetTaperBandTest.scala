@@ -17,7 +17,7 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import common.{CommonPlaySpec, WithCommonFakeApplication}
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatestplus.mockito.MockitoSugar
 
 import scala.util.{Failure, Success}
@@ -29,31 +29,31 @@ class GetTaperBandTest  extends CommonPlaySpec with WithCommonFakeApplication wi
   "Get Taper Band" must {
 
     "return TaperBand(0, 1) when given a date before the start date of the first band" in {
-      GetTaperBand(new LocalDate(2017, 4, 5), basedAsJson) shouldBe Success(TaperBand(0, 1))
+      GetTaperBand(LocalDate.of(2017, 4, 5), basedAsJson) shouldBe Success(TaperBand(0, 1))
     }
 
     "return the correct value when given a date equal to the start of the first band" in {
-      GetTaperBand(new LocalDate(2017, 4, 6), basedAsJson) shouldBe Success(TaperBand(1, 2))
+      GetTaperBand(LocalDate.of(2017, 4, 6), basedAsJson) shouldBe Success(TaperBand(1, 2))
     }
 
     "return the correct value when given a date between two bands" in {
-      GetTaperBand(new LocalDate(2017, 4, 7), basedAsJson) shouldBe Success(TaperBand(1, 2))
+      GetTaperBand(LocalDate.of(2017, 4, 7), basedAsJson) shouldBe Success(TaperBand(1, 2))
     }
 
     "return the correct value when given a date equal to the start of the second band" in {
-      GetTaperBand(new LocalDate(2020, 4, 6), basedAsJson) shouldBe Success(TaperBand(3, 4))
+      GetTaperBand(LocalDate.of(2020, 4, 6), basedAsJson) shouldBe Success(TaperBand(3, 4))
     }
 
     "return the correct value when given a date after the last band" in {
-      GetTaperBand(new LocalDate(2020, 4, 7), basedAsJson) shouldBe Success(TaperBand(3, 4))
+      GetTaperBand(LocalDate.of(2020, 4, 7), basedAsJson) shouldBe Success(TaperBand(3, 4))
     }
 
     "return a failure when invalid JSON is provided" in {
-      GetTaperBand(new LocalDate(2017, 4, 6), "[") shouldBe a[Failure[_]]
+      GetTaperBand(LocalDate.of(2017, 4, 6), "[") shouldBe a[Failure[_]]
     }
 
     "return a failure when the provided JSON does not represent a rate band" in {
-      val result = GetTaperBand(new LocalDate(2017, 4, 6), "{\"something\": []}")
+      val result = GetTaperBand(LocalDate.of(2017, 4, 6), "{\"something\": []}")
       result shouldBe a[Failure[_]]
     }
   }

@@ -19,7 +19,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 import java.io.ByteArrayInputStream
 
 import common.{CommonPlaySpec, WithCommonFakeApplication}
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
 import org.scalatestplus.mockito.MockitoSugar
@@ -43,17 +43,17 @@ class CalculatorTest extends CommonPlaySpec with WithCommonFakeApplication with 
     "all assets are left to direct descendants and leaving a property worth more than the RNRB threshold" must {
 
       "give RNRA equal to the threshold for the 2020/21 tax year" in {
-        val input = CalculationInput(new LocalDate(2021, 1, 1), 490000, 490000, 300000, 100, 0)
+        val input = CalculationInput(LocalDate.of(2021, 1, 1), 490000, 490000, 300000, 100, 0)
         calculator(input) shouldBe Success(CalculationResult(175000, 175000, 0, 175000, 175000))
       }
 
       "give RNRA equal to the threshold for the 2019/20 tax year" in {
-        val input = CalculationInput(new LocalDate(2020, 1, 1), 490000, 490000, 300000, 100, 0)
+        val input = CalculationInput(LocalDate.of(2020, 1, 1), 490000, 490000, 300000, 100, 0)
         calculator(input) shouldBe Success(CalculationResult(150000, 150000, 0, 150000, 150000))
       }
 
       "include transferred value in the RNRA and carry-forward amount results" in {
-        val input = CalculationInput(new LocalDate(2021, 1, 1), 500000, 500000, 250000, 100, 175000)
+        val input = CalculationInput(LocalDate.of(2021, 1, 1), 500000, 500000, 250000, 100, 175000)
         calculator(input) shouldBe Success(CalculationResult(250000, 175000, 100000, 350000, 350000))
       }
     }
@@ -61,47 +61,47 @@ class CalculatorTest extends CommonPlaySpec with WithCommonFakeApplication with 
     "all assets are left to direct descendants and leaving a property worth less than the RNRB threshold" must {
 
       "give RNRA equal to the property value and carry-forward amount equal to (threshold - property value)" in {
-        val input = CalculationInput(new LocalDate(2020, 1, 1), 470000, 470000, 80000, 100, 0)
+        val input = CalculationInput(LocalDate.of(2020, 1, 1), 470000, 470000, 80000, 100, 0)
         calculator(input) shouldBe Success(CalculationResult(80000, 150000, 70000, 150000, 150000))
       }
     }
 
     "part of a property is left to direct descendants, and the percentage left is above the RNRB threshold" must {
       "give RNRA equal to the RNRB threshold" in {
-        val input = CalculationInput(new LocalDate(2021, 1, 1), 500000, 500000, 400000, 50, 0)
+        val input = CalculationInput(LocalDate.of(2021, 1, 1), 500000, 500000, 400000, 50, 0)
         calculator(input) shouldBe Success(CalculationResult(175000, 175000, 0, 175000, 175000))
       }
     }
 
     "part of a property is left to direct descendants, and the percentage left is below the RNRB threshold" must {
       "give RNRA equal to the percentage of the property value" in {
-        val input = CalculationInput(new LocalDate(2021, 1, 1), 500000, 500000, 200000, 50, 0)
+        val input = CalculationInput(LocalDate.of(2021, 1, 1), 500000, 500000, 200000, 50, 0)
         calculator(input) shouldBe Success(CalculationResult(100000, 175000, 75000, 175000, 175000))
       }
     }
 
     "the estate is above the tapering threshold and the property is worth more than the RNRB threshold" must {
       "give RNRA equal to the tapered away amount of the threshold" in {
-        val input = CalculationInput(new LocalDate(2021, 1, 1), 2100000, 2100000, 500000, 100, 0)
+        val input = CalculationInput(LocalDate.of(2021, 1, 1), 2100000, 2100000, 500000, 100, 0)
         calculator(input) shouldBe Success(CalculationResult(125000, 175000, 0, 175000, 125000))
       }
 
       "give RNRA equal to the tapered away amount of the threshold in the 2018/19 tax year" in {
-        val input = CalculationInput(new LocalDate(2018, 7, 1), 2100000, 2100000, 450000, 100, 0)
+        val input = CalculationInput(LocalDate.of(2018, 7, 1), 2100000, 2100000, 450000, 100, 0)
         calculator(input) shouldBe Success(CalculationResult(75000, 125000, 0, 125000, 75000))
       }
     }
 
     "the estate is above the tapering threshold and the property is worth less than the RNRB threshold" must {
       "give RNRA equal to the tapered away amount of the threshold" in {
-        val input = CalculationInput(new LocalDate(2021, 1, 1), 2100000, 2100000, 100000, 100, 0)
+        val input = CalculationInput(LocalDate.of(2021, 1, 1), 2100000, 2100000, 100000, 100, 0)
         calculator(input) shouldBe Success(CalculationResult(100000, 175000, 25000, 175000, 125000))
       }
     }
 
     "part of the property is exempt from inheritance tax" must {
       "give RNRA using the value of assets passing after exemptions" in {
-        val input = CalculationInput(new LocalDate(2021, 1, 1), 1000000, 1000000, 500000, 100, 0, Some(PropertyValueAfterExemption(100000, 100000)))
+        val input = CalculationInput(LocalDate.of(2021, 1, 1), 1000000, 1000000, 500000, 100, 0, Some(PropertyValueAfterExemption(100000, 100000)))
         calculator(input) shouldBe Success(CalculationResult(100000, 175000, 75000, 175000, 175000))
       }
     }
@@ -134,26 +134,26 @@ class CalculatorTest extends CommonPlaySpec with WithCommonFakeApplication with 
   "calculating persons former allowance" must {
 
     "ignore Value Available When Property Changed when the date property was changed is before 6 April 2017" in {
-      calculator.personsFormerAllowance(new LocalDate(2015, 4, 5), 100000, 50000, 0) shouldBe 100000
+      calculator.personsFormerAllowance(LocalDate.of(2015, 4, 5), 100000, 50000, 0) shouldBe 100000
     }
 
     "give an error when RNRB on property change is negative" in {
       val caught = intercept[IllegalArgumentException] {
-        calculator.personsFormerAllowance(new LocalDate(), -1, 1, 1)
+        calculator.personsFormerAllowance(LocalDate.now(), -1, 1, 1)
       }
       assert(caught.getMessage == "requirement failed: rnrnOnPropertyChange cannot be negative")
     }
 
     "give an error when Value Available When Property Changed is negative" in {
       val caught = intercept[IllegalArgumentException] {
-        calculator.personsFormerAllowance(new LocalDate(), 1, -1, 1)
+        calculator.personsFormerAllowance(LocalDate.now(), 1, -1, 1)
       }
       assert(caught.getMessage == "requirement failed: valueAvailableWhenPropertyChanged cannot be negative")
     }
 
     "give an error when adjusted Value Being Transferred is negative" in {
       val caught = intercept[IllegalArgumentException] {
-        calculator.personsFormerAllowance(new LocalDate(), 1, 1, -1)
+        calculator.personsFormerAllowance(LocalDate.now(), 1, 1, -1)
       }
       assert(caught.getMessage == "requirement failed: adjustedValueBeingTransferred cannot be negative")
     }

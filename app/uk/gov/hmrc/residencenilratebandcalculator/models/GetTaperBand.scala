@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.Logging
 import uk.gov.hmrc.residencenilratebandcalculator.models.DateTaperBandSortedMap._

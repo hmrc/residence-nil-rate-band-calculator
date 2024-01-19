@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 trait Band {
   def apply(date: LocalDate): Int

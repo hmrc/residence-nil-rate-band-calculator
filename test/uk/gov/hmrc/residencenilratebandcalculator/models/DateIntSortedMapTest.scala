@@ -17,7 +17,7 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import common.CommonPlaySpec
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.libs.json.Json
 import uk.gov.hmrc.residencenilratebandcalculator.models.DateIntSortedMap._
 
@@ -25,7 +25,7 @@ import scala.collection.immutable.SortedMap
 
 class DateIntSortedMapTest extends CommonPlaySpec {
   val json = Json.parse("""{"2018-01-01": 1, "2019-01-01": 2}""")
-  val data = SortedMap[LocalDate, Int](new LocalDate(2019, 1, 1) -> 2, new LocalDate(2018, 1, 1) -> 1)
+  val data = SortedMap[LocalDate, Int](LocalDate.of(2019, 1, 1) -> 2, LocalDate.of(2018, 1, 1) -> 1)
 
   "A Date to Int sorted map" must {
     "be parsable from valid JSON" in {

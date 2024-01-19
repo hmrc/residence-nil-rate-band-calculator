@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import org.joda.time.LocalDate
-import java.time.{LocalDate => javaLocalDate}
+import java.time.LocalDate
 import helpers.BaseComponentClass
 import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
@@ -28,7 +27,7 @@ class CaseStudy11ASimpleCaseWithDownsizingSpec extends BaseComponentClass{
     "return a valid OK response" when{
       "following case study 11.1 - A simple case" in{
         val testDownsizingDetails = DownsizingDetails(
-          datePropertyWasChanged = LocalDate.parse("2018-06-1"),
+          datePropertyWasChanged = LocalDate.parse("2018-06-01"),
           valueAvailableWhenPropertyChanged = 125000,
           valueOfChangedProperty = 195000,
           valueOfAssetsPassing = 850000
@@ -37,7 +36,7 @@ class CaseStudy11ASimpleCaseWithDownsizingSpec extends BaseComponentClass{
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2018,5,1),
+              dateOfDeath = LocalDate.of(2018,5,1),
               valueOfEstate = 2100000,
               propertyValue = 450000,
               chargeableEstateValue = 2100000,

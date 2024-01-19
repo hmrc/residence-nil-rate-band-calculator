@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import org.joda.time.LocalDate
-import java.time.{LocalDate => javaLocalDate}
+import java.time.LocalDate
 import helpers.BaseComponentClass
 import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
@@ -37,7 +36,7 @@ class CaseStudy15DownsizingBefore2017Spec extends BaseComponentClass {
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2019,12,1),
+              dateOfDeath = LocalDate.of(2019,12,1),
               valueOfEstate = 185000,
               propertyValue = 105000,
               chargeableEstateValue = 80000,
@@ -70,7 +69,7 @@ class CaseStudy15DownsizingBefore2017Spec extends BaseComponentClass {
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = javaLocalDate.of(2019,12,1),
+              dateOfDeath = LocalDate.of(2019,12,1),
               valueOfEstate = 185000,
               propertyValue = 0,
               chargeableEstateValue = 80000,

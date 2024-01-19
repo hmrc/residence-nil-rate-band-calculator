@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import java.time.{LocalDate => javaLocalDate}
+import java.time.LocalDate
 import helpers.BaseComponentClass
 import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
@@ -34,7 +34,7 @@ class PropertyExemptionsSpec extends BaseComponentClass {
         def request: Future[WSResponse] = ws.url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithExemption(
-              dateOfDeath = javaLocalDate.of(2021,1,1),
+              dateOfDeath = LocalDate.of(2021,1,1),
               valueOfEstate = 490000,
               propertyValue = 300000,
               chargeableEstateValue = 490000,

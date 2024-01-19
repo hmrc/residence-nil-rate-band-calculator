@@ -19,7 +19,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 import java.io.ByteArrayInputStream
 
 import common.{CommonPlaySpec, WithCommonFakeApplication}
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
 import org.scalatestplus.mockito.MockitoSugar
@@ -38,23 +38,23 @@ class GetTaperBandFromFileTest extends CommonPlaySpec with WithCommonFakeApplica
   "Get Taper Band From File" must {
 
     "return TaperBand(0, 1) when given a date before the first taper band" in {
-      getTaperBandFromFile(new LocalDate(2017, 4, 5)) shouldBe Success(TaperBand(0, 1))
+      getTaperBandFromFile(LocalDate.of(2017, 4, 5)) shouldBe Success(TaperBand(0, 1))
     }
 
     "return the correct value when given a date equal to the start of the first band" in {
-      getTaperBandFromFile(new LocalDate(2017, 4, 6)) shouldBe Success(TaperBand(1, 2))
+      getTaperBandFromFile(LocalDate.of(2017, 4, 6)) shouldBe Success(TaperBand(1, 2))
     }
 
     "return the correct value when given a date between two bands" in {
-      getTaperBandFromFile(new LocalDate(2017, 4, 7)) shouldBe Success(TaperBand(1, 2))
+      getTaperBandFromFile(LocalDate.of(2017, 4, 7)) shouldBe Success(TaperBand(1, 2))
     }
 
     "return the correct value when given a date equal to the start of the second band" in {
-      getTaperBandFromFile(new LocalDate(2020, 4, 6)) shouldBe Success(TaperBand(3, 4))
+      getTaperBandFromFile(LocalDate.of(2020, 4, 6)) shouldBe Success(TaperBand(3, 4))
     }
 
     "return the correct value when given a date after the last band" in {
-      getTaperBandFromFile(new LocalDate(2020, 4, 7)) shouldBe Success(TaperBand(3, 4))
+      getTaperBandFromFile(LocalDate.of(2020, 4, 7)) shouldBe Success(TaperBand(3, 4))
     }
 
     "fail when unable to obtain the taper bands as JSON" in {
@@ -62,7 +62,7 @@ class GetTaperBandFromFileTest extends CommonPlaySpec with WithCommonFakeApplica
       when(env.resourceAsStream(anyString)) thenReturn None
       val getTaperBandFromFile = new GetTaperBandFromFile(env, "")
 
-      getTaperBandFromFile(new LocalDate(2006, 4, 6)).failed.get.getMessage shouldBe "error.resource_access_failure"
+      getTaperBandFromFile(LocalDate.of(2006, 4, 6)).failed.get.getMessage shouldBe "error.resource_access_failure"
 
     }
   }
