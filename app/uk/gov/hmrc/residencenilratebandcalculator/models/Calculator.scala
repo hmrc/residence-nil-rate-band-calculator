@@ -18,7 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import javax.inject.{Inject, Singleton}
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.Environment
 import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 
@@ -36,8 +36,8 @@ class Calculator @Inject()(env: Environment) {
   }
 
   val taperRate = 2
-  val earliestDisposalDate = new LocalDate(2015, 7, 8)
-  val legislativeStartDate = new LocalDate(2017, 4, 6)
+  val earliestDisposalDate: LocalDate = LocalDate.of(2015, 7, 8)
+  val legislativeStartDate: LocalDate = LocalDate.of(2017, 4, 6)
 
 
   def personsFormerAllowance(datePropertyWasChanged: LocalDate,

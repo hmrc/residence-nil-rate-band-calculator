@@ -17,7 +17,7 @@
 package calculations
 
 import helpers.BaseComponentClass
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 /*   Tests of the calculaton for person's former allowance, which is calculated as:
 

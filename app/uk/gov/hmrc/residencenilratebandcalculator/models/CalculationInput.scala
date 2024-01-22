@@ -16,10 +16,8 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.libs.json._
-import play.api.libs.json.JodaReads._
-import play.api.libs.json.JodaWrites._
 import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
 
 import scala.util.{Failure, Success, Try}

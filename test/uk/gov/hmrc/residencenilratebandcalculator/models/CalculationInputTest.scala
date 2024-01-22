@@ -17,7 +17,7 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import common.CommonPlaySpec
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.libs.json._
 
 class CalculationInputTest extends CommonPlaySpec {
@@ -25,70 +25,70 @@ class CalculationInputTest extends CommonPlaySpec {
   "Calculation Input" must {
     "throw an exception when valueOfEstate is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), -1, 0, 0, 0, 0)
+        CalculationInput(LocalDate.now(), -1, 0, 0, 0, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"valueOfEstate\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when propertyValue is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, -1, 0, 0)
+        CalculationInput(LocalDate.now(), 0, 0, -1, 0, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"propertyValue\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when percentagePassedToDirectDescendants is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, -1, 0)
+        CalculationInput(LocalDate.now(), 0, 0, 0, -1, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"percentagePassedToDirectDescendants\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when percentagePassedToDirectDescendants is greater than one hundred" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, 101, 0)
+        CalculationInput(LocalDate.now(), 0, 0, 0, 101, 0)
       }
       assert(caught.getMessage == "requirement failed: {\"percentagePassedToDirectDescendants\" : \"error.expected.number.100_at_most\"}")
     }
 
     "throw an exception when valueBeingTransferred is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, 0, -1)
+        CalculationInput(LocalDate.now(), 0, 0, 0, 0, -1)
       }
       assert(caught.getMessage == "requirement failed: {\"valueBeingTransferred\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when propertyValueAfterExemption is present but its value is less than 0" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, Some(PropertyValueAfterExemption(-1, 0)))
+        CalculationInput(LocalDate.now(), 0, 0, 0, 0, 0, Some(PropertyValueAfterExemption(-1, 0)))
       }
       assert(caught.getMessage == "requirement failed: {\"value\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when propertyValueAfterExemption is present but its inheritedValue is less than 0" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, Some(PropertyValueAfterExemption(0, -1)))
+        CalculationInput(LocalDate.now(), 0, 0, 0, 0, 0, Some(PropertyValueAfterExemption(0, -1)))
       }
       assert(caught.getMessage == "requirement failed: {\"inheritedValue\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when downsizingDetails are present but valueOfChangedProperty is less than 0" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, None, Some(DownsizingDetails(new LocalDate(), -1, 0, 0)))
+        CalculationInput(LocalDate.now(), 0, 0, 0, 0, 0, None, Some(DownsizingDetails(LocalDate.now(), -1, 0, 0)))
       }
       assert(caught.getMessage == "requirement failed: {\"valueOfChangedProperty\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when downsizingDetails are present but valueOfAssetsPassing is less than 0" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, None, Some(DownsizingDetails(new LocalDate(), 0, -1, 0)))
+        CalculationInput(LocalDate.now(), 0, 0, 0, 0, 0, None, Some(DownsizingDetails(LocalDate.now(), 0, -1, 0)))
       }
       assert(caught.getMessage == "requirement failed: {\"valueOfAssetsPassing\" : \"error.expected.number.non_negative\"}")
     }
 
     "throw an exception when downsizingDetails are present but valueAvailableWhenPropertyChanged is less than 0" in {
       val caught = intercept[IllegalArgumentException] {
-        CalculationInput(new LocalDate(), 0, 0, 0, 0, 0, None, Some(DownsizingDetails(new LocalDate(), 0, 0, -1)))
+        CalculationInput(LocalDate.now(), 0, 0, 0, 0, 0, None, Some(DownsizingDetails(LocalDate.now(), 0, 0, -1)))
       }
       assert(caught.getMessage == "requirement failed: {\"valueAvailableWhenPropertyChanged\" : \"error.expected.number.non_negative\"}")
     }
@@ -108,7 +108,7 @@ class CalculationInputTest extends CommonPlaySpec {
 
       val input = Json.fromJson[CalculationInput](json).get
 
-      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
@@ -135,7 +135,7 @@ class CalculationInputTest extends CommonPlaySpec {
 
       val input = Json.fromJson[CalculationInput](json).get
 
-      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
@@ -165,13 +165,13 @@ class CalculationInputTest extends CommonPlaySpec {
 
       val input = Json.fromJson[CalculationInput](json).get
 
-      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
       assert(input.percentagePassedToDirectDescendants == 3)
       assert(input.valueBeingTransferred == 4)
-      assert(input.downsizingDetails.contains(DownsizingDetails(new LocalDate(2017, 1, 1), 5, 6, 7)))
+      assert(input.downsizingDetails.contains(DownsizingDetails(LocalDate.of(2017, 1, 1), 5, 6, 7)))
     }
 
     "fail to create case class when JSON does not match schema" in {
@@ -253,7 +253,7 @@ class CalculationInputTest extends CommonPlaySpec {
 
       val input = CalculationInput(json).right.get
 
-      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
@@ -280,7 +280,7 @@ class CalculationInputTest extends CommonPlaySpec {
 
       val input = CalculationInput(json).right.get
 
-      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
@@ -310,13 +310,13 @@ class CalculationInputTest extends CommonPlaySpec {
 
       val input = CalculationInput(json).right.get
 
-      assert(input.dateOfDeath == new LocalDate(2018, 1, 1))
+      assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
       assert(input.propertyValue == 1)
       assert(input.chargeableEstateValue == 2)
       assert(input.percentagePassedToDirectDescendants == 3)
       assert(input.valueBeingTransferred == 4)
-      assert(input.downsizingDetails.contains(DownsizingDetails(new LocalDate(2017, 1, 1), 5, 6, 7)))
+      assert(input.downsizingDetails.contains(DownsizingDetails(LocalDate.of(2017, 1, 1), 5, 6, 7)))
     }
 
     "fail with suitable error messages when values are missing" in {
@@ -370,7 +370,7 @@ class CalculationInputTest extends CommonPlaySpec {
 
       val errors = CalculationInput(json).left.get
 
-      val expectedErrors = Seq(("dateOfDeath", "error.expected.jodadate.format"))
+      val expectedErrors = Seq(("dateOfDeath", "error.expected.date.isoformat"))
 
       assert(errors == expectedErrors)
     }
@@ -396,11 +396,11 @@ class CalculationInputTest extends CommonPlaySpec {
     }
 
     "return propertyValueAfterExemption.inheritedValue as the propertyValueCloselyInherited when it is present" in {
-      CalculationInput(new LocalDate(), 1, 2, 3, 4, 5, Some(PropertyValueAfterExemption(6, 7))).propertyValuePassedToDirectDescendants shouldBe 7
+      CalculationInput(LocalDate.now(), 1, 2, 3, 4, 5, Some(PropertyValueAfterExemption(6, 7))).propertyValuePassedToDirectDescendants shouldBe 7
     }
 
     "return (propertyValue * percentagePassedToDirectDescendants / 100) as the propertyValueCloselyInherited when propertyValueAfterExemption is not present" in {
-      CalculationInput(new LocalDate(), 1, 2, 3, 4, 5).propertyValuePassedToDirectDescendants shouldBe (3.0 * (4.0 / 100.0)).toInt
+      CalculationInput(LocalDate.now(), 1, 2, 3, 4, 5).propertyValuePassedToDirectDescendants shouldBe (3.0 * (4.0 / 100.0)).toInt
     }
   }
 }
