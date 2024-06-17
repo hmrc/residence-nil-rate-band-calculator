@@ -13,6 +13,10 @@ To run the service locally:
 
     sbt 'run 7112'
 
+To run dependencies for the service, the following command:
+
+    sm2 -start RNRB_ALL
+
 ### Running the RAML console
 To get the RAML console up and running:
 1. Clone the github repo
