@@ -20,6 +20,7 @@ import helpers.BaseComponentClass
 import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
 import scala.concurrent.Future
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 class CaseStudy8TransferOfRnrbWithPropertyInTrustSpec extends BaseComponentClass{
 

@@ -33,6 +33,6 @@ class GetTaperBandFromFile @Inject()(env: Environment, filename: String) {
 
   def apply(date: LocalDate): Try[TaperBand] =
     bandsAsJson.flatMap {
-      json: String => GetTaperBand(date, json)
+      (json: String) => GetTaperBand(date, json)
     }
 }

@@ -27,7 +27,7 @@ class RamlControllerTest extends CommonPlaySpec with WithCommonFakeApplication {
   def injectedComps = fakeApplication.injector.instanceOf[ControllerComponents]
 
   "Raml Controller" must {
-    implicit val mat = fakeApplication.injector.instanceOf[Materializer]
+    implicit val mat: Materializer = fakeApplication.injector.instanceOf[Materializer]
     implicit def mockExecutionContext: ExecutionContext = fakeApplication.injector.instanceOf[ExecutionContext]
 
     val request = FakeRequest()

@@ -251,7 +251,7 @@ class CalculationInputTest extends CommonPlaySpec {
           |}
         """.stripMargin)
 
-      val input = CalculationInput(json).right.get
+      val input = CalculationInput(json).toOption.get
 
       assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
@@ -278,7 +278,7 @@ class CalculationInputTest extends CommonPlaySpec {
           |}
         """.stripMargin)
 
-      val input = CalculationInput(json).right.get
+      val input = CalculationInput(json).toOption.get
 
       assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
@@ -308,7 +308,7 @@ class CalculationInputTest extends CommonPlaySpec {
           |}
         """.stripMargin)
 
-      val input = CalculationInput(json).right.get
+      val input = CalculationInput(json).toOption.get
 
       assert(input.dateOfDeath == LocalDate.of(2018, 1, 1))
       assert(input.valueOfEstate == 0)
@@ -322,7 +322,7 @@ class CalculationInputTest extends CommonPlaySpec {
     "fail with suitable error messages when values are missing" in {
       val json = Json.parse("{}")
 
-      val errors = CalculationInput(json).left.get
+      val errors = CalculationInput(json).swap.toOption.get
 
       val expcetedErrors = Set(
         ("dateOfDeath", "error.path.missing"),
@@ -348,7 +348,7 @@ class CalculationInputTest extends CommonPlaySpec {
           |}
         """.stripMargin)
 
-      val errors = CalculationInput(json).left.get
+      val errors = CalculationInput(json).swap.toOption.get
 
       val expectedErrors = Seq(("valueOfEstate", "error.expected.jsnumber"))
 
@@ -368,7 +368,7 @@ class CalculationInputTest extends CommonPlaySpec {
           |}
         """.stripMargin)
 
-      val errors = CalculationInput(json).left.get
+      val errors = CalculationInput(json).swap.toOption.get
 
       val expectedErrors = Seq(("dateOfDeath", "error.expected.date.isoformat"))
 
@@ -388,7 +388,7 @@ class CalculationInputTest extends CommonPlaySpec {
           |}
         """.stripMargin)
 
-      val errors = CalculationInput(json).left.get
+      val errors = CalculationInput(json).swap.toOption.get
 
       val expectedErrors = Seq(("valueOfEstate", "error.expected.number.non_negative"))
 

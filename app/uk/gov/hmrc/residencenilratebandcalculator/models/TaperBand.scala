@@ -32,7 +32,7 @@ object TaperBand {
   val taperBandWrites: Writes[TaperBand] = (
     (__ \ "threshold").write[Int] and
       (__ \ "rate").write[Int]
-    )(unlift(TaperBand.unapply _))
+    )(o => Tuple.fromProductTyped(o))
 
   implicit val taperBandFormat: Format[TaperBand] = Format(taperBandReads, taperBandWrites)
 }
