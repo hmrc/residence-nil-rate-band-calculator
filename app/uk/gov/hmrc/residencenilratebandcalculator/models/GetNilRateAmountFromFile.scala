@@ -33,6 +33,6 @@ class GetNilRateAmountFromFile @Inject()(env: Environment, filename: String) {
 
   def apply(date: LocalDate): Try[Int] =
     rateBandsAsJson.flatMap {
-      json: String => GetNilRateAmount(date, json)
+      (json: String) => GetNilRateAmount(date, json)
     }
 }

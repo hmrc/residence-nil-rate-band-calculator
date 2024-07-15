@@ -45,6 +45,6 @@ object DateTaperBandSortedMap extends SortedMapOrdering with Logging {
     }
   }
 
-  implicit val dateIntSortedMapFormat = Format(dateTaperBandSortedMapReads, dateTaperBandSortedMapWrites)
+  implicit val dateIntSortedMapFormat: Format[SortedMap[LocalDate, TaperBand]] = Format(dateTaperBandSortedMapReads, dateTaperBandSortedMapWrites)
 
 }

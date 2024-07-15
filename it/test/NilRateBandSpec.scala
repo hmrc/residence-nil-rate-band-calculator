@@ -18,6 +18,8 @@ import helpers.BaseComponentClass
 import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
 import scala.concurrent.Future
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
+
 
 class NilRateBandSpec extends BaseComponentClass{
 

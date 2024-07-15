@@ -48,5 +48,5 @@ object DateIntSortedMap extends SortedMapOrdering with Logging {
     }
   }
 
-  implicit val dateIntSortedMapFormat = Format(dateIntSortedMapReads, dateIntSortedMapWrites)
+  implicit val dateIntSortedMapFormat: Format[SortedMap[LocalDate, Int]] = Format(dateIntSortedMapReads, dateIntSortedMapWrites)
 }

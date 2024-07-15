@@ -19,7 +19,7 @@ import java.time.LocalDate
 import helpers.BaseComponentClass
 import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
-
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import scala.concurrent.Future
 
 class CaseStudy2HomeWorthLessThanMaximumRnrbSpec extends BaseComponentClass{

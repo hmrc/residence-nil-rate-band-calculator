@@ -20,6 +20,7 @@ import play.api.test.Helpers._
 import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.{DownsizingDetails, PropertyValueAfterExemption}
 import scala.concurrent.Future
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 class CaseStudy14DownsizingWithShareLeftToDirectDescendantsSpec extends BaseComponentClass{
 

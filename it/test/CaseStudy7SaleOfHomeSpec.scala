@@ -20,6 +20,7 @@ import helpers.BaseComponentClass
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._
 import scala.concurrent.Future
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 class CaseStudy7SaleOfHomeSpec extends BaseComponentClass{
 

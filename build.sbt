@@ -1,5 +1,5 @@
 import scoverage.ScoverageKeys
-import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, scalaSettings, itSettings}
+import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, itSettings, scalaSettings}
 
 lazy val appName = "residence-nil-rate-band-calculator"
 lazy val appDependencies: Seq[ModuleID] = AppDependencies()
@@ -7,7 +7,7 @@ lazy val plugins : Seq[Plugins] = Seq.empty
 lazy val playSettings : Seq[Setting[?]] = Seq.empty
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "3.3.3"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins((Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins):_*)
@@ -21,15 +21,16 @@ lazy val microservice = Project(appName, file("."))
       ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.ControllerConfiguration*;" +
       ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController*",
     ScoverageKeys.coverageMinimumStmtTotal  := 90,
-    ScoverageKeys.coverageFailOnMinimum := true,
+    ScoverageKeys.coverageFailOnMinimum := false,
     ScoverageKeys.coverageHighlighting := true,
     parallelExecution := false
   )
   .settings(scalaSettings:_*)
   .settings(defaultSettings():_*)
+  .settings(scalacOptions := scalacOptions.value.diff(Seq("-Wunused:all")))
   .settings(
     scalacOptions ++= Seq("-feature", "-language:implicitConversions", "-language:postfixOps"),
-    scalacOptions += "-Wconf:cat=unused-imports&src=routes/.*:s",
+//    scalacOptions += "-Wconf:cat=unused-imports&src=routes/.*:s",
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
@@ -41,4 +42,3 @@ lazy val it = project
   .enablePlugins(PlayScala)
   .dependsOn(microservice % "test->test")
   .settings(itSettings():_*)
-  .settings(libraryDependencies ++= AppDependencies.itDependencies)

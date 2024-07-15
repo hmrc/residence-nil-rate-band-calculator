@@ -21,9 +21,9 @@ import uk.gov.hmrc.residencenilratebandcalculator.models.Percent
 object Percentify {
 
   class Percentifier(double: Double) {
-    def percent = Percent(double)
+    def percent: Percent = Percent(double)
   }
 
-  implicit def doubleToPercent(double: Double) = new Percentifier(double)
-  implicit def bigDecimalToPercent(bigDecimal: BigDecimal) = new Percentifier(bigDecimal.toDouble)
+  implicit def doubleToPercent(double: Double): Percentifier = new Percentifier(double)
+  implicit def bigDecimalToPercent(bigDecimal: BigDecimal): Percentifier = new Percentifier(bigDecimal.toDouble)
 }

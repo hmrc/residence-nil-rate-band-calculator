@@ -17,15 +17,16 @@
 package uk.gov.hmrc.residencenilratebandcalculator.converters
 
 import common.{CommonPlaySpec, WithCommonFakeApplication}
-import play.api.i18n.MessagesApi
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.{JsNumber, JsString}
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
 class HttpErrorResponseTest extends CommonPlaySpec with WithCommonFakeApplication {
 
-  implicit val fakeRequest = FakeRequest()
-  implicit val messages = fakeApplication.injector.instanceOf[MessagesApi].preferred(fakeRequest)
+  implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit val messages: Messages = fakeApplication.injector.instanceOf[MessagesApi].preferred(fakeRequest)
 
   "Http Error Response" must {
     "create suitable errors" in {
