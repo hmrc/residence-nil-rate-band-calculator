@@ -1,9 +1,5 @@
 # microservice specific routes
 
-GET         /api/conf/:version/application.raml     uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController.getRaml(version)
-GET         /api/conf/:version/schemas/:filename    uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController.getSchema(version, filename)
-GET         /api/conf/:version/docs/:filename       uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController.getDocs(version, filename)
-
 POST        /calculate                              uk.gov.hmrc.residencenilratebandcalculator.controllers.CalculationController.calculate()
 
 GET         /nilrateband/:date                      uk.gov.hmrc.residencenilratebandcalculator.controllers.BandController.getBand(date)

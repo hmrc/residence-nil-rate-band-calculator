@@ -1,5 +1,0 @@
-{
-    "statusCode": 400,
-    "message": "Failed to parse the provided JSON object",
-    "errors": { "valueOfEstate": "A number greater than or equal to zero is required" }
-}
