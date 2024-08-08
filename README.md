@@ -17,24 +17,6 @@ To run dependencies for the service, the following command:
 
     sm2 -start RNRB_ALL
 
-### Running the RAML console
-To get the RAML console up and running:
-1. Clone the github repo
-
-    git clone git@github.com:mulesoft/api-console.git
-    
-2. Move to the working directory
-
-    cd api-console/dist
-    
-3. Start a simple web server
-
-    python -m SimpleHTTPServer 9000
-
-4. Navigate to localhost:9000 in your browser and you can now interact with the service
-
-5. If your service is running on port 7112 you can probably "Load from URL" from http://localhost:7112/residence-nil-rate-band-calculator/raml
-
 #### Test Coverage
 To run the test coverage suite
 
