@@ -18,8 +18,7 @@ lazy val microservice = Project(appName, file("."))
     ScoverageKeys.coverageExcludedFiles := ".*com.kenshoo.play.metrics.*;.*Routes.*;.*uk.gov.hmrc.residencenilratebandcalculator.components.*;" +
       ".*uk.gov.hmrc.residencenilratebandcalculator.connectors.*;.*uk.gov.hmrc.residencenilratebandcalculator.filters.*;" +
       ".*uk.gov.hmrc.residencenilratebandcalculator.handlers.*;.*BuildInfo.*;" +
-      ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.ControllerConfiguration*;" +
-      ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.RamlController*",
+      ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.ControllerConfiguration*;",
     ScoverageKeys.coverageMinimumStmtTotal  := 90,
     ScoverageKeys.coverageFailOnMinimum := false,
     ScoverageKeys.coverageHighlighting := true,
