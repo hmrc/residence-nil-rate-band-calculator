@@ -15,7 +15,7 @@ To run the service locally:
 
 To run dependencies for the service, the following command:
 
-    sm2 -start RNRB_ALL
+    sm2 --start RNRB_ALL
 
 #### Test Coverage
 To run the test coverage suite
