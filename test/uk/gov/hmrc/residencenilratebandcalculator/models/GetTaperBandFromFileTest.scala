@@ -30,8 +30,14 @@ import scala.util.Success
 class GetTaperBandFromFileTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
   val env = mock[Environment]
-  when(env.resourceAsStream(anyString)) thenReturn Some(new ByteArrayInputStream(
-    """{ "2017-04-06": {"threshold": 1, "rate": 2}, "2020-04-06": {"threshold": 3, "rate": 4}}""".getBytes))
+
+  when(env.resourceAsStream(anyString)).thenReturn(
+    Some(
+      new ByteArrayInputStream(
+        """{ "2017-04-06": {"threshold": 1, "rate": 2}, "2020-04-06": {"threshold": 3, "rate": 4}}""".getBytes
+      )
+    )
+  )
 
   val getTaperBandFromFile = new GetTaperBandFromFile(env, "")
 
@@ -59,11 +65,12 @@ class GetTaperBandFromFileTest extends CommonPlaySpec with WithCommonFakeApplica
 
     "fail when unable to obtain the taper bands as JSON" in {
       val env = mock[Environment]
-      when(env.resourceAsStream(anyString)) thenReturn None
+      when(env.resourceAsStream(anyString)).thenReturn(None)
       val getTaperBandFromFile = new GetTaperBandFromFile(env, "")
 
       getTaperBandFromFile(LocalDate.of(2006, 4, 6)).failed.get.getMessage shouldBe "error.resource_access_failure"
 
     }
   }
+
 }

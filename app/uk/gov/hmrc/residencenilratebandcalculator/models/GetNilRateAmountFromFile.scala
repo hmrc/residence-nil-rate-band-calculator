@@ -24,15 +24,14 @@ import play.api.Environment
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
-class GetNilRateAmountFromFile @Inject()(env: Environment, filename: String) {
+class GetNilRateAmountFromFile @Inject() (env: Environment, filename: String) {
 
   private lazy val rateBandsAsJson: Try[String] = env.resourceAsStream(filename) match {
     case Some(stream) => Success(Source.fromInputStream(stream).mkString)
-    case None => Failure(new RuntimeException("error.resource_access_failure"))
+    case None         => Failure(new RuntimeException("error.resource_access_failure"))
   }
 
   def apply(date: LocalDate): Try[Int] =
-    rateBandsAsJson.flatMap {
-      (json: String) => GetNilRateAmount(date, json)
-    }
+    rateBandsAsJson.flatMap((json: String) => GetNilRateAmount(date, json))
+
 }

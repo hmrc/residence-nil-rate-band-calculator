@@ -24,9 +24,9 @@ import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 class CaseStudy18DownsizingWithTransferredRnrbSpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "following case study 18.1 - A simple case of downsizing from a property which was worth less than the available RNRB" in{
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "following case study 18.1 - A simple case of downsizing from a property which was worth less than the available RNRB" in {
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2018-10-01"),
           valueAvailableWhenPropertyChanged = 125000,
@@ -34,10 +34,11 @@ class CaseStudy18DownsizingWithTransferredRnrbSpec extends BaseComponentClass {
           valueOfAssetsPassing = 250000
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = LocalDate.of(2021,3,1),
+              dateOfDeath = LocalDate.of(2021, 3, 1),
               valueOfEstate = 500000,
               propertyValue = 0,
               chargeableEstateValue = 500000,

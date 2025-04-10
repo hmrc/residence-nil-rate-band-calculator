@@ -30,8 +30,14 @@ import scala.util.Success
 class GetNilRateAmountFromFileTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
   val env = mock[Environment]
-  when(env.resourceAsStream(anyString)) thenReturn Some(new ByteArrayInputStream(
-    """{"2006-04-06": 285000, "2007-04-06": 300000, "2008-04-06": 312000, "2009-04-06": 325000}""".getBytes))
+
+  when(env.resourceAsStream(anyString)).thenReturn(
+    Some(
+      new ByteArrayInputStream(
+        """{"2006-04-06": 285000, "2007-04-06": 300000, "2008-04-06": 312000, "2009-04-06": 325000}""".getBytes
+      )
+    )
+  )
 
   val getNilRateAmountFromFile = new GetNilRateAmountFromFile(env, "")
 
@@ -63,10 +69,11 @@ class GetNilRateAmountFromFileTest extends CommonPlaySpec with WithCommonFakeApp
 
     "fail when unable to obtain the rate bands as JSON" in {
       val env = mock[Environment]
-      when(env.resourceAsStream(anyString)) thenReturn None
+      when(env.resourceAsStream(anyString)).thenReturn(None)
       val getNilRateAmountFromFile = new GetNilRateAmountFromFile(env, "")
 
       getNilRateAmountFromFile(LocalDate.of(2006, 4, 6)).failed.get.getMessage shouldBe "error.resource_access_failure"
     }
   }
+
 }

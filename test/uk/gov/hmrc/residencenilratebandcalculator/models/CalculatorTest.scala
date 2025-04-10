@@ -30,11 +30,17 @@ import scala.util.Success
 class CalculatorTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
   val env = mock[Environment]
-  when(env.resourceAsStream(matches("data/RNRB-amounts-by-year.json"))) thenReturn Some(new ByteArrayInputStream(
-    "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}".getBytes))
 
-  when(env.resourceAsStream(matches("data/Taper-bands-by-year.json"))) thenReturn Some(new ByteArrayInputStream(
-    """{ "2017-04-06": {"threshold": 2000000, "rate": 2}}""".getBytes))
+  when(env.resourceAsStream(matches("data/RNRB-amounts-by-year.json"))).thenReturn(
+    Some(
+      new ByteArrayInputStream(
+        "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}".getBytes
+      )
+    )
+  )
+
+  when(env.resourceAsStream(matches("data/Taper-bands-by-year.json")))
+    .thenReturn(Some(new ByteArrayInputStream("""{ "2017-04-06": {"threshold": 2000000, "rate": 2}}""".getBytes)))
 
   val calculator = new Calculator(env)
 
@@ -101,7 +107,15 @@ class CalculatorTest extends CommonPlaySpec with WithCommonFakeApplication with 
 
     "part of the property is exempt from inheritance tax" must {
       "give RNRA using the value of assets passing after exemptions" in {
-        val input = CalculationInput(LocalDate.of(2021, 1, 1), 1000000, 1000000, 500000, 100, 0, Some(PropertyValueAfterExemption(100000, 100000)))
+        val input = CalculationInput(
+          LocalDate.of(2021, 1, 1),
+          1000000,
+          1000000,
+          500000,
+          100,
+          0,
+          Some(PropertyValueAfterExemption(100000, 100000))
+        )
         calculator(input) shouldBe Success(CalculationResult(100000, 175000, 75000, 175000, 175000))
       }
     }
@@ -224,4 +238,5 @@ class CalculatorTest extends CommonPlaySpec with WithCommonFakeApplication with 
       assert(caught.getMessage == "requirement failed: taperedAllowance cannot be negative")
     }
   }
+
 }

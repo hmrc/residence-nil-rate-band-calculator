@@ -24,13 +24,14 @@ import scala.concurrent.Future
 
 class CaseStudy3and4LifetimeTransfersSpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "following case study 3.1 - A simple case" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "following case study 3.1 - A simple case" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2021, 1 ,1),
+              dateOfDeath = LocalDate.of(2021, 1, 1),
               valueOfEstate = 450000,
               propertyValue = 200000,
               chargeableEstateValue = 450000,
@@ -44,18 +45,19 @@ class CaseStudy3and4LifetimeTransfersSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 4.1 - A simple case" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+      "following case study 4.1 - A simple case" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2021, 1 ,1),
+              dateOfDeath = LocalDate.of(2021, 1, 1),
               valueOfEstate = 750000,
               propertyValue = 500000,
               chargeableEstateValue = 750000,
@@ -69,7 +71,7 @@ class CaseStudy3and4LifetimeTransfersSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
@@ -77,4 +79,5 @@ class CaseStudy3and4LifetimeTransfersSpec extends BaseComponentClass {
       }
     }
   }
+
 }

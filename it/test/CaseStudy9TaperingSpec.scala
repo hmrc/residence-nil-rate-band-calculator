@@ -24,13 +24,14 @@ import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 class CaseStudy9TaperingSpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "following case study 9.1 - A simple case" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "following case study 9.1 - A simple case" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2018, 12 ,1),
+              dateOfDeath = LocalDate.of(2018, 12, 1),
               valueOfEstate = 2100000,
               propertyValue = 450000,
               chargeableEstateValue = 2100000,
@@ -44,7 +45,7 @@ class CaseStudy9TaperingSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 125000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 125000,
-          adjustedAllowanceAmount =75000
+          adjustedAllowanceAmount = 75000
         )
 
         await(request).status shouldBe OK
@@ -52,4 +53,5 @@ class CaseStudy9TaperingSpec extends BaseComponentClass {
       }
     }
   }
+
 }

@@ -27,24 +27,24 @@ import uk.gov.hmrc.residencenilratebandcalculator.models.GetNilRateAmountFromFil
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
-class BandController @Inject()(env: Environment,
-                               cc: ControllerComponents) extends BackendController(cc) with Logging {
+class BandController @Inject() (env: Environment, cc: ControllerComponents) extends BackendController(cc) with Logging {
 
-  lazy val residenceNilRateBand: GetNilRateAmountFromFile = {
+  lazy val residenceNilRateBand: GetNilRateAmountFromFile =
     new GetNilRateAmountFromFile(env, "data/RNRB-amounts-by-year.json")
-  }
 
-  def getBand(dateStr: String): Action[AnyContent] = Action.async  {
+  def getBand(dateStr: String): Action[AnyContent] = Action.async {
     Try(LocalDate.parse(dateStr)) match {
-      case Success(parsedDate) => residenceNilRateBand(parsedDate) match {
-        case Success(band) => Future.successful(Ok(Json.toJson(band)))
-        case Failure(e) =>
-          logger.error("[BandController][getBand] : Unable to get band", e)
-          Future.successful(BadRequest)
-      }
+      case Success(parsedDate) =>
+        residenceNilRateBand(parsedDate) match {
+          case Success(band) => Future.successful(Ok(Json.toJson(band)))
+          case Failure(e) =>
+            logger.error("[BandController][getBand] : Unable to get band", e)
+            Future.successful(BadRequest)
+        }
       case Failure(e) =>
         logger.error(s"[BandController][getBand] : Unable to parse date $dateStr", e)
         Future.successful(BadRequest)
     }
   }
+
 }

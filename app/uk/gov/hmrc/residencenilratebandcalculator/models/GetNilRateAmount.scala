@@ -27,28 +27,24 @@ import scala.util.{Failure, Success, Try}
 object GetNilRateAmount extends Logging {
 
   private def getRateBand(date: LocalDate, rateBands: SortedMap[LocalDate, Int]): Option[(LocalDate, Int)] =
-    rateBands.find {
-      case (startDate: LocalDate, _) => (date equals startDate) || (date isAfter startDate)
-    }
+    rateBands.find { case (startDate: LocalDate, _) => (date.equals(startDate)) || (date.isAfter(startDate)) }
 
-  def apply(date: LocalDate, rateBandAsJson: String): Try[Int] = {
+  def apply(date: LocalDate, rateBandAsJson: String): Try[Int] =
     Try(Json.parse(rateBandAsJson)) match {
       case Success(json) =>
         Json.fromJson[SortedMap[LocalDate, Int]](json) match {
           case JsSuccess(rateBands, _) =>
             Success(getRateBand(date, rateBands) match {
               case Some((_, amount)) => amount
-              case None => 0
+              case None              => 0
             })
-          case error: JsError => {
+          case error: JsError =>
             logger.error(s"Invalid rate band JSON:\n$rateBandAsJson")
             Failure(new RuntimeException(error.toString))
-          }
         }
-      case Failure(error) => {
+      case Failure(error) =>
         logger.error(error.getMessage, error)
         Failure(error)
-      }
     }
-  }
+
 }

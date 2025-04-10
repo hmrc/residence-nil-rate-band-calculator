@@ -27,18 +27,16 @@ import scala.util.{Failure, Success, Try}
 object GetTaperBand extends Logging {
 
   private def getBand(date: LocalDate, bands: SortedMap[LocalDate, TaperBand]): Option[(LocalDate, TaperBand)] =
-    bands.find {
-      case (startDate: LocalDate, _) => (date equals startDate) || (date isAfter startDate)
-    }
+    bands.find { case (startDate: LocalDate, _) => (date.equals(startDate)) || (date.isAfter(startDate)) }
 
-  def apply(date: LocalDate, bandAsJson: String): Try[TaperBand] = {
+  def apply(date: LocalDate, bandAsJson: String): Try[TaperBand] =
     Try(Json.parse(bandAsJson)) match {
       case Success(json) =>
         Json.fromJson[SortedMap[LocalDate, TaperBand]](json) match {
           case JsSuccess(bands, _) =>
             Success(getBand(date, bands) match {
               case Some((_, taperBand)) => taperBand
-              case None => TaperBand(0, 1)
+              case None                 => TaperBand(0, 1)
             })
           case error: JsError =>
             logger.error(s"Invalid taper band JSON:\n$bandAsJson")
@@ -48,5 +46,5 @@ object GetTaperBand extends Logging {
         logger.error(error.getMessage, error)
         Failure(error)
     }
-  }
+
 }

@@ -23,9 +23,11 @@ object HttpErrorResponse {
 
   def apply(status: Int, messageKey: String, errors: Seq[(String, String)] = Seq())(implicit messages: Messages) = {
     val responseErrors =
-      if (errors.nonEmpty) { Seq("errors" -> JsObject(errors.map { case (key, value) => (key, JsString(messages(value))) })) }
-      else { Nil }
+      if (errors.nonEmpty) {
+        Seq("errors" -> JsObject(errors.map { case (key, value) => (key, JsString(messages(value))) }))
+      } else { Nil }
     val body = Seq("statusCode" -> JsNumber(status), "message" -> JsString(messages(messageKey))) ++ responseErrors
     JsObject(body.toMap[String, JsValue])
   }
+
 }

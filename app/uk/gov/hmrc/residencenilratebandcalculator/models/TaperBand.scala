@@ -21,18 +21,15 @@ import play.api.libs.json.Writes._
 import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
 
-case class TaperBand (threshold: Int, rate: Int)
+case class TaperBand(threshold: Int, rate: Int)
 
 object TaperBand {
-  val taperBandReads: Reads[TaperBand] = (
-    (__ \ "threshold").read[Int] and
-    (__ \ "rate").read[Int]
-  )(TaperBand.apply _)
 
-  val taperBandWrites: Writes[TaperBand] = (
-    (__ \ "threshold").write[Int] and
-      (__ \ "rate").write[Int]
-    )(o => Tuple.fromProductTyped(o))
+  val taperBandReads: Reads[TaperBand] =
+    (__ \ "threshold").read[Int].and((__ \ "rate").read[Int])(TaperBand.apply _)
+
+  val taperBandWrites: Writes[TaperBand] =
+    (__ \ "threshold").write[Int].and((__ \ "rate").write[Int])(o => Tuple.fromProductTyped(o))
 
   implicit val taperBandFormat: Format[TaperBand] = Format(taperBandReads, taperBandWrites)
 }

@@ -22,11 +22,11 @@ import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
 import scala.concurrent.Future
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
-class CaseStudy12DownsizingNotApplicableSpec extends BaseComponentClass{
+class CaseStudy12DownsizingNotApplicableSpec extends BaseComponentClass {
 
-  "The calculate route" must{
-    "return a valid OK response" when{
-      "following case study 12.1 - A simple case where downsizing is not due" in{
+  "The calculate route" must {
+    "return a valid OK response" when {
+      "following case study 12.1 - A simple case where downsizing is not due" in {
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2018-10-01"),
           valueAvailableWhenPropertyChanged = 0,
@@ -34,10 +34,11 @@ class CaseStudy12DownsizingNotApplicableSpec extends BaseComponentClass{
           valueOfAssetsPassing = 500000
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = LocalDate.of(2020,8,1),
+              dateOfDeath = LocalDate.of(2020, 8, 1),
               valueOfEstate = 700000,
               propertyValue = 200000,
               chargeableEstateValue = 700000,
@@ -52,7 +53,7 @@ class CaseStudy12DownsizingNotApplicableSpec extends BaseComponentClass{
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 175000,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
@@ -61,4 +62,5 @@ class CaseStudy12DownsizingNotApplicableSpec extends BaseComponentClass{
 
     }
   }
+
 }

@@ -22,11 +22,11 @@ import uk.gov.hmrc.residencenilratebandcalculator.models.DownsizingDetails
 import scala.concurrent.Future
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
-class CaseStudy13DownsizingSpec extends BaseComponentClass{
+class CaseStudy13DownsizingSpec extends BaseComponentClass {
 
-  "The calculate route" must{
-    "return a valid OK response" when{
-      "following case study 13.1 - A simple case of downsizing" in{
+  "The calculate route" must {
+    "return a valid OK response" when {
+      "following case study 13.1 - A simple case of downsizing" in {
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2018-05-01"),
           valueAvailableWhenPropertyChanged = 0,
@@ -34,10 +34,11 @@ class CaseStudy13DownsizingSpec extends BaseComponentClass{
           valueOfAssetsPassing = 200000
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = LocalDate.of(2020,9,1),
+              dateOfDeath = LocalDate.of(2020, 9, 1),
               valueOfEstate = 305000,
               propertyValue = 105000,
               chargeableEstateValue = 305000,
@@ -52,14 +53,14 @@ class CaseStudy13DownsizingSpec extends BaseComponentClass{
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 13.2 - A simple case of downsizing" in{
+      "following case study 13.2 - A simple case of downsizing" in {
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2018-05-01"),
           valueAvailableWhenPropertyChanged = 0,
@@ -67,10 +68,11 @@ class CaseStudy13DownsizingSpec extends BaseComponentClass{
           valueOfAssetsPassing = 50000
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = LocalDate.of(2020,9,1),
+              dateOfDeath = LocalDate.of(2020, 9, 1),
               valueOfEstate = 305000,
               propertyValue = 105000,
               chargeableEstateValue = 305000,
@@ -85,7 +87,7 @@ class CaseStudy13DownsizingSpec extends BaseComponentClass{
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 20000,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
@@ -94,4 +96,5 @@ class CaseStudy13DownsizingSpec extends BaseComponentClass{
 
     }
   }
+
 }

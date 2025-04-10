@@ -20,26 +20,25 @@ import play.api.libs.ws.WSResponse
 import scala.concurrent.Future
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 
+class NilRateBandSpec extends BaseComponentClass {
 
-class NilRateBandSpec extends BaseComponentClass{
-
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "the correct value is given for 5th April 2017" in{
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "the correct value is given for 5th April 2017" in {
         def request: Future[WSResponse] = ws.url(nilRateBandUrl("2017-04-05")).get()
 
         await(request).status shouldBe OK
         await(request).body shouldBe "100000"
       }
 
-      "the correct value is given for 6th April 2017" in{
+      "the correct value is given for 6th April 2017" in {
         def request: Future[WSResponse] = ws.url(nilRateBandUrl("2017-04-06")).get()
 
         await(request).status shouldBe OK
         await(request).body shouldBe "100000"
       }
 
-      "the correct value is given for 1st Jan 2021" in{
+      "the correct value is given for 1st Jan 2021" in {
         def request: Future[WSResponse] = ws.url(nilRateBandUrl("2021-01-01")).get()
 
         await(request).status shouldBe OK

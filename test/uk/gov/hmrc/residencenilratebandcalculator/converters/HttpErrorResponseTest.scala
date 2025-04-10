@@ -31,8 +31,8 @@ class HttpErrorResponseTest extends CommonPlaySpec with WithCommonFakeApplicatio
   "Http Error Response" must {
     "create suitable errors" in {
       val failureMessageKey = "error.json_parsing_failure"
-      val key = "key"
-      val errorMessageKey = "error.path.missing"
+      val key               = "key"
+      val errorMessageKey   = "error.path.missing"
 
       val result = HttpErrorResponse(BAD_REQUEST, failureMessageKey, Seq((key, errorMessageKey)))
 
@@ -41,4 +41,5 @@ class HttpErrorResponseTest extends CommonPlaySpec with WithCommonFakeApplicatio
       (result \ "errors" \ key).as[JsString].value shouldBe messages(errorMessageKey)
     }
   }
+
 }

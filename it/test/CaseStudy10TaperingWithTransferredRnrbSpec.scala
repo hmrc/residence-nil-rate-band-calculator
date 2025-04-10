@@ -25,13 +25,14 @@ import scala.concurrent.Future
 
 class CaseStudy10TaperingWithTransferredRnrbSpec extends BaseComponentClass {
 
-  "The calculate route" must{
-    "return a valid OK response" when{
-      "following case study 10.1 - A simple case" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+  "The calculate route" must {
+    "return a valid OK response" when {
+      "following case study 10.1 - A simple case" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2018,5,1),
+              dateOfDeath = LocalDate.of(2018, 5, 1),
               valueOfEstate = 2100000,
               propertyValue = 4500010,
               chargeableEstateValue = 2100000,
@@ -45,18 +46,19 @@ class CaseStudy10TaperingWithTransferredRnrbSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 125000,
           carryForwardAmount = 75000,
           defaultAllowanceAmount = 125000,
-          adjustedAllowanceAmount =75000
+          adjustedAllowanceAmount = 75000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 10.2" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+      "following case study 10.2" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2021,3,25),
+              dateOfDeath = LocalDate.of(2021, 3, 25),
               valueOfEstate = 1800000,
               propertyValue = 500000,
               chargeableEstateValue = 1800000,
@@ -70,7 +72,7 @@ class CaseStudy10TaperingWithTransferredRnrbSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 280000,
-          adjustedAllowanceAmount =280000
+          adjustedAllowanceAmount = 280000
         )
 
         await(request).status shouldBe OK
@@ -78,4 +80,5 @@ class CaseStudy10TaperingWithTransferredRnrbSpec extends BaseComponentClass {
       }
     }
   }
+
 }

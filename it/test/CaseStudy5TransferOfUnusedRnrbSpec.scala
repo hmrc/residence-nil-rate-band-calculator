@@ -24,13 +24,14 @@ import scala.concurrent.Future
 
 class CaseStudy5TransferOfUnusedRnrbSpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "following case study 5.1 - A simple case" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "following case study 5.1 - A simple case" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2019, 7 ,30),
+              dateOfDeath = LocalDate.of(2019, 7, 30),
               valueOfEstate = 1000000,
               propertyValue = 400000,
               chargeableEstateValue = 1000000,
@@ -44,18 +45,19 @@ class CaseStudy5TransferOfUnusedRnrbSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 150000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 300000,
-          adjustedAllowanceAmount =300000
+          adjustedAllowanceAmount = 300000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 5.2 - Property worth less than the RNRB + unused allowance" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+      "following case study 5.2 - Property worth less than the RNRB + unused allowance" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2019, 7 ,30),
+              dateOfDeath = LocalDate.of(2019, 7, 30),
               valueOfEstate = 750000,
               propertyValue = 250000,
               chargeableEstateValue = 750000,
@@ -77,4 +79,5 @@ class CaseStudy5TransferOfUnusedRnrbSpec extends BaseComponentClass {
       }
     }
   }
+
 }

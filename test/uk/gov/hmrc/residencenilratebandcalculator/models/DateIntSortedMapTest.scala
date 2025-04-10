@@ -40,4 +40,5 @@ class DateIntSortedMapTest extends CommonPlaySpec {
       Json.fromJson[SortedMap[LocalDate, Int]](Json.parse("{\"key\": []}")).asOpt shouldBe None
     }
   }
+
 }
