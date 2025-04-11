@@ -19,7 +19,9 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 import java.time.LocalDate
 
 trait SortedMapOrdering {
+
   implicit val ordering: Ordering[LocalDate] = new Ordering[LocalDate] {
     override def compare(x: LocalDate, y: LocalDate) = y.compareTo(x)
   }
+
 }

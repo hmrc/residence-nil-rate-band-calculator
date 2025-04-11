@@ -24,9 +24,9 @@ import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 class CaseStudy20DownsizingAndLeavingAPropertySpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "following case study 20.1 - downsizing and leaving a property with Value Being Transferred" in{
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "following case study 20.1 - downsizing and leaving a property with Value Being Transferred" in {
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2019-07-01"),
           valueAvailableWhenPropertyChanged = 150000,
@@ -34,10 +34,11 @@ class CaseStudy20DownsizingAndLeavingAPropertySpec extends BaseComponentClass {
           valueOfAssetsPassing = 1660000
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = LocalDate.of(2019,12,1),
+              dateOfDeath = LocalDate.of(2019, 12, 1),
               valueOfEstate = 1900000,
               propertyValue = 240000,
               chargeableEstateValue = 1900000,
@@ -52,14 +53,14 @@ class CaseStudy20DownsizingAndLeavingAPropertySpec extends BaseComponentClass {
           applicableNilRateBandAmount = 150000,
           carryForwardAmount = 15000,
           defaultAllowanceAmount = 300000,
-          adjustedAllowanceAmount =300000
+          adjustedAllowanceAmount = 300000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 20.2 - downsizing and leaving a property with Value Being Transferred" in{
+      "following case study 20.2 - downsizing and leaving a property with Value Being Transferred" in {
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2017-07-01"),
           valueAvailableWhenPropertyChanged = 100000,
@@ -67,10 +68,11 @@ class CaseStudy20DownsizingAndLeavingAPropertySpec extends BaseComponentClass {
           valueOfAssetsPassing = 1660000
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithDownsizing(
-              dateOfDeath = LocalDate.of(2019,12,1),
+              dateOfDeath = LocalDate.of(2019, 12, 1),
               valueOfEstate = 1900000,
               propertyValue = 240000,
               chargeableEstateValue = 1900000,
@@ -85,7 +87,7 @@ class CaseStudy20DownsizingAndLeavingAPropertySpec extends BaseComponentClass {
           applicableNilRateBandAmount = 150000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 300000,
-          adjustedAllowanceAmount =300000
+          adjustedAllowanceAmount = 300000
         )
 
         await(request).status shouldBe OK

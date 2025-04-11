@@ -29,14 +29,20 @@ import play.api.test.FakeRequest
 
 class BandControllerTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
-  def fakeRequest = FakeRequest()
-  def messagesApi = fakeApplication.injector.instanceOf[MessagesApi]
+  def fakeRequest   = FakeRequest()
+  def messagesApi   = fakeApplication.injector.instanceOf[MessagesApi]
   def injectedComps = fakeApplication.injector.instanceOf[ControllerComponents]
-  def messages = messagesApi.preferred(fakeRequest)
+  def messages      = messagesApi.preferred(fakeRequest)
 
   val env = mock[Environment]
-  when(env.resourceAsStream(matches("data/RNRB-amounts-by-year.json"))) thenReturn Some(new ByteArrayInputStream(
-    "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}".getBytes))
+
+  when(env.resourceAsStream(matches("data/RNRB-amounts-by-year.json"))).thenReturn(
+    Some(
+      new ByteArrayInputStream(
+        "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}".getBytes
+      )
+    )
+  )
 
   "Band Controller" must {
 
@@ -50,4 +56,5 @@ class BandControllerTest extends CommonPlaySpec with WithCommonFakeApplication w
       status(result) shouldBe 400
     }
   }
+
 }

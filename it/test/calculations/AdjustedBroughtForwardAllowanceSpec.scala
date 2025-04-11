@@ -25,9 +25,9 @@ import helpers.BaseComponentClass
   Value Being Transferred - (amount to taper * (Value Being Transferred / total allowance)).
 
   It cannot be negative, so is set to zero if the above equation is negative.
-*/
+ */
 
-class AdjustedBroughtForwardAllowanceSpec extends BaseComponentClass{
+class AdjustedBroughtForwardAllowanceSpec extends BaseComponentClass {
 
   "Adjusted Value Being Transferred" should {
     "return the correctly calculated value" when {
@@ -56,4 +56,5 @@ class AdjustedBroughtForwardAllowanceSpec extends BaseComponentClass{
       }
     }
   }
+
 }

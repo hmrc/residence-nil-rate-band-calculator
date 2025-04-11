@@ -34,18 +34,24 @@ import scala.util.Failure
 
 class CalculationControllerTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
-  def fakeRequest = FakeRequest()
-  def messagesApi = fakeApplication.injector.instanceOf[MessagesApi]
-  def injectedComps = fakeApplication.injector.instanceOf[ControllerComponents]
+  def fakeRequest     = FakeRequest()
+  def messagesApi     = fakeApplication.injector.instanceOf[MessagesApi]
+  def injectedComps   = fakeApplication.injector.instanceOf[ControllerComponents]
   def injectedParsers = fakeApplication.injector.instanceOf[PlayBodyParsers]
-  def messages = messagesApi.preferred(fakeRequest)
+  def messages        = messagesApi.preferred(fakeRequest)
 
   val env = mock[Environment]
-  when(env.resourceAsStream(matches("data/RNRB-amounts-by-year.json"))) thenReturn Some(new ByteArrayInputStream(
-    "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}".getBytes))
 
-  when(env.resourceAsStream(matches("data/Taper-bands-by-year.json"))) thenReturn Some(new ByteArrayInputStream(
-    """{ "2017-04-06": {"threshold": 2000000, "rate": 2}}""".getBytes))
+  when(env.resourceAsStream(matches("data/RNRB-amounts-by-year.json"))).thenReturn(
+    Some(
+      new ByteArrayInputStream(
+        "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}".getBytes
+      )
+    )
+  )
+
+  when(env.resourceAsStream(matches("data/Taper-bands-by-year.json")))
+    .thenReturn(Some(new ByteArrayInputStream("""{ "2017-04-06": {"threshold": 2000000, "rate": 2}}""".getBytes)))
 
   val calculator = new Calculator(env)
 
@@ -53,16 +59,15 @@ class CalculationControllerTest extends CommonPlaySpec with WithCommonFakeApplic
 
     "return a calculation result when given valid JSON" in {
 
-      val json = Json.parse(
-        """
-          |{
-          | "dateOfDeath": "2018-01-01",
-          | "valueOfEstate": 0,
-          | "propertyValue": 0,
-          | "chargeableEstateValue": 0,
-          | "percentagePassedToDirectDescendants": 0,
-          | "valueBeingTransferred": 0
-          |}
+      val json = Json.parse("""
+                              |{
+                              | "dateOfDeath": "2018-01-01",
+                              | "valueOfEstate": 0,
+                              | "propertyValue": 0,
+                              | "chargeableEstateValue": 0,
+                              | "percentagePassedToDirectDescendants": 0,
+                              | "valueBeingTransferred": 0
+                              |}
         """.stripMargin)
 
       val fakeRequest = FakeRequest("POST", "").withHeaders(("Content-Type", "application/json")).withBody(json)
@@ -70,26 +75,28 @@ class CalculationControllerTest extends CommonPlaySpec with WithCommonFakeApplic
       val response = new CalculationController(calculator)(injectedComps, injectedParsers).calculate()(fakeRequest)
 
       status(response) shouldBe OK
-      contentAsJson(response) shouldBe JsObject(Map(
-        "residenceNilRateAmount" -> JsNumber(0),
-        "applicableNilRateBandAmount" -> JsNumber(100000),
-        "carryForwardAmount" -> JsNumber(100000),
-        "defaultAllowanceAmount" -> JsNumber(100000),
-        "adjustedAllowanceAmount" -> JsNumber(100000)))
+      contentAsJson(response) shouldBe JsObject(
+        Map(
+          "residenceNilRateAmount"      -> JsNumber(0),
+          "applicableNilRateBandAmount" -> JsNumber(100000),
+          "carryForwardAmount"          -> JsNumber(100000),
+          "defaultAllowanceAmount"      -> JsNumber(100000),
+          "adjustedAllowanceAmount"     -> JsNumber(100000)
+        )
+      )
     }
 
     "return an error when given invalid JSON" in {
 
-      val json = Json.parse(
-        """
-          |{
-          | "dateOfDeath": "2018-01-01",
-          | "valueOfEstate": -1,
-          | "propertyValue": 0,
-          | "chargeableEstateValue": 0,
-          | "percentagePassedToDirectDescendants": 0,
-          | "valueBeingTransferred": 0
-          |}
+      val json = Json.parse("""
+                              |{
+                              | "dateOfDeath": "2018-01-01",
+                              | "valueOfEstate": -1,
+                              | "propertyValue": 0,
+                              | "chargeableEstateValue": 0,
+                              | "percentagePassedToDirectDescendants": 0,
+                              | "valueBeingTransferred": 0
+                              |}
         """.stripMargin)
 
       val fakeRequest = FakeRequest("POST", "").withHeaders(("Content-Type", "application/json")).withBody(json)
@@ -97,27 +104,29 @@ class CalculationControllerTest extends CommonPlaySpec with WithCommonFakeApplic
       val response = new CalculationController(calculator)(injectedComps, injectedParsers).calculate()(fakeRequest)
 
       status(response) shouldBe BAD_REQUEST
-      (contentAsJson(response) \ "errors" \ "valueOfEstate").as[JsString].value shouldBe messages("error.expected.number.non_negative")
+      (contentAsJson(response) \ "errors" \ "valueOfEstate").as[JsString].value shouldBe messages(
+        "error.expected.number.non_negative"
+      )
     }
 
     "return an error when the calculation fails" in {
 
-      val json = Json.parse(
-        """
-          |{
-          | "dateOfDeath": "2018-01-01",
-          | "valueOfEstate": 0,
-          | "propertyValue": 0,
-          | "chargeableEstateValue": 0,
-          | "percentagePassedToDirectDescendants": 0,
-          | "valueBeingTransferred": 0
-          |}
+      val json = Json.parse("""
+                              |{
+                              | "dateOfDeath": "2018-01-01",
+                              | "valueOfEstate": 0,
+                              | "propertyValue": 0,
+                              | "chargeableEstateValue": 0,
+                              | "percentagePassedToDirectDescendants": 0,
+                              | "valueBeingTransferred": 0
+                              |}
         """.stripMargin)
 
       val fakeRequest = FakeRequest("POST", "").withHeaders(("Content-Type", "application/json")).withBody(json)
 
       val mockCalculator = mock[Calculator]
-      when(mockCalculator.apply(any[CalculationInput])) thenReturn Failure(new RuntimeException("error.resource_access_failure"))
+      when(mockCalculator.apply(any[CalculationInput]))
+        .thenReturn(Failure(new RuntimeException("error.resource_access_failure")))
 
       val response = new CalculationController(mockCalculator)(injectedComps, injectedParsers).calculate()(fakeRequest)
 
@@ -125,4 +134,5 @@ class CalculationControllerTest extends CommonPlaySpec with WithCommonFakeApplic
       (contentAsJson(response) \ "message").as[JsString].value shouldBe messages("error.resource_access_failure")
     }
   }
+
 }

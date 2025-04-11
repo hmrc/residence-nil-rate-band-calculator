@@ -50,7 +50,7 @@ class PercentTest extends CommonPlaySpec {
       "return -1" in {
         val p = Percent(10)
         val q = Percent(11)
-        p compare q shouldBe -1
+        p.compare(q) shouldBe -1
       }
     }
 
@@ -58,7 +58,7 @@ class PercentTest extends CommonPlaySpec {
       "return 1" in {
         val p = Percent(10)
         val q = Percent(9)
-        p compare q shouldBe 1
+        p.compare(q) shouldBe 1
       }
     }
 
@@ -66,7 +66,7 @@ class PercentTest extends CommonPlaySpec {
       "return 0" in {
         val p = Percent(10)
         val q = Percent(10)
-        p compare q shouldBe 0
+        p.compare(q) shouldBe 0
       }
     }
 
@@ -84,4 +84,5 @@ class PercentTest extends CommonPlaySpec {
       }
     }
   }
+
 }

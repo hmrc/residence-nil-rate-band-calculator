@@ -22,11 +22,11 @@ import uk.gov.hmrc.residencenilratebandcalculator.models.{DownsizingDetails, Pro
 import scala.concurrent.Future
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
-class CaseStudy14DownsizingWithShareLeftToDirectDescendantsSpec extends BaseComponentClass{
+class CaseStudy14DownsizingWithShareLeftToDirectDescendantsSpec extends BaseComponentClass {
 
-  "The calculate route" must{
-    "return a valid OK response" when{
-      "following case study 14.1 - A simple case of downsizing with only part of the property left to descendants" in{
+  "The calculate route" must {
+    "return a valid OK response" when {
+      "following case study 14.1 - A simple case of downsizing with only part of the property left to descendants" in {
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2019-02-01"),
           valueAvailableWhenPropertyChanged = 0,
@@ -39,10 +39,11 @@ class CaseStudy14DownsizingWithShareLeftToDirectDescendantsSpec extends BaseComp
           inheritedValue = 52500
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithExemptionAndDownsizing(
-              dateOfDeath = LocalDate.of(2020,9,1),
+              dateOfDeath = LocalDate.of(2020, 9, 1),
               valueOfEstate = 700000,
               propertyValue = 105000,
               chargeableEstateValue = 700000,
@@ -58,14 +59,14 @@ class CaseStudy14DownsizingWithShareLeftToDirectDescendantsSpec extends BaseComp
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 52500,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 14.2 - A simple case of downsizing with only part of the property left to descendants" in{
+      "following case study 14.2 - A simple case of downsizing with only part of the property left to descendants" in {
         val testDownsizingDetails = DownsizingDetails(
           datePropertyWasChanged = LocalDate.parse("2019-02-01"),
           valueAvailableWhenPropertyChanged = 0,
@@ -78,10 +79,11 @@ class CaseStudy14DownsizingWithShareLeftToDirectDescendantsSpec extends BaseComp
           inheritedValue = 52500
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithExemptionAndDownsizing(
-              dateOfDeath = LocalDate.of(2020,9,1),
+              dateOfDeath = LocalDate.of(2020, 9, 1),
               valueOfEstate = 700000,
               propertyValue = 105000,
               chargeableEstateValue = 700000,
@@ -97,7 +99,7 @@ class CaseStudy14DownsizingWithShareLeftToDirectDescendantsSpec extends BaseComp
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 102500,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
@@ -105,4 +107,5 @@ class CaseStudy14DownsizingWithShareLeftToDirectDescendantsSpec extends BaseComp
       }
     }
   }
+
 }

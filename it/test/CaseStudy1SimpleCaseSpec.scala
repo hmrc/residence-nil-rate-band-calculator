@@ -24,13 +24,14 @@ import scala.concurrent.Future
 
 class CaseStudy1SimpleCaseSpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "following case study 1.1 - A simple case" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "following case study 1.1 - A simple case" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2021, 1 ,1),
+              dateOfDeath = LocalDate.of(2021, 1, 1),
               valueOfEstate = 490000,
               propertyValue = 300000,
               chargeableEstateValue = 490000,
@@ -44,17 +45,18 @@ class CaseStudy1SimpleCaseSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 1.2 - Death occurs in an earlier tax year" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+      "following case study 1.2 - Death occurs in an earlier tax year" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2018, 1 ,1),
+              dateOfDeath = LocalDate.of(2018, 1, 1),
               valueOfEstate = 490000,
               propertyValue = 300000,
               chargeableEstateValue = 490000,
@@ -68,7 +70,7 @@ class CaseStudy1SimpleCaseSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 100000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 100000,
-          adjustedAllowanceAmount =100000
+          adjustedAllowanceAmount = 100000
         )
 
         await(request).status shouldBe OK
@@ -76,4 +78,5 @@ class CaseStudy1SimpleCaseSpec extends BaseComponentClass {
       }
     }
   }
+
 }

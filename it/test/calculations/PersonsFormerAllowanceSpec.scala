@@ -27,7 +27,7 @@ import java.time.LocalDate
 
   However, Value Being Transferred is reduced to 0 if the property was changed before 6 April 2017*/
 
-class PersonsFormerAllowanceSpec extends BaseComponentClass{
+class PersonsFormerAllowanceSpec extends BaseComponentClass {
 
   "Persons Former Allowance" should {
     "return the correctly calculated value" when {
@@ -48,4 +48,5 @@ class PersonsFormerAllowanceSpec extends BaseComponentClass{
       }
     }
   }
+
 }

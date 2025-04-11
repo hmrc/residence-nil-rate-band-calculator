@@ -22,15 +22,16 @@ import play.api.libs.ws.WSResponse
 import scala.concurrent.Future
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
-class CaseStudy8TransferOfRnrbWithPropertyInTrustSpec extends BaseComponentClass{
+class CaseStudy8TransferOfRnrbWithPropertyInTrustSpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "following case study 8.1 - A simple case" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "following case study 8.1 - A simple case" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2020, 12 ,1),
+              dateOfDeath = LocalDate.of(2020, 12, 1),
               valueOfEstate = 1200000,
               propertyValue = 400000,
               chargeableEstateValue = 1250000,
@@ -44,7 +45,7 @@ class CaseStudy8TransferOfRnrbWithPropertyInTrustSpec extends BaseComponentClass
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 0,
           defaultAllowanceAmount = 350000,
-          adjustedAllowanceAmount =350000
+          adjustedAllowanceAmount = 350000
         )
 
         await(request).status shouldBe OK
@@ -52,4 +53,5 @@ class CaseStudy8TransferOfRnrbWithPropertyInTrustSpec extends BaseComponentClass
       }
     }
   }
+
 }

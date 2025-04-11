@@ -28,23 +28,24 @@ import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calc
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-class CalculationController @Inject()(calculator: Calculator)(cc: ControllerComponents,
-                                                              bodyParsers: PlayBodyParsers) extends BackendController(cc) with I18nSupport with Logging {
+class CalculationController @Inject() (calculator: Calculator)(cc: ControllerComponents, bodyParsers: PlayBodyParsers)
+    extends BackendController(cc)
+    with I18nSupport
+    with Logging {
 
-  def calculate(): Action[JsValue] = Action.async(bodyParsers.json) {
-    implicit request => {
-      CalculationInput(request.body) match {
-        case Right(input) =>
-          calculator(input) match {
-            case Success(result) => Future.successful(Ok(Json.toJson(result)))
-            case Failure(error) =>
-              logger.error("[CalculationController][calculate] : Unable to calculate", error)
-              Future.successful(InternalServerError(HttpErrorResponse(INTERNAL_SERVER_ERROR, error.getMessage)))
-          }
-        case Left(jsonErrors) =>
-          logger.error("[CalculationController][calculate] : Failed to parse the provided JSON object")
-          Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", jsonErrors)))
-      }
+  def calculate(): Action[JsValue] = Action.async(bodyParsers.json) { implicit request =>
+    CalculationInput(request.body) match {
+      case Right(input) =>
+        calculator(input) match {
+          case Success(result) => Future.successful(Ok(Json.toJson(result)))
+          case Failure(error) =>
+            logger.error("[CalculationController][calculate] : Unable to calculate", error)
+            Future.successful(InternalServerError(HttpErrorResponse(INTERNAL_SERVER_ERROR, error.getMessage)))
+        }
+      case Left(jsonErrors) =>
+        logger.error("[CalculationController][calculate] : Failed to parse the provided JSON object")
+        Future.successful(BadRequest(HttpErrorResponse(BAD_REQUEST, "error.json_parsing_failure", jsonErrors)))
     }
   }
+
 }

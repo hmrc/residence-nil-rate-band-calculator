@@ -26,16 +26,22 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
 import uk.gov.hmrc.residencenilratebandcalculator.models.Calculator
 
-class BaseComponentClass extends AnyWordSpecLike with Matchers with OptionValues with GuiceOneServerPerSuite with MockitoSugar {
+class BaseComponentClass
+    extends AnyWordSpecLike
+    with Matchers
+    with OptionValues
+    with GuiceOneServerPerSuite
+    with MockitoSugar {
+
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
     .build()
 
-  val calculateUrl = s"http://localhost:$port/residence-nil-rate-band-calculator/calculate"
-  def nilRateBandUrl(date: String) = s"http://localhost:$port/residence-nil-rate-band-calculator/nilrateband/$date"
+  val calculateUrl                  = s"http://localhost:$port/residence-nil-rate-band-calculator/calculate"
+  def nilRateBandUrl(date: String)  = s"http://localhost:$port/residence-nil-rate-band-calculator/nilrateband/$date"
   val jsonHelper: jsonHelperFactory = jsonHelperFactory()
-  lazy val ws: WSClient = app.injector.instanceOf[WSClient]
+  lazy val ws: WSClient             = app.injector.instanceOf[WSClient]
 
   val env: Environment = mock[Environment]
-  val calculator = new Calculator(env)
+  val calculator       = new Calculator(env)
 
 }

@@ -24,18 +24,19 @@ import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 class PropertyExemptionsSpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "Property is partially exempt, and the remaining part is lower than the applicable nil-rate band" in{
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "Property is partially exempt, and the remaining part is lower than the applicable nil-rate band" in {
         val testPropertyExemption = PropertyValueAfterExemption(
           value = 100000,
           inheritedValue = 100000
         )
 
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactoryWithExemption(
-              dateOfDeath = LocalDate.of(2021,1,1),
+              dateOfDeath = LocalDate.of(2021, 1, 1),
               valueOfEstate = 490000,
               propertyValue = 300000,
               chargeableEstateValue = 490000,
@@ -50,7 +51,7 @@ class PropertyExemptionsSpec extends BaseComponentClass {
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 75000,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
@@ -58,4 +59,5 @@ class PropertyExemptionsSpec extends BaseComponentClass {
       }
     }
   }
+
 }

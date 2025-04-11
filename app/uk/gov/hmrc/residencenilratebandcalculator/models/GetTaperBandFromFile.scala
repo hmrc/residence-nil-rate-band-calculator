@@ -24,15 +24,14 @@ import play.api.Environment
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
-class GetTaperBandFromFile @Inject()(env: Environment, filename: String) {
+class GetTaperBandFromFile @Inject() (env: Environment, filename: String) {
 
   private lazy val bandsAsJson: Try[String] = env.resourceAsStream(filename) match {
     case Some(stream) => Success(Source.fromInputStream(stream).mkString)
-    case None => Failure(new RuntimeException("error.resource_access_failure"))
+    case None         => Failure(new RuntimeException("error.resource_access_failure"))
   }
 
   def apply(date: LocalDate): Try[TaperBand] =
-    bandsAsJson.flatMap {
-      (json: String) => GetTaperBand(date, json)
-    }
+    bandsAsJson.flatMap((json: String) => GetTaperBand(date, json))
+
 }

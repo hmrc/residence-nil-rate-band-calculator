@@ -22,15 +22,16 @@ import play.api.libs.ws.WSResponse
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import scala.concurrent.Future
 
-class CaseStudy2HomeWorthLessThanMaximumRnrbSpec extends BaseComponentClass{
+class CaseStudy2HomeWorthLessThanMaximumRnrbSpec extends BaseComponentClass {
 
-  "The calculate route" should{
-    "return a valid OK response" when{
-      "following case study 2.1 - A simple case" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+  "The calculate route" should {
+    "return a valid OK response" when {
+      "following case study 2.1 - A simple case" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2021, 1 ,1),
+              dateOfDeath = LocalDate.of(2021, 1, 1),
               valueOfEstate = 1000000,
               propertyValue = 100000,
               chargeableEstateValue = 500000,
@@ -44,18 +45,19 @@ class CaseStudy2HomeWorthLessThanMaximumRnrbSpec extends BaseComponentClass{
           applicableNilRateBandAmount = 175000,
           carryForwardAmount = 75000,
           defaultAllowanceAmount = 175000,
-          adjustedAllowanceAmount =175000
+          adjustedAllowanceAmount = 175000
         )
 
         await(request).status shouldBe OK
         await(request).json shouldBe response
       }
 
-      "following case study 2.2 - Death occurs in an earlier tax year" in{
-        def request: Future[WSResponse] = ws.url(calculateUrl)
+      "following case study 2.2 - Death occurs in an earlier tax year" in {
+        def request: Future[WSResponse] = ws
+          .url(calculateUrl)
           .post(
             jsonHelper.jsonRequestFactory(
-              dateOfDeath = LocalDate.of(2019, 1 ,1),
+              dateOfDeath = LocalDate.of(2019, 1, 1),
               valueOfEstate = 1000000,
               propertyValue = 100000,
               chargeableEstateValue = 500000,
@@ -69,7 +71,7 @@ class CaseStudy2HomeWorthLessThanMaximumRnrbSpec extends BaseComponentClass{
           applicableNilRateBandAmount = 125000,
           carryForwardAmount = 25000,
           defaultAllowanceAmount = 125000,
-          adjustedAllowanceAmount =125000
+          adjustedAllowanceAmount = 125000
         )
 
         await(request).status shouldBe OK
@@ -77,4 +79,5 @@ class CaseStudy2HomeWorthLessThanMaximumRnrbSpec extends BaseComponentClass{
       }
     }
   }
+
 }

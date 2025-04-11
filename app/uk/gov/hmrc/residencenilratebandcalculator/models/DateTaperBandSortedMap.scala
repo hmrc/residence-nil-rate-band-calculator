@@ -27,24 +27,24 @@ object DateTaperBandSortedMap extends SortedMapOrdering with Logging {
 
   val dateTaperBandSortedMapReads = new Reads[SortedMap[LocalDate, TaperBand]] {
     override def reads(json: JsValue) =
-      Try(json.as[Map[String, TaperBand]].map {
-        case (key: String, value: TaperBand) => (LocalDate.parse(key), value)
-      }) match {
+      Try(
+        json.as[Map[String, TaperBand]].map { case (key: String, value: TaperBand) => (LocalDate.parse(key), value) }
+      ) match {
         case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, TaperBand](bandsMap.toArray: _*))
         case Failure(error) =>
           logger.error(error.getMessage, error)
           JsError(error.getMessage)
       }
-    }
-
-  val dateTaperBandSortedMapWrites = new Writes[SortedMap[LocalDate, TaperBand]] {
-    override def writes(bandsMap: SortedMap[LocalDate, TaperBand]) = {
-      Json.toJson[SortedMap[String, TaperBand]](bandsMap.map {
-        case (key: LocalDate, value: TaperBand) => (key.toString, value)
-      })
-    }
   }
 
-  implicit val dateIntSortedMapFormat: Format[SortedMap[LocalDate, TaperBand]] = Format(dateTaperBandSortedMapReads, dateTaperBandSortedMapWrites)
+  val dateTaperBandSortedMapWrites = new Writes[SortedMap[LocalDate, TaperBand]] {
+    override def writes(bandsMap: SortedMap[LocalDate, TaperBand]) =
+      Json.toJson[SortedMap[String, TaperBand]](bandsMap.map { case (key: LocalDate, value: TaperBand) =>
+        (key.toString, value)
+      })
+  }
+
+  implicit val dateIntSortedMapFormat: Format[SortedMap[LocalDate, TaperBand]] =
+    Format(dateTaperBandSortedMapReads, dateTaperBandSortedMapWrites)
 
 }

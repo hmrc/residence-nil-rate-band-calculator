@@ -22,7 +22,7 @@ import org.scalatestplus.mockito.MockitoSugar
 
 import scala.util.{Failure, Success}
 
-class GetTaperBandTest  extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
+class GetTaperBandTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
   val basedAsJson = """{ "2017-04-06": {"threshold": 1, "rate": 2}, "2020-04-06": {"threshold": 3, "rate": 4}}"""
 
@@ -57,4 +57,5 @@ class GetTaperBandTest  extends CommonPlaySpec with WithCommonFakeApplication wi
       result shouldBe a[Failure[_]]
     }
   }
+
 }

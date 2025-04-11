@@ -24,7 +24,8 @@ import scala.util.{Failure, Success}
 
 class GetNilRateAmountTest extends CommonPlaySpec with WithCommonFakeApplication with MockitoSugar {
 
-  val rateBandsAsJson = "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}"
+  val rateBandsAsJson =
+    "{ \"2017-04-06\": 100000,  \"2018-04-06\": 125000,  \"2019-04-06\": 150000,  \"2020-04-06\": 175000}"
 
   "Residence Nil Rate Band" must {
 
@@ -78,4 +79,5 @@ class GetNilRateAmountTest extends CommonPlaySpec with WithCommonFakeApplication
       result shouldBe a[Failure[_]]
     }
   }
+
 }
