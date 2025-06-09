@@ -22,6 +22,6 @@ trait Band {
   def apply(date: LocalDate): Int
 
   protected val getHighestDateBefore: (LocalDate, Map[LocalDate, Int]) => Option[LocalDate] = (date, bands) =>
-    bands.keys.toSeq.filter(d => d.isBefore(date)).sortWith(_ isAfter _).headOption
+    bands.keys.toSeq.filter(d => d.isBefore(date)).sortWith(_ `isAfter` _).headOption
 
 }

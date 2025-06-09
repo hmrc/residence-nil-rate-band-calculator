@@ -30,7 +30,7 @@ object DateTaperBandSortedMap extends SortedMapOrdering with Logging {
       Try(
         json.as[Map[String, TaperBand]].map { case (key: String, value: TaperBand) => (LocalDate.parse(key), value) }
       ) match {
-        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, TaperBand](bandsMap.toArray: _*))
+        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, TaperBand](bandsMap.toArray *))
         case Failure(error) =>
           logger.error(error.getMessage, error)
           JsError(error.getMessage)

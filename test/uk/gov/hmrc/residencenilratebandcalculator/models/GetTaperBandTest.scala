@@ -49,12 +49,12 @@ class GetTaperBandTest extends CommonPlaySpec with WithCommonFakeApplication wit
     }
 
     "return a failure when invalid JSON is provided" in {
-      GetTaperBand(LocalDate.of(2017, 4, 6), "[") shouldBe a[Failure[_]]
+      GetTaperBand(LocalDate.of(2017, 4, 6), "[") shouldBe a[Failure[?]]
     }
 
     "return a failure when the provided JSON does not represent a rate band" in {
       val result = GetTaperBand(LocalDate.of(2017, 4, 6), "{\"something\": []}")
-      result shouldBe a[Failure[_]]
+      result shouldBe a[Failure[?]]
     }
   }
 
