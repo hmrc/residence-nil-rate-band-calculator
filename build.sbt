@@ -21,19 +21,23 @@ lazy val microservice = Project(appName, file("."))
       ".*uk.gov.hmrc.residencenilratebandcalculator.controllers.ControllerConfiguration*;",
     ScoverageKeys.coverageMinimumStmtTotal := 90,
     ScoverageKeys.coverageFailOnMinimum    := false,
-    ScoverageKeys.coverageHighlighting     := true,
-    parallelExecution                      := false
+    ScoverageKeys.coverageHighlighting     := true
   )
   .settings(scalaSettings: _*)
   .settings(defaultSettings(): _*)
-  .settings(scalacOptions := scalacOptions.value.diff(Seq("-Wunused:all")))
   .settings(
     scalacOptions ++= Seq("-feature", "-language:implicitConversions", "-language:postfixOps"),
-//    scalacOptions += "-Wconf:cat=unused-imports&src=routes/.*:s",
+    scalacOptions += "-Wconf:msg=Flag.*repeatedly:s",
+    scalacOptions += "-Wconf:msg=.*-Wunused.*:s",
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     libraryDependencies ++= appDependencies,
-    retrieveManaged                 := true,
-    update / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
+    retrieveManaged := true
+  )
+  .settings(
+    scalacOptions ++= Seq(
+      // Silence unused warnings on Play `routes` files
+      "-Wconf:src=routes/.*:s"
+    )
   )
   .settings(PlayKeys.playDefaultPort := 7112)
 
@@ -41,3 +45,8 @@ lazy val it = project
   .enablePlugins(PlayScala)
   .dependsOn(microservice % "test->test")
   .settings(itSettings(): _*)
+  .settings(
+    scalacOptions ++= Seq(
+      "-Wconf:msg=Flag.*repeatedly:s"
+    )
+  )

@@ -70,13 +70,13 @@ class GetNilRateAmountTest extends CommonPlaySpec with WithCommonFakeApplication
     }
 
     "return a failure when invalid JSON is provided" in {
-      GetNilRateAmount(LocalDate.of(2017, 4, 6), "[") shouldBe a[Failure[_]]
+      GetNilRateAmount(LocalDate.of(2017, 4, 6), "[") shouldBe a[Failure[?]]
     }
 
     "return a failure when the provided JSON does not represent a rate band" in {
       val result = GetNilRateAmount(LocalDate.of(2017, 4, 6), "{\"something\": []}")
       println("result: " + result)
-      result shouldBe a[Failure[_]]
+      result shouldBe a[Failure[?]]
     }
   }
 

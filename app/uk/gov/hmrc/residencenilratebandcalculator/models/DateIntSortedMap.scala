@@ -30,7 +30,7 @@ object DateIntSortedMap extends SortedMapOrdering with Logging {
   val dateIntSortedMapReads = new Reads[SortedMap[LocalDate, Int]] {
     override def reads(json: JsValue) =
       Try(json.as[Map[String, Int]].map { case (key: String, value: Int) => (LocalDate.parse(key), value) }) match {
-        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, Int](bandsMap.toArray: _*))
+        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, Int](bandsMap.toArray *))
         case Failure(error) =>
           logger.error(error.getMessage, error)
           JsError(error.getMessage)
