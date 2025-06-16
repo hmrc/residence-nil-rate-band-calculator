@@ -143,7 +143,7 @@ class Calculator @Inject() (env: Environment) {
       CalculationResult(residenceNilRateAmount, rnrbOnDeath, carryForwardAmount, defaultAllowance, adjustedAllowance)
     }
 
-  private def taperedAllowance(totalAllowance: Int, amountToTaper: Int) = math.max(totalAllowance - amountToTaper, 0)
+  def taperedAllowance(totalAllowance: Int, amountToTaper: Int) = math.max(totalAllowance - amountToTaper, 0)
 
   private def fractionAsBoundedPercent(v: Double) = math.min(v * 100, 100).percent
 

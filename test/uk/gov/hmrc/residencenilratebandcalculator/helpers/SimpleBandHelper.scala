@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.residencenilratebandcalculator.models
+package uk.gov.hmrc.residencenilratebandcalculator.helpers
 
+import uk.gov.hmrc.residencenilratebandcalculator.models.Band
 import java.time.LocalDate
 
-trait Band {
-  def apply(date: LocalDate): Int
+class SimpleBandHelper(bands: Map[LocalDate, Int]) extends Band {
 
-  val getHighestDateBefore: (LocalDate, Map[LocalDate, Int]) => Option[LocalDate] = (date, bands) =>
-    bands.keys.toSeq.filter(d => d.isBefore(date)).sortWith(_ `isAfter` _).headOption
+  override def apply(date: LocalDate): Int =
+    getHighestDateBefore(date, bands) match {
+      case Some(highestDate) => bands(highestDate)
+      case None              => 0 // Default to 0 if no prior date exists
+    }
 
 }
