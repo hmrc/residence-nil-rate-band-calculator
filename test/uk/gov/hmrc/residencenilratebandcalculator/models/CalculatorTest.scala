@@ -143,6 +143,34 @@ class CalculatorTest extends CommonPlaySpec with WithCommonFakeApplication with 
       }
       assert(caught.getMessage == "requirement failed: valueBeingTransferred cannot be negative")
     }
+
+    "return a positive value when tapering does not exceed the value being transferred" in {
+      val result = calculator.adjustedValueBeingTransferred(500000, 20000, 100000)
+      result shouldBe 96000
+    }
+
+    "return 0 when tapering adjustment is greater than the value being transferred" in {
+      val result = calculator.adjustedValueBeingTransferred(200000, 500000, 100000)
+      result shouldBe 0
+    }
+
+    "return 0 when total allowance is very small and taper adjustment fully removes the value" in {
+      val result = calculator.adjustedValueBeingTransferred(1, 20000, 100000)
+      result shouldBe 0
+    }
+
+    "return the full value being transferred if taper amount is zero" in {
+      val result = calculator.adjustedValueBeingTransferred(500000, 0, 100000)
+      result shouldBe 100000
+    }
+
+    "handle large values for allowance, taper, and transfer" in {
+      val result = calculator.adjustedValueBeingTransferred(999999999, 88888888, 77777777)
+      val expected = math
+        .max(77777777 - (88888888.toDouble * (77777777.toDouble / 999999999)), 0.0)
+        .toInt
+      result shouldBe expected
+    }
   }
 
   "calculating persons former allowance" must {
@@ -237,6 +265,85 @@ class CalculatorTest extends CommonPlaySpec with WithCommonFakeApplication with 
       }
       assert(caught.getMessage == "requirement failed: taperedAllowance cannot be negative")
     }
+  }
+
+  "Downsizing Details" must {
+    "return 0 when downsizingDetails is None" in {
+      val result = calculator.downsizingAllowance(
+        downsizingDetails = None,
+        rnrnOnPropertyChange = 100000,
+        totalAllowance = 200000,
+        amountToTaper = 50000,
+        valueBeingTransferred = 100000,
+        propertyValue = 150000
+      )
+      result shouldBe 0
+    }
+    "return 0 when datePropertyWasChanged is before the earliestDisposalDate" in {
+      val downsizingDetails = Some(
+        DownsizingDetails(
+          datePropertyWasChanged = LocalDate.of(2010, 1, 1),
+          valueAvailableWhenPropertyChanged = 50000,
+          valueOfChangedProperty = 250000,
+          valueOfAssetsPassing = 100000
+        )
+      )
+
+      val result = calculator.downsizingAllowance(
+        downsizingDetails = downsizingDetails,
+        rnrnOnPropertyChange = 100000,
+        totalAllowance = 200000,
+        amountToTaper = 50000,
+        valueBeingTransferred = 100000,
+        propertyValue = 150000
+      )
+      result shouldBe 0
+    }
+
+  }
+
+  "return the minimum of valueOfAssetsPassing and lostAmount based on valid downsizing details" in {
+    val downsizingDetails = Some(
+      DownsizingDetails(
+        datePropertyWasChanged = LocalDate.of(2020, 1, 1),
+        valueAvailableWhenPropertyChanged = 50000,
+        valueOfChangedProperty = 250000,
+        valueOfAssetsPassing = 100000
+      )
+    )
+    val rnrnOnPropertyChange  = 100000
+    val totalAllowance        = 200000
+    val amountToTaper         = 50000
+    val valueBeingTransferred = 100000
+    val propertyValue         = 150000
+
+    val result = calculator.downsizingAllowance(
+      downsizingDetails,
+      rnrnOnPropertyChange,
+      totalAllowance,
+      amountToTaper,
+      valueBeingTransferred,
+      propertyValue
+    )
+
+    val adjustedBroughtForward =
+      calculator.adjustedValueBeingTransferred(totalAllowance, amountToTaper, valueBeingTransferred)
+    val formerAllowance = calculator.personsFormerAllowance(
+      downsizingDetails.get.datePropertyWasChanged,
+      rnrnOnPropertyChange,
+      downsizingDetails.get.valueAvailableWhenPropertyChanged,
+      adjustedBroughtForward
+    )
+    val adjustedAllowance = calculator.taperedAllowance(totalAllowance, amountToTaper)
+    val lostAmount = calculator.lostRelievableAmount(
+      downsizingDetails.get.valueOfChangedProperty,
+      formerAllowance,
+      propertyValue,
+      adjustedAllowance
+    )
+    val expected = Math.min(downsizingDetails.get.valueOfAssetsPassing, lostAmount)
+
+    result shouldBe expected
   }
 
 }

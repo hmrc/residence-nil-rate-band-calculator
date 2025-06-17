@@ -23,6 +23,44 @@ import play.api.libs.json._
 class CalculationInputTest extends CommonPlaySpec {
 
   "Calculation Input" must {
+    "serialize and deserialize CalculationInput correctly" in {
+      val calculationInput = CalculationInput(
+        dateOfDeath = LocalDate.of(2023, 2, 1),
+        valueOfEstate = 500000,
+        chargeableEstateValue = 400000,
+        propertyValue = 300000,
+        percentagePassedToDirectDescendants = 80,
+        valueBeingTransferred = 100000,
+        propertyValueAfterExemption = Some(PropertyValueAfterExemption(200000, 150000)),
+        downsizingDetails = Some(DownsizingDetails(LocalDate.of(2023, 1, 1), 100000, 50000, 20000))
+      )
+
+      val json         = Json.toJson(calculationInput)
+      val deserialized = json.as[CalculationInput]
+
+      deserialized shouldBe calculationInput
+    }
+
+    "handle missing optional fields during serialization and deserialization" in {
+      val calculationInput = CalculationInput(
+        dateOfDeath = LocalDate.of(2023, 2, 1),
+        valueOfEstate = 500000,
+        chargeableEstateValue = 400000,
+        propertyValue = 300000,
+        percentagePassedToDirectDescendants = 80,
+        valueBeingTransferred = 100000,
+        propertyValueAfterExemption = None,
+        downsizingDetails = None
+      )
+
+      val json = Json.toJson(calculationInput)
+      (json \ "propertyValueAfterExemption").asOpt[JsValue] shouldBe None
+      (json \ "downsizingDetails").asOpt[JsValue] shouldBe None
+
+      val deserialized = json.as[CalculationInput]
+      deserialized shouldBe calculationInput
+    }
+
     "throw an exception when valueOfEstate is less than zero" in {
       val caught = intercept[IllegalArgumentException] {
         CalculationInput(LocalDate.now(), -1, 0, 0, 0, 0)
@@ -461,6 +499,104 @@ class CalculationInputTest extends CommonPlaySpec {
         5
       ).propertyValuePassedToDirectDescendants shouldBe (3.0 * (4.0 / 100.0)).toInt
     }
+  }
+
+  "PropertyValueAfterExemption JSON formatter should serialize and deserialize correctly" in {
+    val model = PropertyValueAfterExemption(value = 100000, inheritedValue = 50000)
+    // Serialize to JSON
+    val json: JsValue = Json.toJson(model)
+
+    json shouldBe Json.parse(
+      """{
+      "value": 100000,
+      "inheritedValue": 50000
+      }"""
+    )
+
+    // Deserialize back
+    val parsed = json.validate[PropertyValueAfterExemption]
+
+    parsed.isSuccess shouldBe true
+    parsed.get shouldBe model
+  }
+
+  "It should fail if negative values are passed (due to require constraints)" in {
+    val invalidJson = Json.parse("""{
+      "value": -10,
+      "inheritedValue": 100
+    }""")
+
+    val result = intercept[IllegalArgumentException] {
+      invalidJson.as[PropertyValueAfterExemption]
+    }
+
+    result.getMessage should include("value")
+  }
+
+  "serialize and deserialize DownsizingDetails to and from JSON correctly" in {
+    val downsizingDetails = DownsizingDetails(
+      datePropertyWasChanged = LocalDate.of(2023, 1, 1),
+      valueOfChangedProperty = 100000,
+      valueOfAssetsPassing = 50000,
+      valueAvailableWhenPropertyChanged = 20000
+    )
+
+    val json = Json.toJson(downsizingDetails)
+    (json \ "datePropertyWasChanged").as[String] shouldBe "2023-01-01"
+    (json \ "valueOfChangedProperty").as[Int] shouldBe 100000
+    (json \ "valueOfAssetsPassing").as[Int] shouldBe 50000
+    (json \ "valueAvailableWhenPropertyChanged").as[Int] shouldBe 20000
+
+    val deserialized = json.as[DownsizingDetails]
+    deserialized shouldBe downsizingDetails
+  }
+
+  "handle large numeric values for DownsizingDetails" in {
+    val downsizingDetails = DownsizingDetails(
+      datePropertyWasChanged = LocalDate.of(2023, 1, 1),
+      valueOfChangedProperty = Int.MaxValue,
+      valueOfAssetsPassing = Int.MaxValue,
+      valueAvailableWhenPropertyChanged = Int.MaxValue
+    )
+
+    downsizingDetails.valueOfChangedProperty shouldBe Int.MaxValue
+    downsizingDetails.valueOfAssetsPassing shouldBe Int.MaxValue
+    downsizingDetails.valueAvailableWhenPropertyChanged shouldBe Int.MaxValue
+  }
+
+  "be equal to another instance of DownsizingDetails with the same data" in {
+    val downsizingDetails1 = DownsizingDetails(
+      datePropertyWasChanged = LocalDate.of(2023, 1, 1),
+      valueOfChangedProperty = 100000,
+      valueOfAssetsPassing = 50000,
+      valueAvailableWhenPropertyChanged = 20000
+    )
+    val downsizingDetails2 = DownsizingDetails(
+      datePropertyWasChanged = LocalDate.of(2023, 1, 1),
+      valueOfChangedProperty = 100000,
+      valueOfAssetsPassing = 50000,
+      valueAvailableWhenPropertyChanged = 20000
+    )
+
+    downsizingDetails1 shouldEqual downsizingDetails2
+    downsizingDetails1.hashCode() shouldBe downsizingDetails2.hashCode()
+  }
+
+  "not be equal to another instance of DownsizingDetails with different data" in {
+    val downsizingDetails1 = DownsizingDetails(
+      datePropertyWasChanged = LocalDate.of(2023, 1, 1),
+      valueOfChangedProperty = 100000,
+      valueOfAssetsPassing = 50000,
+      valueAvailableWhenPropertyChanged = 20000
+    )
+    val downsizingDetails2 = DownsizingDetails(
+      datePropertyWasChanged = LocalDate.of(2024, 2, 2),
+      valueOfChangedProperty = 1,
+      valueOfAssetsPassing = 1,
+      valueAvailableWhenPropertyChanged = 1
+    )
+
+    (downsizingDetails1 should not).equal(downsizingDetails2)
   }
 
 }

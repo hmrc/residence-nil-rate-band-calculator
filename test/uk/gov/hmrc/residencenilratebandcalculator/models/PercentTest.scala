@@ -46,6 +46,26 @@ class PercentTest extends CommonPlaySpec {
       }
     }
 
+    "percentage subtracted from another" must {
+      "return the correct percentage" in {
+        val p = Percent(10)
+        val q = Percent(5)
+        p - q shouldBe Percent(5)
+      }
+
+      "return a negative percentage when smaller percentage is subtracted from a larger one" in {
+        val p = Percent(5)
+        val q = Percent(10)
+        p - q shouldBe Percent(-5)
+      }
+
+      "return 0 when the same percentages are subtracted" in {
+        val p = Percent(10)
+        val q = Percent(10)
+        p - q shouldBe Percent(0)
+      }
+    }
+
     "compared to a larger value" must {
       "return -1" in {
         val p = Percent(10)
@@ -81,6 +101,13 @@ class PercentTest extends CommonPlaySpec {
       "return the correct percentage of the Int" in {
         val p = Percent(50)
         p * 100 shouldBe 50
+      }
+    }
+
+    "big decimal" must {
+      "return the correct percentage of the BigDecimal" in {
+        val p = Percent(50)
+        p * BigDecimal(100.2) shouldBe BigDecimal(50.1)
       }
     }
   }
