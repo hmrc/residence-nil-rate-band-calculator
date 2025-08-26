@@ -4,7 +4,7 @@ import play.core.PlayVersion
 
 private object AppDependencies {
 
-  val bootstrapVersion   = "9.13.0"
+  val bootstrapVersion   = "10.1.0"
   val mockitoCoreVersion = "5.2.0"
 
   val compile: Seq[ModuleID] = Seq(
