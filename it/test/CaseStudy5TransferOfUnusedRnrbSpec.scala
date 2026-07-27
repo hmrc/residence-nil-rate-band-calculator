@@ -18,7 +18,7 @@ import java.time.LocalDate
 
 import helpers.BaseComponentClass
 import play.api.libs.ws.WSResponse
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import scala.concurrent.Future
 

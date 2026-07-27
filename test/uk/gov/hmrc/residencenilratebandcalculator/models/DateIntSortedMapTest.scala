@@ -19,7 +19,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 import common.CommonPlaySpec
 import java.time.LocalDate
 import play.api.libs.json.Json
-import uk.gov.hmrc.residencenilratebandcalculator.models.DateIntSortedMap._
+import uk.gov.hmrc.residencenilratebandcalculator.models.DateIntSortedMap.dateIntSortedMapFormat
 
 import scala.collection.immutable.SortedMap
 
@@ -37,7 +37,7 @@ class DateIntSortedMapTest extends CommonPlaySpec {
     }
 
     "must fail when constructed with invalid JSON" in {
-      Json.fromJson[SortedMap[LocalDate, Int]](Json.parse("{\"key\": []}")).asOpt shouldBe None
+      Json.fromJson[SortedMap[LocalDate, Int]](Json.parse("{\"key\": []}")).asOpt.isEmpty shouldBe true
     }
   }
 

@@ -24,7 +24,7 @@ import play.api.test.Helpers.running
 trait WithCommonFakeApplication extends BeforeAndAfterAll {
   this: Suite =>
 
-  lazy val fakeApplication: Application = new GuiceApplicationBuilder().bindings(bindModules *).build()
+  lazy val fakeApplication: Application = new GuiceApplicationBuilder().bindings(bindModules*).build()
 
   def bindModules: Seq[GuiceableModule] = Seq()
 

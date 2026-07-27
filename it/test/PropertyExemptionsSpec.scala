@@ -16,7 +16,7 @@
 
 import java.time.LocalDate
 import helpers.BaseComponentClass
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.api.libs.ws.WSResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.PropertyValueAfterExemption
 import scala.concurrent.Future

@@ -20,8 +20,8 @@ import java.time.LocalDate
 
 trait SortedMapOrdering {
 
-  implicit val ordering: Ordering[LocalDate] = new Ordering[LocalDate] {
-    override def compare(x: LocalDate, y: LocalDate) = y.compareTo(x)
+  given Ordering[LocalDate] = new Ordering[LocalDate] {
+    override def compare(x: LocalDate, y: LocalDate): Int = y.compareTo(x)
   }
 
 }

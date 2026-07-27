@@ -18,7 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import java.time.LocalDate
 import play.api.Logging
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.collection.immutable.SortedMap
 import scala.util.{Failure, Success, Try}
@@ -30,7 +30,7 @@ object DateTaperBandSortedMap extends SortedMapOrdering with Logging {
       Try(
         json.as[Map[String, TaperBand]].map { case (key: String, value: TaperBand) => (LocalDate.parse(key), value) }
       ) match {
-        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, TaperBand](bandsMap.toArray *))
+        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, TaperBand](bandsMap.toArray*))
         case Failure(error) =>
           logger.error(error.getMessage, error)
           JsError(error.getMessage)
@@ -44,7 +44,7 @@ object DateTaperBandSortedMap extends SortedMapOrdering with Logging {
       })
   }
 
-  implicit val dateIntSortedMapFormat: Format[SortedMap[LocalDate, TaperBand]] =
+  given dateIntSortedMapFormat: Format[SortedMap[LocalDate, TaperBand]] =
     Format(dateTaperBandSortedMapReads, dateTaperBandSortedMapWrites)
 
 }

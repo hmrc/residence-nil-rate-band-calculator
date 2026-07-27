@@ -18,7 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import common.CommonPlaySpec
 import java.time.LocalDate
-import play.api.libs.json._
+import play.api.libs.json.*
 
 class CalculationInputTest extends CommonPlaySpec {
 
@@ -54,8 +54,8 @@ class CalculationInputTest extends CommonPlaySpec {
       )
 
       val json = Json.toJson(calculationInput)
-      (json \ "propertyValueAfterExemption").asOpt[JsValue] shouldBe None
-      (json \ "downsizingDetails").asOpt[JsValue] shouldBe None
+      (json \ "propertyValueAfterExemption").asOpt[JsValue].isEmpty shouldBe true
+      (json \ "downsizingDetails").asOpt[JsValue].isEmpty shouldBe true
 
       val deserialized = json.as[CalculationInput]
       deserialized shouldBe calculationInput

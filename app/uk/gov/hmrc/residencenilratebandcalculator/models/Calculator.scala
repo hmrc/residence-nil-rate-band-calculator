@@ -20,7 +20,7 @@ import javax.inject.{Inject, Singleton}
 
 import java.time.LocalDate
 import play.api.Environment
-import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
+import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify.doubleToPercent
 
 import scala.util.{Success, Try}
 

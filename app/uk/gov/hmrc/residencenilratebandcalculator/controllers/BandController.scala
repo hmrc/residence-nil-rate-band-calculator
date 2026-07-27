@@ -19,7 +19,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 import javax.inject.Inject
 import java.time.LocalDate
 import play.api.{Environment, Logging}
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.residencenilratebandcalculator.models.GetNilRateAmountFromFile

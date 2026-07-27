@@ -19,8 +19,8 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 import javax.inject.Inject
 import play.api.Logging
 import play.api.i18n.I18nSupport
-import play.api.libs.json._
-import play.api.mvc.{Action, ControllerComponents, PlayBodyParsers}
+import play.api.libs.json.*
+import play.api.mvc.{Action, ControllerComponents, PlayBodyParsers, Request}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.residencenilratebandcalculator.converters.HttpErrorResponse
 import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calculator}
@@ -33,7 +33,8 @@ class CalculationController @Inject() (calculator: Calculator)(cc: ControllerCom
     with I18nSupport
     with Logging {
 
-  def calculate(): Action[JsValue] = Action.async(bodyParsers.json) { implicit request =>
+  def calculate(): Action[JsValue] = Action.async(bodyParsers.json) { request =>
+    given Request[JsValue] = request
     CalculationInput(request.body) match {
       case Right(input) =>
         calculator(input) match {

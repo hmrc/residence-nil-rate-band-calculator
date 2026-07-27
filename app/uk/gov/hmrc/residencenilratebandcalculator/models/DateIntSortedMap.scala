@@ -18,7 +18,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import java.time.LocalDate
 import play.api.Logging
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.collection.immutable.SortedMap
 import scala.util.{Failure, Success, Try}
@@ -27,22 +27,22 @@ class InvalidJsonException extends RuntimeException
 
 object DateIntSortedMap extends SortedMapOrdering with Logging {
 
-  val dateIntSortedMapReads = new Reads[SortedMap[LocalDate, Int]] {
-    override def reads(json: JsValue) =
+  private val dateIntSortedMapReads = new Reads[SortedMap[LocalDate, Int]] {
+    override def reads(json: JsValue): JsResult[SortedMap[LocalDate, Int]] =
       Try(json.as[Map[String, Int]].map { case (key: String, value: Int) => (LocalDate.parse(key), value) }) match {
-        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, Int](bandsMap.toArray *))
+        case Success(bandsMap) => JsSuccess(SortedMap[LocalDate, Int](bandsMap.toArray*))
         case Failure(error) =>
           logger.error(error.getMessage, error)
           JsError(error.getMessage)
       }
   }
 
-  val dateIntSortedMapWrites = new Writes[SortedMap[LocalDate, Int]] {
-    override def writes(bandsMap: SortedMap[LocalDate, Int]) =
+  private val dateIntSortedMapWrites = new Writes[SortedMap[LocalDate, Int]] {
+    override def writes(bandsMap: SortedMap[LocalDate, Int]): JsValue =
       Json.toJson[SortedMap[String, Int]](bandsMap.map { case (key: LocalDate, value: Int) => (key.toString, value) })
   }
 
-  implicit val dateIntSortedMapFormat: Format[SortedMap[LocalDate, Int]] =
+  given dateIntSortedMapFormat: Format[SortedMap[LocalDate, Int]] =
     Format(dateIntSortedMapReads, dateIntSortedMapWrites)
 
 }

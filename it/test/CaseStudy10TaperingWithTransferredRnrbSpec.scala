@@ -17,7 +17,7 @@
 import java.time.LocalDate
 
 import helpers.BaseComponentClass
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.api.libs.ws.WSResponse
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
