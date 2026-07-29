@@ -19,15 +19,15 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 import java.io.ByteArrayInputStream
 
 import common.{CommonPlaySpec, WithCommonFakeApplication}
-import org.mockito.Mockito._
-import org.mockito.ArgumentMatchers._
+import org.mockito.Mockito.*
+import org.mockito.ArgumentMatchers.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Environment
 import play.api.i18n.MessagesApi
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.mvc.{ControllerComponents, PlayBodyParsers}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.residencenilratebandcalculator.models.{CalculationInput, Calculator}
 
 import scala.util.Failure

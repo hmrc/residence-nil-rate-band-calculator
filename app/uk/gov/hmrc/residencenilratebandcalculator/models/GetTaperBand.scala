@@ -19,7 +19,7 @@ package uk.gov.hmrc.residencenilratebandcalculator.models
 import java.time.LocalDate
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.Logging
-import uk.gov.hmrc.residencenilratebandcalculator.models.DateTaperBandSortedMap._
+import uk.gov.hmrc.residencenilratebandcalculator.models.DateTaperBandSortedMap.dateIntSortedMapFormat
 
 import scala.collection.immutable.SortedMap
 import scala.util.{Failure, Success, Try}

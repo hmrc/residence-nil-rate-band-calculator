@@ -19,8 +19,8 @@ package uk.gov.hmrc.residencenilratebandcalculator.controllers
 import java.io.ByteArrayInputStream
 
 import common.{CommonPlaySpec, WithCommonFakeApplication}
-import org.mockito.Mockito._
-import org.mockito.ArgumentMatchers._
+import org.mockito.Mockito.*
+import org.mockito.ArgumentMatchers.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Environment
 import play.api.i18n.MessagesApi

@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
-import play.api.libs.json._
-import play.api.libs.json.Writes._
-import play.api.libs.json.Reads._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.*
+import play.api.libs.json.Writes.*
+import play.api.libs.json.Reads.*
+import play.api.libs.functional.syntax.*
 
 case class TaperBand(threshold: Int, rate: Int)
 
@@ -31,5 +31,5 @@ object TaperBand {
   val taperBandWrites: Writes[TaperBand] =
     (__ \ "threshold").write[Int].and((__ \ "rate").write[Int])(o => Tuple.fromProductTyped(o))
 
-  implicit val taperBandFormat: Format[TaperBand] = Format(taperBandReads, taperBandWrites)
+  given Format[TaperBand] = Format(taperBandReads, taperBandWrites)
 }

@@ -17,11 +17,11 @@
 package uk.gov.hmrc.residencenilratebandcalculator.converters
 
 import play.api.i18n.Messages
-import play.api.libs.json._
+import play.api.libs.json.*
 
 object HttpErrorResponse {
 
-  def apply(status: Int, messageKey: String, errors: Seq[(String, String)] = Seq())(implicit messages: Messages) = {
+  def apply(status: Int, messageKey: String, errors: Seq[(String, String)] = Seq())(using messages: Messages) = {
     val responseErrors =
       if (errors.nonEmpty) {
         Seq("errors" -> JsObject(errors.map { case (key, value) => (key, JsString(messages(value))) }))

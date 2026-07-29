@@ -17,8 +17,8 @@
 package uk.gov.hmrc.residencenilratebandcalculator.models
 
 import java.time.LocalDate
-import play.api.libs.json._
-import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify._
+import play.api.libs.json.*
+import uk.gov.hmrc.residencenilratebandcalculator.converters.Percentify.bigDecimalToPercent
 
 import scala.util.{Failure, Success, Try}
 
@@ -47,7 +47,7 @@ case class CalculationInput(
 
   require(valueBeingTransferred >= 0, """{"valueBeingTransferred" : "error.expected.number.non_negative"}""")
 
-  def propertyValuePassedToDirectDescendants = propertyValueAfterExemption match {
+  def propertyValuePassedToDirectDescendants: Int = propertyValueAfterExemption match {
     case Some(values) => values.inheritedValue
     case None         => ((percentagePassedToDirectDescendants.percent) * propertyValue).toInt
   }
@@ -55,7 +55,7 @@ case class CalculationInput(
 }
 
 object CalculationInput {
-  implicit val formats: Format[CalculationInput] = Json.format[CalculationInput]
+  given Format[CalculationInput] = Json.format[CalculationInput]
 
   private def extractErrors(errors: JsValue): Seq[(String, String)] =
     errors.as[JsObject].fields.map(error => (error._1.stripPrefix("obj."), (error._2 \ 0 \ "msg" \ 0).as[String])).toSeq
@@ -86,7 +86,7 @@ case class PropertyValueAfterExemption(value: Int, inheritedValue: Int) {
 }
 
 object PropertyValueAfterExemption {
-  implicit val formats: OFormat[PropertyValueAfterExemption] = Json.format[PropertyValueAfterExemption]
+  given OFormat[PropertyValueAfterExemption] = Json.format[PropertyValueAfterExemption]
 }
 
 case class DownsizingDetails(
@@ -106,5 +106,5 @@ case class DownsizingDetails(
 }
 
 object DownsizingDetails {
-  implicit val formats: OFormat[DownsizingDetails] = Json.format[DownsizingDetails]
+  given OFormat[DownsizingDetails] = Json.format[DownsizingDetails]
 }

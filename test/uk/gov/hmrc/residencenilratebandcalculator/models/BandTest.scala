@@ -56,12 +56,12 @@ class BandTest extends CommonPlaySpec with Matchers {
       val band = new SimpleBandHelper(bands)
 
       "Test highest date before" in {
-        band.getHighestDateBefore(LocalDate.of(2023, 7, 1), bands) shouldBe Some(LocalDate.of(2023, 6, 1))
-        band.getHighestDateBefore(LocalDate.of(2023, 1, 2), bands) shouldBe Some(LocalDate.of(2023, 1, 1))
+        band.getHighestDateBefore(LocalDate.of(2023, 7, 1), bands) shouldBe Option(LocalDate.of(2023, 6, 1))
+        band.getHighestDateBefore(LocalDate.of(2023, 1, 2), bands) shouldBe Option(LocalDate.of(2023, 1, 1))
       }
 
       "Test when no previous date exists" in {
-        band.getHighestDateBefore(LocalDate.of(2023, 1, 1), bands) shouldBe None
+        band.getHighestDateBefore(LocalDate.of(2023, 1, 1), bands).isEmpty shouldBe true
       }
     }
 
@@ -70,7 +70,7 @@ class BandTest extends CommonPlaySpec with Matchers {
       val band       = new SimpleBandHelper(emptyBands)
 
       band(LocalDate.now()) shouldBe 0
-      band.getHighestDateBefore(LocalDate.now(), emptyBands) shouldBe None
+      band.getHighestDateBefore(LocalDate.now(), emptyBands).isEmpty shouldBe true
     }
   }
 

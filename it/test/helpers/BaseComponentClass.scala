@@ -33,7 +33,7 @@ class BaseComponentClass
     with GuiceOneServerPerSuite
     with MockitoSugar {
 
-  override implicit lazy val app: Application = new GuiceApplicationBuilder()
+  override given app: Application = new GuiceApplicationBuilder()
     .build()
 
   val calculateUrl                  = s"http://localhost:$port/residence-nil-rate-band-calculator/calculate"
