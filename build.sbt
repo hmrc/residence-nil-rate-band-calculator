@@ -29,7 +29,7 @@ lazy val microservice = Project(appName, file("."))
     scalacOptions ++= Seq("-feature", "-language:implicitConversions", "-language:postfixOps"),
     scalacOptions += "-Wconf:msg=Flag.*repeatedly:s",
     scalacOptions += "-Wconf:msg=.*-Wunused.*:s",
-    dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
+    dependencyOverrides += "commons-codec" % "commons-codec" % "1.23.0",
     libraryDependencies ++= appDependencies,
     retrieveManaged := true
   )
